@@ -20,6 +20,7 @@ const LI=[
 ];
 const UI=[
 {nome:"Vinicius",email:"vinicius@metrocasa.com.br",senha:P,role:"Corretor"},
+{nome:"Nikolas",email:"nikolas@metrocasa.com.br",senha:P,role:"Corretor"},
 {nome:"Admin Master",email:"admin@metrocasa.com.br",senha:P,role:"Admin"}
 ];
 function ler(k,p){try{return JSON.parse(localStorage.getItem(k))??p}catch{return p}}
@@ -28,7 +29,7 @@ function getLeads(){return ler(L,LI)}
 function getUsrs(){return ler(U,UI)}
 function getSessao(){return ler(S,null)}
 
-let idx=0, emChamada=false;
+let idx=0;
 
 function render(){
 let s=getSessao();
@@ -39,24 +40,24 @@ app.innerHTML=`
 <aside class="w-full lg:w-64 bg-slate-900 border-r border-slate-800 p-5 flex flex-col justify-between">
 <div>
 <div class="flex items-center gap-3 pb-5 border-b border-slate-800">
-<span class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-rose-600/30"><i class="fa-solid.fa-headset"></i></span>
+<span class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-rose-600/30"><i class="fa-solid fa-headset"></i></span>
 <div><p class="font-bold text-sm">${s.nome}</p><p class="text-xs text-rose-500 font-bold uppercase">Metrocasa</p></div>
 </div>
 <nav class="mt-4 space-y-1">
-<button onclick="router('discador')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid.fa-phone w-4"></i> Discador</button>
-<button onclick="router('leads')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid.fa-users w-4"></i> Leads</button>
-<button onclick="router('importar')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid.fa-upload w-4"></i> Importar</button>
-${s.admin?`<button onclick="router('admin')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid.fa-shield-halved w-4"></i> Painel Master</button>`:""}
+<button onclick="router('discador')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-phone w-4"></i> Discador</button>
+<button onclick="router('leads')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-users w-4"></i> Leads</button>
+<button onclick="router('importar')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-upload w-4"></i> Importar</button>
+${s.admin?`<button onclick="router('admin')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-shield-halved w-4"></i> Painel Master</button>`:""}
 </nav>
 </div>
-<button onclick="localStorage.removeItem('${S}');render();" class="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-800 text-sm font-medium text-slate-400 hover:text-rose-500 hover:border-rose-500"><i class="fa-solid.fa-right-from-bracket"></i> Sair</button>
+<button onclick="localStorage.removeItem('${S}');render();" class="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-800 text-sm font-medium text-slate-400 hover:text-rose-500 hover:border-rose-500"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
 </aside>
 <main class="flex-1 max-w-4xl mx-auto p-6 w-full" id="main-content"></main>
 </div>`;
-router(window.currentRoute||"discador",true);
+router(window.currentRoute||"discador");
 }
 
-function router(r,keep){
+function router(r){
 window.currentRoute=r;
 let el=document.getElementById("main-content");
 if(!el)return;
@@ -71,14 +72,14 @@ return `
 <div class="min-h-screen flex items-center justify-center p-4">
 <div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
 <div class="text-center mb-6">
-<span class="mx-auto w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-rose-600/30 mb-3"><i class="fa-solid.fa-headset"></i></span>
-<h1 class="text-xl font-bold">Discador Imobiliário</h1><p class="text-xs text-slate-400">Metrocasa Atendimento</p>
+<span class="mx-auto w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-rose-600/30 mb-3"><i class="fa-solid fa-headset"></i></span>
+<h1 class="text-xl font-bold">Discador Imobiliário</h1><p class="text-xs text-slate-400">Acesso Restrito ao Sistema</p>
 </div>
 <form onsubmit="fazerLogin(event)" class="space-y-4">
-<div><label class="text-[11px] font-semibold uppercase text-slate-400">E-mail ou Nome</label><input id="l-user" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="ex: vinicius"></div>
-<div><label class="text-[11px] font-semibold uppercase text-slate-400">Senha (Padrão: ${P})</label><input id="l-pass" type="password" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="••••••••"></div>
-<button type="submit" class="w-full bg-rose-600 text-white py-3 rounded-xl text-xs font-semibold uppercase tracking-wider shadow-lg shadow-rose-600/25 hover:bg-rose-500">Acessar Sistema</button>
-<button type="button" onclick="entrarAdmin()" class="w-full text-center text-xs text-slate-400 underline hover:text-white pt-2">Entrar como Administrador Geral</button>
+<div><label class="text-[11px] font-semibold uppercase text-slate-400">Seu Nome ou E-mail Cadastrado</label><input id="l-user" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="ex: Nikolas"></div>
+<div><label class="text-[11px] font-semibold uppercase text-slate-400">Senha</label><input id="l-pass" type="password" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="••••••••"></div>
+<button type="submit" class="w-full bg-rose-600 text-white py-3 rounded-xl text-xs font-semibold uppercase tracking-wider shadow-lg shadow-rose-600/25 hover:bg-rose-500">Entrar no Sistema</button>
+<p class="text-[11px] text-center text-slate-500 mt-3">Apenas nomes cadastrados pelo Administrador têm acesso.</p>
 </form>
 </div></div>`;
 }
@@ -87,14 +88,18 @@ function fazerLogin(e){
 e.preventDefault();
 let u=document.getElementById("l-user").value.trim().toLowerCase();
 let p=document.getElementById("l-pass").value;
-let user=getUsrs().find(x=>x.email.toLowerCase()===u||x.nome.toLowerCase()===u);
-if(user&&user.senha===p){gra(S,{nome:user.nome,email:user.email,admin:user.role==="Admin"});render();}
-else alert("Credenciais inválidas!");
-}
+let usuarios=getUsrs();
+let user=usuarios.find(x=>x.email.toLowerCase()===u||x.nome.toLowerCase()===u);
 
-function entrarAdmin(){
-let a=getUsrs().find(x=>x.role==="Admin");
-gra(S,{nome:a.nome,email:a.email,admin:true});
+if(!user){
+alert("Acesso Negado: Este nome ou e-mail não está cadastrado no sistema.");
+return;
+}
+if(user.senha!==p){
+alert("Senha incorreta!");
+return;
+}
+gra(S,{nome:user.nome,email:user.email,admin:user.role==="Admin"});
 render();
 }
 
@@ -121,14 +126,14 @@ ${l?`
 <h2 class="text-3xl font-bold mt-2">${l.nome}</h2>
 <p class="text-lg text-slate-400 mt-1">${l.telefone}</p>
 <div class="flex justify-center gap-3 mt-6">
-<a href="tel:${l.telefone}" class="bg-rose-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-rose-500"><i class="fa-solid.fa-phone mr-2"></i> Ligar</a>
-<a href="https://wa.me/55${l.telefone.replace(/\D/g,'')}" target="_blank" class="border border-slate-800 px-6 py-3 rounded-xl text-sm font-semibold text-emerald-500 hover:border-emerald-500"><i class="fa-brands.fa-whatsapp mr-2"></i> WhatsApp</a>
+<a href="tel:${l.telefone}" class="bg-rose-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-rose-500"><i class="fa-solid fa-phone mr-2"></i> Ligar</a>
+<a href="https://wa.me/55${l.telefone.replace(/\D/g,'')}" target="_blank" class="border border-slate-800 px-6 py-3 rounded-xl text-sm font-semibold text-emerald-500 hover:border-emerald-500"><i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp</a>
 </div>
 <div class="grid sm:grid-cols-2 gap-4 mt-6 text-left">
 <div><label class="text-[11px] uppercase text-slate-400 font-semibold">Status</label><select id="lead-status" onchange="atualizarLead('status',this.value)" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none">${SO.map(s=>`<option value="${s}" ${l.status===s?'selected':''}>${SL[s]}</option>`).join('')}</select></div>
 <div><label class="text-[11px] uppercase text-slate-400 font-semibold">Observação</label><textarea id="lead-obs" oninput="atualizarLead('observacao',this.value)" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" rows="2">${l.observacao||''}</textarea></div>
 </div>
-<button onclick="proximoLead()" class="mt-6 bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold w-full">Salvar e Próximo <i class="fa-solid.fa-arrow-right ml-2"></i></button>
+<button onclick="proximoLead()" class="mt-6 bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold w-full">Salvar e Próximo <i class="fa-solid fa-arrow-right ml-2"></i></button>
 </div>`:`<p class="text-slate-400 mt-6">Nenhum lead disponível.</p>`}`;
 }
 
@@ -184,13 +189,36 @@ router('leads');
 function adminHTML(){
 let usrs=getUsrs();
 return `
-<h1 class="text-xl font-bold">Painel Master</h1>
-<div class="mt-6 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-<h2 class="text-sm font-bold mb-3">Equipe Cadastrada</h2>
-<div class="space-y-2">
-${usrs.map(u=>`<div class="flex justify-between items-center p-3 bg-slate-950 rounded-xl border border-slate-800"><div><p class="font-medium text-sm">${u.nome}</p><p class="text-xs text-slate-400">${u.email}</p></div><button onclick="resetPass('${u.email}')" class="text-xs border border-slate-800 px-3 py-1.5 rounded-lg hover:border-rose-600">Resetar Senha</button></div>`).join('')}
+<h1 class="text-xl font-bold">Painel Master (Administração)</h1>
+<div class="grid lg:grid-cols-2 gap-6 mt-6">
+<div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+<h2 class="text-sm font-bold mb-3">Cadastrar Novo Corretor</h2>
+<form onsubmit="cadastrarCorretor(event)" class="space-y-3">
+<div><label class="text-[11px] uppercase text-slate-400 font-semibold">Nome</label><input id="cad-nome" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" placeholder="Nome do corretor"></div>
+<div><label class="text-[11px] uppercase text-slate-400 font-semibold">E-mail</label><input id="cad-email" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" placeholder="email@metrocasa.com.br"></div>
+<button type="submit" class="w-full bg-rose-600 text-white py-2.5 rounded-xl text-xs font-semibold uppercase hover:bg-rose-500">Adicionar à Lista de Permitidos</button>
+</form>
+</div>
+<div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+<h2 class="text-sm font-bold mb-3">Equipe Permitida</h2>
+<div class="space-y-2 max-h-60 overflow-y-auto">
+${usrs.map(u=>`<div class="flex justify-between items-center p-3 bg-slate-950 rounded-xl border border-slate-800"><div><p class="font-medium text-sm">${u.nome}</p><p class="text-xs text-slate-400">${u.email} (${u.role})</p></div><button onclick="resetPass('${u.email}')" class="text-xs border border-slate-800 px-3 py-1.5 rounded-lg hover:border-rose-600">Reset Senha</button></div>`).join('')}
+</div>
 </div>
 </div>`;
+}
+
+function cadastrarCorretor(e){
+e.preventDefault();
+let nome=document.getElementById("cad-nome").value.trim();
+let email=document.getElementById("cad-email").value.trim();
+if(!nome||!email) return alert("Preencha todos os campos!");
+let usrs=getUsrs();
+if(usrs.some(u=>u.email.toLowerCase()===email.toLowerCase())) return alert("Este e-mail já está cadastrado!");
+usrs.push({nome,email,senha:P,role:"Corretor"});
+gra(U,usrs);
+alert(`Corretor ${nome} cadastrado com sucesso! Ele já pode acessar o sistema com a senha padrão: ${P}`);
+router('admin');
 }
 
 function resetPass(email){
