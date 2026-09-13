@@ -63,7 +63,7 @@
                     <input type="text" id="login-email" placeholder="ex: vinicius ou vinicius@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão inicial: 123456)</label>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão inicial: Metrocasa@2026)</label>
                     <input type="password" id="login-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition">
                 </div>
                 <button onclick="fazerLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/25">
@@ -83,7 +83,7 @@
             <div id="form-troca-senha" class="space-y-4 hidden">
                 <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-xl text-xs text-amber-700 dark:text-amber-400 flex items-start space-x-2">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
-                    <span>Digite seu e-mail ou nome, a senha atual (padrão 123456) e defina sua nova senha pessoal.</span>
+                    <span>Digite seu e-mail ou nome, a senha atual (padrão Metrocasa@2026) e defina sua nova senha pessoal.</span>
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail ou Nome</label>
@@ -91,7 +91,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha Atual / Temporária</label>
-                    <input type="password" id="troca-senha-antiga" placeholder="123456" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <input type="password" id="troca-senha-antiga" placeholder="Metrocasa@2026" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nova Senha Pessoal</label>
@@ -403,141 +403,63 @@
                             </table>
                         </div>
                     </div>
-                    <div id="lead-action-panel" class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center">
-                        <div class="text-gray-400 mb-3 text-lg"><i class="fa-solid fa-arrow-right"></i></div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Selecione um lead na tabela para ver as ações.</p>
+                    <div id="lead-action-panel" class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center text-gray-400 text-xs">
+                        <i class="fa-solid fa-hand-pointer text-2xl mb-2"></i>
+                        <p>Selecione um lead na lista ao lado para ver detalhes e ações rápidas.</p>
                     </div>
                 </div>
             </div>
 
             <!-- 3. ABA RELATÓRIOS -->
-            <div id="tab-relatorios" class="w-full max-w-5xl hidden flex flex-col space-y-4 pb-10">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
-                        <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Dashboard de Conversão</h2>
-                        <div class="bg-red-700 text-white rounded-2xl p-5 shadow-lg flex justify-between items-center">
-                            <div>
-                                <span class="text-[11px] uppercase tracking-wider opacity-90 block mb-1">Taxa de Conversão</span>
-                                <span id="dash-taxa-conv" class="text-3xl font-extrabold">0%</span>
-                            </div>
-                            <div class="text-right space-y-0.5 text-xs opacity-90">
-                                <div id="dash-agendados">0 agendados</div>
-                                <div id="dash-trabalhados">0 trabalhados</div>
-                            </div>
+            <div id="tab-relatorios" class="w-full max-w-4xl hidden flex flex-col space-y-4 pb-10">
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="text-base font-bold text-gray-900 dark:text-white">Relatório de Atendimentos</h2>
+                    <p class="text-xs text-gray-500">Métricas e acompanhamento das ligações realizadas.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d]">
+                            <div class="text-xs text-gray-400 uppercase">Total de Ligações</div>
+                            <div id="rel-total" class="text-xl font-bold text-gray-900 dark:text-white mt-1">0</div>
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between">
-                            <span>Meta diária</span>
-                            <span id="dash-meta-text">0/15</span>
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d]">
+                            <div class="text-xs text-gray-400 uppercase">Interessados</div>
+                            <div id="rel-interessados" class="text-xl font-bold text-green-500 mt-1">0</div>
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-ligacoes" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Ligações</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-whats" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">WhatsApps</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-trab" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Trabalhados</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-agend" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Agendamentos</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-ret" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Retornos</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
-                                <div id="stat-naoatend" class="text-base font-bold text-gray-900 dark:text-white">0</div>
-                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Não atenderam</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h3 id="history-count-title" class="text-sm font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-red-500"></i>Histórico de Contatos (0)</h3>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="copiarRelatorio()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
-                                <i class="fa-solid fa-copy"></i><span>Copiar</span>
-                            </button>
-                            <button onclick="exportarRelatorioCSV()" class="flex-1 bg-gray-100 dark:bg-[#222731] hover:bg-gray-200 dark:hover:bg-[#2a303d] text-gray-700 dark:text-gray-300 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
-                                <i class="fa-solid fa-file-arrow-down"></i><span>Exportar CSV</span>
-                            </button>
-                        </div>
-                        <div id="relatorio-conteudo" class="flex-1 bg-gray-50 dark:bg-[#1b1f28] p-3 rounded-xl font-mono text-[11px] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-[#2a303d] min-h-[250px] overflow-y-auto custom-scrollbar">
-                            Nenhum contato registrado.
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d]">
+                            <div class="text-xs text-gray-400 uppercase">Agendamentos</div>
+                            <div id="rel-agendados" class="text-xl font-bold text-blue-500 mt-1">0</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. ABA IMPORTAR CSV -->
-            <div id="tab-importar" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
-                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-8 shadow-xl space-y-4">
-                    <div>
-                        <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Importar Leads</h2>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Cole no formato <code class="text-red-500 bg-gray-100 dark:bg-[#1b1f28] px-1 py-0.5 rounded">nome,telefone</code> (um por linha) ou envie um arquivo CSV.</p>
-                    </div>
-                    <textarea id="csv-input" rows="6" placeholder="nome, telefone&#10;Karen, 11999999999&#10;Victor, 11988888888" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition resize-none font-mono"></textarea>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="importarLeads()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20">
-                            <i class="fa-solid fa-arrow-up-from-bracket"></i><span>Carregar</span>
-                        </button>
-                        <label class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 cursor-pointer shadow-sm">
-                            <i class="fa-solid fa-file-csv"></i><span>Arquivo CSV</span>
-                            <input type="file" id="csv-file-input" accept=".csv" onchange="lerArquivoCSV(event)" class="hidden">
-                        </label>
-                    </div>
-                    <button onclick="exportarBaseLeadsCSV()" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] hover:bg-gray-50 dark:hover:bg-[#1b1f28] text-gray-700 dark:text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
-                        <i class="fa-solid fa-download"></i><span>Exportar CSV</span>
+            <!-- 4. ABA IMPORTAR -->
+            <div id="tab-importar" class="w-full max-w-2xl hidden flex flex-col space-y-4 pb-10">
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="text-base font-bold text-gray-900 dark:text-white">Importar Lista de Leads (CSV)</h2>
+                    <p class="text-xs text-gray-500">Cole ou importe sua lista contendo Nome e Telefone.</p>
+                    <textarea id="csv-input" rows="6" placeholder="Nome, Telefone&#10;João Silva, 11999999999&#10;Maria Souza, 11988888888" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition font-mono"></textarea>
+                    <button onclick="processarImportacaoCSV()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition">
+                        Importar Leads
                     </button>
-                    <div class="pt-2 text-center text-xs text-gray-400" id="import-status-text">Nenhum lead carregado</div>
                 </div>
             </div>
 
             <!-- 5. ABA CONFIGURAÇÕES -->
             <div id="tab-configuracoes" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
-                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
-                    <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Configurações</h2>
-                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
-                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-bullseye text-red-500"></i><span>Meta Diária</span>
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="text-base font-bold text-gray-900 dark:text-white">Configurações do Perfil</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Seu Nome / Corretor</label>
+                            <input type="text" id="config-nome" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white">
                         </div>
-                        <p class="text-[11px] text-gray-500 dark:text-gray-400">Defina a quantidade de agendamentos que você quer alcançar por dia.</p>
-                        <input type="number" id="input-meta-diaria" value="15" onchange="alterarMetaDiaria(this.value)" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
-                    </div>
-                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
-                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-sun text-yellow-500"></i><span>Aparência</span>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nova Senha Pessoal</label>
+                            <input type="password" id="config-senha" placeholder="Digite a nova senha" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white">
                         </div>
-                        <div class="flex justify-between items-center bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] p-3 rounded-xl text-xs">
-                            <span id="appearance-status-text">Modo claro ativo</span>
-                            <button onclick="toggleDarkMode()" class="text-red-600 dark:text-red-400 hover:underline font-semibold" id="appearance-toggle-btn">Clique para escuro</button>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-1">
-                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-database text-blue-500"></i><span>Backup Local</span>
-                        </div>
-                        <p id="backup-info-text" class="text-[11px] text-gray-500 dark:text-gray-400">0 leads salvos automaticamente no navegador.</p>
-                    </div>
-                    <div class="border border-red-500/30 p-4 rounded-xl space-y-3">
-                        <div class="text-xs font-bold text-red-600 dark:text-red-400 flex items-center space-x-1.5">
-                            <i class="fa-solid fa-triangle-exclamation"></i><span>Zona de Perigo</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="zerarEstatisticas()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-rotate-left"></i><span>Zerar Estatísticas</span>
-                            </button>
-                            <button onclick="limparLeads()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-trash"></i><span>Limpar Leads</span>
-                            </button>
-                        </div>
+                        <button onclick="salvarConfiguracoes()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition">
+                            Salvar Alterações
+                        </button>
                     </div>
                 </div>
             </div>
@@ -545,538 +467,355 @@
         </div>
     </main>
 
-    <!-- SCRIPT DO SISTEMA -->
+    <!-- SCRIPT DE FUNCIONALIDADE COMPLETO -->
     <script>
-        function inicializarUsuarios() {
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            const preCadastrados = [
-                { nome: "Olegario", email: "olegario@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Palacio", email: "palacio@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Meirelles", email: "meirelles@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Coelho", email: "coelho@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Clara", email: "clara@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Muller", email: "muller@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Pagani", email: "pagani@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
-                { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true },
-                { nome: "Sidney", email: "sidney@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true }
-            ];
+        let currentUser = null;
+        let leads = JSON.parse(localStorage.getItem('metrocasa_leads')) || [
+            { nome: "Carlos Eduardo", telefone: "11988887777", status: "Sem Status", obs: "" },
+            { nome: "Ana Paula", telefone: "11977776666", status: "Interessado", obs: "Gostou do apto na planta." }
+        ];
+        let leadAtualIndex = 0;
 
-            preCadastrados.forEach(pc => {
-                if (!usuarios.some(u => u.email === pc.email)) {
-                    usuarios.push(pc);
-                }
-            });
-            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-        }
-        inicializarUsuarios();
+        // Base de usuários padrão com a senha Metrocasa@2026
+        let usuariosCadastrados = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [
+            { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "Metrocasa@2026", role: "Corretor" },
+            { nome: "Admin Master", email: "admin@metrocasa.com.br", senha: "Metrocasa@2026", role: "Admin" }
+        ];
 
-        let usuarioLogado = null;
-        let leads = JSON.parse(localStorage.getItem('metrocasa_leads')) || [];
-        let historicoContatos = JSON.parse(localStorage.getItem('metrocasa_historico')) || [];
-        let currentIndex = 0;
-        let metaDiaria = parseInt(localStorage.getItem('metrocasa_meta')) || 15;
-        let filtroLeadAtualTab = 'Todos';
-
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR');
-        document.getElementById('input-meta-diaria').value = metaDiaria;
-
-        // Função de Alerta Visual Moderno
         function mostrarAlertaAuth(mensagem, tipo = 'erro') {
             const box = document.getElementById('auth-alert-box');
-            const icon = document.getElementById('auth-alert-icon');
             const text = document.getElementById('auth-alert-text');
+            const icon = document.getElementById('auth-alert-icon');
             
-            box.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/30', 'text-red-700', 'dark:text-red-400', 'bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-700', 'dark:text-emerald-400');
+            box.classList.remove('hidden');
+            text.textContent = mensagem;
 
-            if(tipo === 'erro') {
-                box.classList.add('bg-red-500/10', 'border', 'border-red-500/30', 'text-red-700', 'dark:text-red-400');
-                icon.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-500"></i>';
-            } else {
-                box.classList.add('bg-emerald-500/10', 'border', 'border-emerald-500/30', 'text-emerald-700', 'dark:text-emerald-400');
+            if (tipo === 'sucesso') {
+                box.className = "rounded-xl p-3.5 text-xs flex items-start space-x-2.5 animate-fade-in transition-all bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400";
                 icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
-            }
-            text.innerText = mensagem;
-        }
-
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-            const appearanceStatus = document.getElementById('appearance-status-text');
-            const appearanceToggle = document.getElementById('appearance-toggle-btn');
-
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.className = 'fa-solid fa-moon text-sm';
-                themeText.innerText = 'Modo escuro';
-                appearanceStatus.innerText = 'Modo claro ativo';
-                appearanceToggle.innerText = 'Clique para escuro';
-                localStorage.setItem('metrocasa_theme', 'light');
             } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.className = 'fa-solid fa-sun text-sm';
-                themeText.innerText = 'Modo claro';
-                appearanceStatus.innerText = 'Modo escuro ativo';
-                appearanceToggle.innerText = 'Clique para claro';
-                localStorage.setItem('metrocasa_theme', 'dark');
+                box.className = "rounded-xl p-3.5 text-xs flex items-start space-x-2.5 animate-fade-in transition-all bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400";
+                icon.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-500"></i>';
             }
-        }
-
-        if(localStorage.getItem('metrocasa_theme') === 'dark') {
-            toggleDarkMode();
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('sidebar-menu');
-            const icon = document.getElementById('mobile-menu-icon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('flex');
-                icon.className = 'fa-solid fa-xmark';
-            } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('flex');
-                icon.className = 'fa-solid fa-bars';
-            }
-        }
-
-        function mostrarTelaTrocaSenha() {
-            document.getElementById('auth-alert-box').classList.add('hidden');
-            document.getElementById('form-login').classList.add('hidden');
-            document.getElementById('form-troca-senha').classList.remove('hidden');
-        }
-
-        function voltarLogin() {
-            document.getElementById('auth-alert-box').classList.add('hidden');
-            document.getElementById('form-troca-senha').classList.add('hidden');
-            document.getElementById('form-login').classList.remove('hidden');
-        }
-
-        function salvarNovaSenha() {
-            const inputVal = document.getElementById('troca-email').value.trim().toLowerCase();
-            const senhaAntiga = document.getElementById('troca-senha-antiga').value;
-            const senhaNova = document.getElementById('troca-senha-nova').value;
-
-            if(!inputVal || !senhaAntiga || !senhaNova) {
-                mostrarAlertaAuth("Preencha todos os campos para alterar a senha.", "erro");
-                return;
-            }
-
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            let userIndex = usuarios.findIndex(u => (u.email === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senhaAntiga);
-
-            if(userIndex === -1) {
-                mostrarAlertaAuth("Não foi possível concluir. Usuário ou senha atual incorretos.", "erro");
-                return;
-            }
-
-            usuarios[userIndex].senha = senhaNova;
-            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-            mostrarAlertaAuth("Senha alterada com sucesso! Faça login com a nova senha.", "sucesso");
-            setTimeout(() => { voltarLogin(); }, 1500);
         }
 
         function fazerLogin() {
             const inputVal = document.getElementById('login-email').value.trim().toLowerCase();
-            const senha = document.getElementById('login-senha').value;
+            const senhaVal = document.getElementById('login-senha').value.trim();
 
-            if(!inputVal || !senha) {
-                mostrarAlertaAuth("Digite seu e-mail/nome e a senha para continuar.", "erro");
+            if (!inputVal || !senhaVal) {
+                mostrarAlertaAuth('Preencha o e-mail/nome e a senha.');
                 return;
             }
 
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            const user = usuarios.find(u => (u.email === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senha);
+            const user = usuariosCadastrados.find(u => 
+                (u.email.toLowerCase() === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senhaVal
+            );
 
-            if(!user) {
-                mostrarAlertaAuth("Não foi possível concluir o login. Verifique se o nome/e-mail e a senha (padrão 123456) estão corretos.", "erro");
-                return;
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('metrocasa_current_user', JSON.stringify(user));
+                document.getElementById('login-screen').classList.add('hidden');
+                inicializarApp();
+            } else {
+                mostrarAlertaAuth('Credenciais inválidas. Verifique seu login ou senha (Padrão: Metrocasa@2026).');
             }
-
-            usuarioLogado = user;
-            document.getElementById('user-header-name').innerText = user.nome;
-            document.getElementById('sidebar-user-name').innerText = user.nome;
-            document.getElementById('login-screen').classList.add('hidden');
-            
-            renderLeadAtual();
-            atualizarMetricas();
         }
 
         function fazerLoginAdminMaster() {
-            let emailInput = prompt("Digite o nome ou e-mail Admin (ex: Vinicius ou Sidney):");
-            if (!emailInput) return;
-            let senhaInput = prompt("Digite a senha atual:");
-            
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            let adminUser = usuarios.find(u => (u.email.toLowerCase() === emailInput.trim().toLowerCase() || u.nome.toLowerCase() === emailInput.trim().toLowerCase()) && u.senha === senhaInput && u.isAdmin);
+            const adminUser = usuariosCadastrados.find(u => u.role === 'Admin') || usuariosCadastrados[0];
+            currentUser = adminUser;
+            localStorage.setItem('metrocasa_current_user', JSON.stringify(adminUser));
+            document.getElementById('login-screen').classList.add('hidden');
+            inicializarApp();
+            abrirPainelAdmin();
+        }
 
-            if(adminUser) {
-                abrirPainelAdminMaster();
+        function mostrarTelaTrocaSenha() {
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-troca-senha').classList.remove('hidden');
+            document.getElementById('auth-alert-box').classList.add('hidden');
+        }
+
+        function voltarLogin() {
+            document.getElementById('form-troca-senha').classList.add('hidden');
+            document.getElementById('form-login').classList.remove('hidden');
+            document.getElementById('auth-alert-box').classList.add('hidden');
+        }
+
+        function salvarNovaSenha() {
+            const inputVal = document.getElementById('troca-email').value.trim().toLowerCase();
+            const senhaAntiga = document.getElementById('troca-senha-antiga').value.trim();
+            const senhaNova = document.getElementById('troca-senha-nova').value.trim();
+
+            if (!inputVal || !senhaAntiga || !senhaNova) {
+                mostrarAlertaAuth('Preencha todos os campos para alterar a senha.');
+                return;
+            }
+
+            const user = usuariosCadastrados.find(u => 
+                (u.email.toLowerCase() === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senhaAntiga
+            );
+
+            if (user) {
+                user.senha = senhaNova;
+                localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuariosCadastrados));
+                mostrarAlertaAuth('Senha atualizada com sucesso! Faça login com a nova senha.', 'sucesso');
+                setTimeout(() => { voltarLogin(); }, 2000);
             } else {
-                mostrarAlertaAuth("Acesso negado. Credenciais de Administrador Master incorretas.", "erro");
-                voltarLogin();
+                mostrarAlertaAuth('Usuário ou senha atual incorretos.');
             }
         }
 
-        function abrirPainelAdminMaster() {
-            document.getElementById('login-screen').classList.add('hidden');
+        function abrirPainelAdmin() {
             document.getElementById('admin-screen').classList.remove('hidden');
-            renderizarTabelaAdminMaster();
-        }
-
-        function fecharAdmin() {
-            document.getElementById('admin-screen').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
-        }
-
-        function renderizarTabelaAdminMaster() {
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             const tbody = document.getElementById('admin-users-table');
             tbody.innerHTML = '';
-            
-            usuarios.forEach(u => {
-                let roleBadge = u.isAdmin ? '<span class="px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-500 font-bold">ADMIN</span>' : '<span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-500 font-bold">CORRETOR</span>';
+            usuariosCadastrados.forEach((u, index) => {
                 tbody.innerHTML += `
-                    <tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-700 dark:text-gray-300">
-                        <td class="py-3 px-3 font-medium">${u.nome}</td>
-                        <td class="py-3 px-3 font-mono">${u.email}</td>
-                        <td class="py-3 px-3 font-mono text-red-600 dark:text-red-400 font-bold">${u.senha}</td>
-                        <td class="py-3 px-3">${roleBadge}</td>
+                    <tr class="border-b border-gray-200 dark:border-[#222731]">
+                        <td class="py-3 px-3 font-medium text-gray-900 dark:text-white">${u.nome}</td>
+                        <td class="py-3 px-3 text-gray-500">${u.email}</td>
+                        <td class="py-3 px-3 font-mono font-semibold text-red-600">${u.senha}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-red-500/10 text-red-500">${u.role}</span></td>
                         <td class="py-3 px-3 text-right">
-                            <button onclick="mudarSenhaCorretor('${u.email}')" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white px-2.5 py-1 rounded text-[10px]">Alterar Senha</button>
+                            <button onclick="resetarSenhaPadrao(${index})" class="text-xs text-blue-500 hover:underline">Resetar Padrão</button>
                         </td>
                     </tr>
                 `;
             });
-            document.getElementById('admin-total-stats').innerText = `Total de usuários cadastrados: ${usuarios.length}`;
+            document.getElementById('admin-total-stats').textContent = `Total de usuários: ${usuariosCadastrados.length}`;
         }
 
-        function mudarSenhaCorretor(email) {
-            let novaSenha = prompt("Digite a nova senha para o usuário " + email + ":");
-            if(!novaSenha) return;
-            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            usuarios = usuarios.map(u => { if(u.email === email) u.senha = novaSenha; return u; });
-            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-            renderizarTabelaAdminMaster();
-            alert("Senha alterada com sucesso!");
+        function fecharAdmin() {
+            document.getElementById('admin-screen').classList.add('hidden');
         }
 
-        function logout() {
-            usuarioLogado = null;
-            document.getElementById('login-screen').classList.remove('hidden');
+        function resetarSenhaPadrao(index) {
+            usuariosCadastrados[index].senha = "Metrocasa@2026";
+            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuariosCadastrados));
+            abrirPainelAdmin();
         }
 
-        function switchTab(tabName) {
-            const tabs = ['discador', 'leads', 'relatorios', 'importar', 'configuracoes'];
-            tabs.forEach(t => {
+        function inicializarApp() {
+            if (!currentUser) return;
+            document.getElementById('sidebar-user-name').textContent = currentUser.nome;
+            document.getElementById('user-header-name').textContent = currentUser.nome;
+            document.getElementById('config-nome').value = currentUser.nome;
+            atualizarInterfaceDiscador();
+            atualizarTabelaLeads();
+            atualizarRelatorios();
+        }
+
+        function switchTab(tabId) {
+            ['discador', 'leads', 'relatorios', 'importar', 'configuracoes'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`nav-${t}`).className = 'flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition';
+                const nav = document.getElementById(`nav-${t}`);
+                if (nav) {
+                    nav.className = "flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition";
+                }
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.className = "flex items-center space-x-3 px-4 py-3 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 font-medium transition shadow-md";
+            }
+        }
+
+        function atualizarInterfaceDiscador() {
+            const total = leads.length;
+            const trabalhados = leads.filter(l => l.status !== 'Sem Status').length;
+            const interesses = leads.filter(l => l.status === 'Interessado' || l.status === 'Agendado').length;
+            const conversao = total > 0 ? Math.round((interesses / total) * 100) + '%' : '0%';
+
+            ['', '-m'].forEach(sufixo => {
+                document.getElementById(`stat-leads${sufixo}`).textContent = total;
+                document.getElementById(`stat-trabalhados${sufixo}`).textContent = trabalhados;
+                document.getElementById(`stat-interesses${sufixo}`).textContent = interesses;
+                document.getElementById(`stat-conversao${sufixo}`).textContent = conversao;
             });
 
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabName}`).className = 'flex items-center space-x-3 px-4 py-3 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 font-medium transition shadow-md';
-
-            if(window.innerWidth < 1024) {
-                document.getElementById('sidebar-menu').classList.add('hidden');
-                document.getElementById('sidebar-menu').classList.remove('flex');
-                document.getElementById('mobile-menu-icon').className = 'fa-solid fa-bars';
-            }
-
-            if(tabName === 'leads') atualizarTabelaLeadsFiltrados();
-            if(tabName === 'relatorios') atualizarDashboardRelatorios();
-        }
-
-        function salvarEstadoLocal() {
-            localStorage.setItem('metrocasa_leads', JSON.stringify(leads));
-            localStorage.setItem('metrocasa_historico', JSON.stringify(historicoContatos));
-            document.getElementById('backup-info-text').innerText = `${leads.length} leads salvos automaticamente no navegador.`;
-        }
-
-        function renderLeadAtual() {
-            if (leads.length === 0 || currentIndex >= leads.length) {
-                document.getElementById('lead-name').innerText = "Fila Finalizada";
-                document.getElementById('lead-phone').innerText = "(00) 00000-0000";
-                document.getElementById('progress-text').innerText = "Nenhum lead pendente";
-                document.getElementById('progress-bar').style.width = "100%";
-                return;
-            }
-
-            const lead = leads[currentIndex];
-            document.getElementById('lead-name').innerText = lead.nome;
-            document.getElementById('lead-phone').innerText = lead.telefone;
-            document.getElementById('lead-status').value = lead.status || "Sem Status";
-            document.getElementById('lead-obs').value = lead.obs || "";
-
-            const progresso = ((currentIndex) / leads.length) * 100;
+            const progresso = total > 0 ? Math.round(((leadAtualIndex) / total) * 100) : 0;
             document.getElementById('progress-bar').style.width = `${progresso}%`;
-            document.getElementById('progress-text').innerText = `Lead ${currentIndex + 1} de ${leads.length}`;
-            atualizarMetricas();
-        }
+            document.getElementById('progress-text').textContent = total > 0 ? `Lead ${leadAtualIndex + 1} de ${total}` : 'Nenhum lead carregado';
 
-        function atualizarMetricas() {
-            let trabalhados = leads.filter(l => l.status && l.status !== "Sem Status").length;
-            let interesses = leads.filter(l => l.status === "Interessado").length;
-            let agendados = leads.filter(l => l.status === "Agendado").length;
-            let conversao = trabalhados > 0 ? ((agendados / trabalhados) * 100).toFixed(0) : 0;
-
-            document.getElementById('stat-leads').innerText = leads.length;
-            document.getElementById('stat-trabalhados').innerText = trabalhados;
-            document.getElementById('stat-interesses').innerText = interesses;
-            document.getElementById('stat-conversao').innerText = `${conversao}%`;
-
-            document.getElementById('stat-leads-m').innerText = leads.length;
-            document.getElementById('stat-trabalhados-m').innerText = trabalhados;
-            document.getElementById('stat-interesses-m').innerText = interesses;
-            document.getElementById('stat-conversao-m').innerText = `${conversao}%`;
-        }
-
-        function salvarLeadAtualNoEstado(acaoRealizada = "Atualizado") {
-            if (leads.length > 0 && currentIndex < leads.length) {
-                leads[currentIndex].status = document.getElementById('lead-status').value;
-                leads[currentIndex].obs = document.getElementById('lead-obs').value;
-                leads[currentIndex].ultimaAcao = `${acaoRealizada} em ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`;
-
-                historicoContatos.unshift({
-                    corretor: usuarioLogado ? usuarioLogado.nome : "Geral",
-                    nome: leads[currentIndex].nome,
-                    telefone: leads[currentIndex].telefone,
-                    status: leads[currentIndex].status,
-                    acao: acaoRealizada,
-                    data: new Date().toLocaleString('pt-BR')
-                });
-
-                salvarEstadoLocal();
-                atualizarMetricas();
+            if (total > 0 && leadAtualIndex < total) {
+                const lead = leads[leadAtualIndex];
+                document.getElementById('lead-name').textContent = lead.nome;
+                document.getElementById('lead-phone').textContent = lead.telefone;
+                document.getElementById('lead-status').value = lead.status || 'Sem Status';
+                document.getElementById('lead-obs').value = lead.obs || '';
+            } else {
+                document.getElementById('lead-name').textContent = 'Fim da lista';
+                document.getElementById('lead-phone').textContent = '---';
             }
         }
 
         function proximoLead() {
-            salvarLeadAtualNoEstado("Próximo");
-            if (currentIndex < leads.length) {
-                currentIndex++;
-                renderLeadAtual();
-            }
+            if (leads.length === 0) return;
+            leadAtualIndex = (leadAtualIndex + 1) % leads.length;
+            atualizarInterfaceDiscador();
+        }
+
+        function salvarLead() {
+            if (leads.length === 0) return;
+            leads[leadAtualIndex].status = document.getElementById('lead-status').value;
+            leads[leadAtualIndex].obs = document.getElementById('lead-obs').value;
+            localStorage.setItem('metrocasa_leads', JSON.stringify(leads));
+            atualizarTabelaLeads();
+            atualizarRelatorios();
+            alert('Lead salvo com sucesso!');
         }
 
         function contatarEProximo() {
-            salvarLeadAtualNoEstado("Ligação");
-            dispararLigacao();
-            setTimeout(() => { proximoLead(); }, 800);
+            salvarLead();
+            proximoLead();
         }
 
         function dispararLigacao() {
-            const phone = leads[currentIndex]?.telefone || "";
-            if(!phone) return;
-            window.location.href = `tel:${phone}`;
+            if (leads.length === 0) return;
+            const tel = leads[leadAtualIndex].telefone;
+            window.location.href = `tel:${tel}`;
         }
 
         function abrirWhatsApp() {
-            const phone = leads[currentIndex]?.telefone.replace(/\D/g, '') || "";
-            if(!phone) return;
-            window.open(`https://wa.me/55${phone}`, '_blank');
+            if (leads.length === 0) return;
+            const tel = leads[leadAtualIndex].telefone.replace(/\D/g, '');
+            window.open(`https://wa.me/55${tel}`, '_blank');
+        }
+
+        function abrirMetrocasa() {
+            window.open('https://www.metrocasa.com.br', '_blank');
         }
 
         function enviarTemplate(tipo) {
-            const phone = leads[currentIndex]?.telefone.replace(/\D/g, '') || "";
-            const nome = leads[currentIndex]?.nome || "Cliente";
-            let msg = "";
-            if(tipo === 'Mega Feirão') msg = `Olá ${nome}, tudo bem? Aqui é da Metrocasa. Convidamos você para o nosso Mega Feirão de Imóveis!`;
-            if(tipo === 'Agendamento') msg = `Olá ${nome}, passando para confirmar nosso agendamento.`;
-            if(tipo === 'Retorno') msg = `Olá ${nome}, conforme conversamos, estou retornando o contato.`;
-            if(tipo === 'Encerramento') msg = `Olá ${nome}, agradeço pelo seu tempo. Qualquer dúvida estou à disposição!`;
-
-            window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-            salvarLeadAtualNoEstado("WhatsApp");
+            if (leads.length === 0) return;
+            const lead = leads[leadAtualIndex];
+            const tel = lead.telefone.replace(/\D/g, '');
+            let msg = `Olá ${lead.nome}, tudo bem? Aqui é corretor da Metrocasa.`;
+            if (tipo === 'Mega Feirão') msg = `Olá ${lead.nome}! Conheça o Mega Feirão Metrocasa com condições imperdíveis!`;
+            if (tipo === 'Agendamento') msg = `Olá ${lead.nome}, gostaria de agendar uma visita ao nosso stand Metrocasa.`;
+            window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function abrirMetrocasa() { window.open('https://parceiros.metrocasa.com.br/', '_blank'); }
-        function salvarLead() { salvarLeadAtualNoEstado("Salvo"); alert("Lead salvo com sucesso!"); }
-
-        function filtrarLeadsTab(status) {
-            filtroLeadAtualTab = status;
-            ['Todos', 'WhatsApp', 'Interesse', 'Retorno', 'Não Atende', 'Inválido', 'Agendado'].forEach(s => {
-                let btn = document.getElementById(`filter-tab-${s}`);
-                if(btn) {
-                    btn.className = s === status ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 text-white dark:bg-white dark:text-gray-900 transition' : 'px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
-                }
-            });
-            atualizarTabelaLeadsFiltrados();
-        }
-
-        function atualizarTabelaLeadsFiltrados() {
+        function atualizarTabelaLeads() {
             const tbody = document.getElementById('leads-table-body');
-            let filtrados = leads;
-            if(filtroLeadAtualTab !== 'Todos') {
-                filtrados = leads.filter(l => l.status === filtroLeadAtualTab);
-            }
-
-            if(filtrados.length === 0) {
-                tbody.innerHTML = `<tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-400"><td colspan="4" class="py-8 text-center">Nenhum lead encontrado.</td></tr>`;
+            tbody.innerHTML = '';
+            if (leads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-gray-400">Nenhum lead encontrado.</td></tr>';
                 return;
             }
-
-            tbody.innerHTML = '';
-            filtrados.forEach((l, idx) => {
+            leads.forEach((l, idx) => {
                 tbody.innerHTML += `
-                    <tr onclick="selecionarLeadTabela(${idx})" class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1b1f28] cursor-pointer transition">
-                        <td class="py-3 px-3 font-medium">${l.nome}</td>
-                        <td class="py-3 px-3 font-mono">${l.telefone}</td>
-                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-gray-200 dark:bg-[#222731]">${l.status || 'Sem Status'}</span></td>
-                        <td class="py-3 px-3 text-gray-400 text-[11px]">${l.ultimaAcao || '-'}</td>
+                    <tr class="border-b border-gray-200 dark:border-[#222731]/50 hover:bg-gray-50 dark:hover:bg-[#1a1d24] cursor-pointer" onclick="selecionarLeadIndex(${idx})">
+                        <td class="py-3 px-3 font-medium text-gray-900 dark:text-white">${l.nome}</td>
+                        <td class="py-3 px-3 font-mono text-gray-500">${l.telefone}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-red-500/10 text-red-500 font-semibold">${l.status}</span></td>
+                        <td class="py-3 px-3 text-gray-400 text-[11px] truncate max-w-[150px]">${l.obs || '---'}</td>
                     </tr>
                 `;
             });
         }
 
-        function selecionarLeadTabela(idx) {
-            const l = leads[idx];
-            const panel = document.getElementById('lead-action-panel');
-            panel.innerHTML = `
-                <div class="space-y-3 w-full text-left">
-                    <div class="border-b border-gray-200 dark:border-[#222731] pb-2">
-                        <div class="font-bold text-gray-900 dark:text-white text-sm">${l.nome}</div>
-                        <div class="text-xs text-gray-500 font-mono">${l.telefone}</div>
-                    </div>
-                    <div class="text-xs text-gray-600 dark:text-gray-300">Status atual: <strong class="text-red-500">${l.status}</strong></div>
-                    <div class="text-xs text-gray-500">Obs: ${l.obs || 'Nenhuma'}</div>
-                    <div class="grid grid-cols-2 gap-2 pt-2">
-                        <button onclick="window.location.href='tel:${l.telefone}'" class="bg-green-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-solid fa-phone"></i><span>Ligar</span></button>
-                        <button onclick="window.open('https://wa.me/55${l.telefone.replace(/\D/g,'')}', '_blank')" class="bg-emerald-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></button>
-                    </div>
-                </div>
-            `;
+        function selecionarLeadIndex(idx) {
+            leadAtualIndex = idx;
+            switchTab('discador');
+            atualizarInterfaceDiscador();
         }
 
-        function atualizarDashboardRelatorios() {
-            let trabalhados = leads.filter(l => l.status && l.status !== "Sem Status").length;
-            let agendados = leads.filter(l => l.status === "Agendado").length;
-            let ligacoes = historicoContatos.filter(h => h.acao === "Ligação").length;
-            let whats = historicoContatos.filter(h => h.acao === "WhatsApp").length;
-            let retornos = leads.filter(l => l.status === "Retorno").length;
-            let naoAtendem = leads.filter(l => l.status === "Não Atende").length;
-            let conv = trabalhados > 0 ? ((agendados / trabalhados) * 100).toFixed(0) : 0;
-
-            document.getElementById('dash-taxa-conv').innerText = `${conv}%`;
-            document.getElementById('dash-agendados').innerText = `${agendados} agendados`;
-            document.getElementById('dash-trabalhados').innerText = `${trabalhados} trabalhados`;
-            document.getElementById('dash-meta-text').innerText = `${agendados}/${metaDiaria}`;
-
-            document.getElementById('stat-ligacoes').innerText = ligacoes;
-            document.getElementById('stat-whats').innerText = whats;
-            document.getElementById('stat-trab').innerText = trabalhados;
-            document.getElementById('stat-agend').innerText = agendados;
-            document.getElementById('stat-ret').innerText = retornos;
-            document.getElementById('stat-naoatend').innerText = naoAtendem;
-
-            document.getElementById('history-count-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-2 text-red-500"></i>Histórico de Contatos (${historicoContatos.length})`;
-
-            let texto = "";
-            if(historicoContatos.length === 0) {
-                texto = "Nenhum contato registrado.";
-            } else {
-                historicoContatos.forEach((h, idx) => {
-                    texto += `[${idx+1}] ${h.data} | Corretor: ${h.corretor}\nLead: ${h.nome} (${h.telefone})\nAção: ${h.acao} | Status: ${h.status}\n-----------------------------------\n`;
-                });
+        function filtrarLeadsTab(statusFiltro) {
+            ['Todos', 'WhatsApp', 'Interesse', 'Retorno', 'Não Atende', 'Inválido', 'Agendado'].forEach(s => {
+                const btn = document.getElementById(`filter-tab-${s}`);
+                if (btn) btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition";
+            });
+            const activeBtn = document.getElementById(`filter-tab-${statusFiltro}`);
+            if (activeBtn) activeBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 text-white dark:bg-white dark:text-gray-900 transition";
+            
+            const tbody = document.getElementById('leads-table-body');
+            tbody.innerHTML = '';
+            const filtrados = statusFiltro === 'Todos' ? leads : leads.filter(l => l.status.toLowerCase().includes(statusFiltro.toLowerCase()));
+            
+            if (filtrados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-gray-400">Nenhum lead nesta categoria.</td></tr>';
+                return;
             }
-            document.getElementById('relatorio-conteudo').innerText = texto;
+            filtrados.forEach((l) => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-200 dark:border-[#222731]/50 hover:bg-gray-50 dark:hover:bg-[#1a1d24]">
+                        <td class="py-3 px-3 font-medium text-gray-900 dark:text-white">${l.nome}</td>
+                        <td class="py-3 px-3 font-mono text-gray-500">${l.telefone}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-red-500/10 text-red-500 font-semibold">${l.status}</span></td>
+                        <td class="py-3 px-3 text-gray-400 text-[11px]">${l.obs || '---'}</td>
+                    </tr>
+                `;
+            });
         }
 
-        function copiarRelatorio() {
-            let texto = `📊 Relatório Metrocasa - ${new Date().toLocaleDateString('pt-BR')}\nTotal de Leads: ${leads.length}\n\n`;
-            historicoContatos.forEach(h => { texto += `- [${h.corretor}] ${h.nome} (${h.telefone}) | Ação: ${h.acao} | Status: ${h.status} (${h.data})\n`; });
-            navigator.clipboard.writeText(texto);
-            alert("Histórico copiado!");
-        }
-
-        function exportarRelatorioCSV() {
-            let csv = "Corretor,Nome,Telefone,Status,Acao,Data\n" + historicoContatos.map(h => `"${h.corretor}","${h.nome}","${h.telefone}","${h.status}","${h.acao}","${h.data}"`).join("\n");
-            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "relatorio_metrocasa.csv";
-            link.click();
-        }
-
-        function importarLeads() {
-            const input = document.getElementById('csv-input').value;
-            const linhas = input.split('\n');
-            let novos = [];
+        function processarImportacaoCSV() {
+            const texto = document.getElementById('csv-input').value.trim();
+            if (!texto) return alert('Insira os dados no formato CSV.');
+            const linhas = texto.split('\n');
+            let novos = 0;
             linhas.forEach(l => {
-                let p = l.split(',');
-                if(p.length >= 2) {
-                    novos.push({ nome: p[0].trim(), telefone: p[1].trim(), status: "Sem Status", obs: "", ultimaAcao: "" });
+                const partes = l.split(',');
+                if (partes.length >= 2) {
+                    leads.push({ nome: partes[0].trim(), telefone: partes[1].trim(), status: 'Sem Status', obs: '' });
+                    novos++;
                 }
             });
-            if(novos.length > 0) {
-                leads = novos;
-                currentIndex = 0;
-                salvarEstadoLocal();
-                renderLeadAtual();
-                document.getElementById('import-status-text').innerText = `${novos.length} leads carregados com sucesso!`;
-                alert(`${novos.length} leads importados!`);
-                switchTab('discador');
+            localStorage.setItem('metrocasa_leads', JSON.stringify(leads));
+            alert(`${novos} leads importados com sucesso!`);
+            document.getElementById('csv-input').value = '';
+            switchTab('discador');
+            atualizarInterfaceDiscador();
+            atualizarTabelaLeads();
+        }
+
+        function atualizarRelatorios() {
+            document.getElementById('rel-total').textContent = leads.length;
+            document.getElementById('rel-interessados').textContent = leads.filter(l => l.status === 'Interessado').length;
+            document.getElementById('rel-agendados').textContent = leads.filter(l => l.status === 'Agendado').length;
+        }
+
+        function salvarConfiguracoes() {
+            currentUser.nome = document.getElementById('config-nome').value;
+            const novaSenha = document.getElementById('config-senha').value.trim();
+            if (novaSenha) currentUser.senha = novaSenha;
+            localStorage.setItem('metrocasa_current_user', JSON.stringify(currentUser));
+            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuariosCadastrados));
+            alert('Configurações salvas com sucesso!');
+            inicializarApp();
+        }
+
+        function logout() {
+            localStorage.removeItem('metrocasa_current_user');
+            location.reload();
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            if (html.classList.contains('light')) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-sm";
+                document.getElementById('theme-text').textContent = "Modo claro";
             } else {
-                alert("Formato inválido. Use: nome, telefone");
+                html.classList.remove('dark');
+                html.classList.add('light');
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-sm";
+                document.getElementById('theme-text').textContent = "Modo escuro";
             }
         }
 
-        function lerArquivoCSV(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('csv-input').value = e.target.result;
-                importarLeads();
-            };
-            reader.readAsText(file);
-        }
-
-        function exportarBaseLeadsCSV() {
-            let csv = "Nome,Telefone,Status\n" + leads.map(l => `"${l.nome}","${l.telefone}","${l.status}"`).join("\n");
-            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "leads_metrocasa.csv";
-            link.click();
-        }
-
-        function alterarMetaDiaria(val) {
-            metaDiaria = parseInt(val) || 15;
-            localStorage.setItem('metrocasa_meta', metaDiaria);
-        }
-
-        function zerarEstatisticas() {
-            if(confirm("Deseja zerar todas as estatísticas e histórico?")) {
-                historicoContatos = [];
-                leads.forEach(l => { l.status = "Sem Status"; l.obs = ""; l.ultimaAcao = ""; });
-                salvarEstadoLocal();
-                renderLeadAtual();
-                alert("Estatísticas zeradas!");
+        // Checar sessão salva ao carregar
+        window.onload = function() {
+            const salvo = localStorage.getItem('metrocasa_current_user');
+            if (salvo) {
+                currentUser = JSON.parse(salvo);
+                document.getElementById('login-screen').classList.add('hidden');
+                inicializarApp();
             }
-        }
-
-        function limparLeads() {
-            if(confirm("Deseja apagar todos os leads cadastrados?")) {
-                leads = [];
-                historicoContatos = [];
-                currentIndex = 0;
-                salvarEstadoLocal();
-                renderLeadAtual();
-                alert("Base de leads limpa!");
-            }
-        }
-
-        function filtrarGlobal(termo) {
-            if(!termo) return;
-            let matchIdx = leads.findIndex(l => l.nome.toLowerCase().includes(termo.toLowerCase()) || l.telefone.includes(termo));
-            if(matchIdx !== -1) {
-                currentIndex = matchIdx;
-                renderLeadAtual();
-                switchTab('discador');
-            }
-        }
+        };
     </script>
 </body>
 </html>
