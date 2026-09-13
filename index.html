@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discador Imobiliário</title>
+    <title>Discador Imobiliário - Metrocasa</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome para ícones -->
@@ -32,8 +32,8 @@
 </head>
 <body class="bg-gray-50 dark:bg-[#0d0f12] text-gray-800 dark:text-gray-200 flex flex-col lg:flex-row h-screen overflow-hidden transition-colors duration-200">
 
-    <!-- ================= TELA DE LOGIN / CADASTRO ================= -->
-    <div id="login-screen" class="fixed inset-0 bg-gray-900/60 dark:bg-[#0d0f12] z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+    <!-- ================= TELA DE LOGIN / PRIMEIRO ACESSO ================= -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-900/80 dark:bg-[#0d0f12] z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
             <div class="text-center">
                 <div class="inline-flex bg-red-600 p-3 sm:p-4 rounded-2xl text-white shadow-lg shadow-red-600/30 mb-3">
@@ -43,74 +43,78 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Plataforma de Atendimento Metrocasa</p>
             </div>
 
-            <!-- Seletor de Abas Login / Cadastro -->
-            <div class="flex bg-gray-100 dark:bg-[#111318] p-1 rounded-xl border border-gray-200 dark:border-[#222731]">
-                <button onclick="switchAuthTab('login')" id="auth-tab-login" class="flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition">Entrar</button>
-                <button onclick="switchAuthTab('register')" id="auth-tab-register" class="flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Cadastrar-se</button>
-            </div>
-
-            <!-- FORMULÁRIO DE LOGIN -->
+            <!-- Formulário de Login -->
             <div id="form-login" class="space-y-4">
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail</label>
-                    <input type="email" id="login-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail Corporativo</label>
+                    <input type="email" id="login-email" placeholder="ex: vinicius@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão: 123)</label>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão inicial: 123456)</label>
                     <input type="password" id="login-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
                 <button onclick="fazerLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/20">
                     Acessar Sistema
                 </button>
-                <div class="text-center pt-2">
-                    <button onclick="fazerLoginAdminTeste()" class="text-[11px] text-gray-500 dark:text-gray-400 hover:text-red-500 underline">
-                        Entrar como Admin (Gerenciar Cadastros)
+                <div class="text-center pt-2 border-t border-gray-100 dark:border-[#222731]">
+                    <button onclick="mostrarTelaTrocaSenha()" class="text-[11px] text-red-600 dark:text-red-400 hover:underline font-semibold block w-full mb-2">
+                        Primeiro acesso? Mudar minha senha
+                    </button>
+                    <button onclick="fazerLoginAdminMaster()" class="text-[11px] text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white underline">
+                        Entrar como Administrador Geral (Painel Master)
                     </button>
                 </div>
             </div>
 
-            <!-- FORMULÁRIO DE CADASTRO -->
-            <div id="form-register" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nome Completo</label>
-                    <input type="text" id="reg-nome" placeholder="Seu Nome" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+            <!-- Formulário de Troca de Senha no Primeiro Acesso -->
+            <div id="form-troca-senha" class="space-y-4 hidden">
+                <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30 p-3 rounded-xl text-xs text-amber-800 dark:text-amber-400">
+                    Digite seu e-mail cadastrado, a senha atual (padrão 123456) e defina sua nova senha pessoal.
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail</label>
-                    <input type="email" id="reg-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Seu E-mail</label>
+                    <input type="email" id="troca-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha</label>
-                    <input type="password" id="reg-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha Atual / Temporária</label>
+                    <input type="password" id="troca-senha-antiga" placeholder="123456" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
-                <button onclick="realizarCadastro()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/20">
-                    Solicitar Cadastro
-                </button>
-                <p class="text-[10px] text-gray-500 dark:text-gray-400 text-center">Seu cadastro precisará ser aprovado pelo administrador antes do acesso.</p>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nova Senha Pessoal</label>
+                    <input type="password" id="troca-senha-nova" placeholder="Sua nova senha" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="salvarNovaSenha()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition">
+                        Atualizar Senha
+                    </button>
+                    <button onclick="voltarLogin()" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white font-medium py-3 px-4 rounded-xl text-xs transition">
+                        Voltar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ================= PAINEL DE ADMINISTRAÇÃO ================= -->
-    <div id="admin-screen" class="fixed inset-0 bg-gray-900/60 dark:bg-[#0d0f12] z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-5 sm:p-6 rounded-2xl shadow-2xl w-full max-w-3xl space-y-4">
+    <!-- ================= PAINEL DO ADMINISTRADOR (MASTER) ================= -->
+    <div id="admin-screen" class="fixed inset-0 bg-gray-900/80 dark:bg-[#0d0f12] z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-5 sm:p-6 rounded-2xl shadow-2xl w-full max-w-4xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-[#222731] pb-3">
                 <div>
-                    <h2 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-shield-halved text-red-500 mr-2"></i>Painel do Administrador</h2>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400">Gerencie os acessos da equipe (Sidney e Vinicius)</p>
+                    <h2 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-shield-halved text-red-500 mr-2"></i>Painel do Administrador Master (Visão Geral & Senhas)</h2>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400">Acompanhe as equipes e visualize as senhas atualizadas por cada corretor</p>
                 </div>
                 <button onclick="fecharAdmin()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
-            <div class="overflow-x-auto max-h-72 sm:max-h-80 custom-scrollbar">
-                <table class="w-full text-left text-xs min-w-[500px]">
+            <div class="overflow-x-auto max-h-80 custom-scrollbar">
+                <table class="w-full text-left text-xs min-w-[650px]">
                     <thead>
                         <tr class="border-b border-gray-200 dark:border-[#222731] text-gray-500 dark:text-gray-400">
-                            <th class="py-2 px-3">Nome</th>
-                            <th class="py-2 px-3">E-mail</th>
-                            <th class="py-2 px-3">Função</th>
-                            <th class="py-2 px-3">Status</th>
-                            <th class="py-2 px-3 text-right">Ações</th>
+                            <th class="py-2.5 px-3">Corretor</th>
+                            <th class="py-2.5 px-3">E-mail</th>
+                            <th class="py-2.5 px-3">Senha Atual (Visível)</th>
+                            <th class="py-2.5 px-3">Função</th>
+                            <th class="py-2.5 px-3 text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="admin-users-table">
@@ -119,8 +123,9 @@
                 </table>
             </div>
 
-            <div class="flex justify-end pt-2">
-                <button onclick="fecharAdmin()" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white font-medium py-2 px-4 rounded-xl text-xs transition">Voltar ao Login</button>
+            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-[#222731]">
+                <span class="text-xs text-gray-400" id="admin-total-stats">Total de corretores: 9</span>
+                <button onclick="fecharAdmin()" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white font-medium py-2 px-4 rounded-xl text-xs transition">Sair do Admin</button>
             </div>
         </div>
     </div>
@@ -132,8 +137,8 @@
                 <i class="fa-solid fa-headset text-sm"></i>
             </div>
             <div>
-                <h1 class="font-bold text-sm tracking-wide text-gray-900 dark:text-white">Discador</h1>
-                <span class="text-[10px] text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Imobiliário</span>
+                <h1 class="font-bold text-sm tracking-wide text-gray-900 dark:text-white" id="user-header-name">Discador</h1>
+                <span class="text-[10px] text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Metrocasa</span>
             </div>
         </div>
         <button onclick="toggleMobileMenu()" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white p-2 text-lg focus:outline-none">
@@ -148,8 +153,8 @@
                     <i class="fa-solid fa-headset text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base tracking-wide text-gray-900 dark:text-white">Discador</h1>
-                    <span class="text-xs text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Imobiliário</span>
+                    <h1 class="font-bold text-base tracking-wide text-gray-900 dark:text-white" id="sidebar-user-name">Corretor</h1>
+                    <span class="text-xs text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Metrocasa</span>
                 </div>
             </div>
 
@@ -359,12 +364,10 @@
                 </div>
             </div>
 
-            <!-- 2. ABA LEADS (Com as abas da imagem: Todos, WhatsApp, Interesse, Retorno, Não Atende, Inválido, Agendado e Painel Lateral de Ações) -->
+            <!-- 2. ABA LEADS -->
             <div id="tab-leads" class="w-full max-w-6xl hidden flex flex-col space-y-4 pb-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Tabela e Filtros de Leads -->
                     <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-4">
-                        <!-- Filtros por Abas IDênticos à Imagem -->
                         <div class="flex flex-wrap gap-1.5 bg-gray-100 dark:bg-[#111318] p-1.5 rounded-xl border border-gray-200 dark:border-[#222731]">
                             <button onclick="filtrarLeadsTab('Todos')" id="filter-tab-Todos" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 text-white dark:bg-white dark:text-gray-900 transition">Todos</button>
                             <button onclick="filtrarLeadsTab('WhatsApp')" id="filter-tab-WhatsApp" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">WhatsApp</button>
@@ -394,7 +397,6 @@
                         </div>
                     </div>
 
-                    <!-- Cartão de Ações do Lead Selecionado (Exatamente como na imagem) -->
                     <div id="lead-action-panel" class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center">
                         <div class="text-gray-400 mb-3 text-lg">
                             <i class="fa-solid fa-arrow-right"></i>
@@ -404,13 +406,12 @@
                 </div>
             </div>
 
-            <!-- 3. ABA RELATÓRIOS (Dashboard idêntico às imagens de relatórios) -->
+            <!-- 3. ABA RELATÓRIOS -->
             <div id="tab-relatorios" class="w-full max-w-5xl hidden flex flex-col space-y-4 pb-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
                         <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Dashboard de Conversão</h2>
                         
-                        <!-- Caixa Vermelha Principal -->
                         <div class="bg-red-700 text-white rounded-2xl p-5 shadow-lg flex justify-between items-center">
                             <div>
                                 <span class="text-[11px] uppercase tracking-wider opacity-90 block mb-1">Taxa de Conversão</span>
@@ -427,7 +428,6 @@
                             <span id="dash-meta-text">0/15</span>
                         </div>
 
-                        <!-- Grid de 6 Cards de Estatísticas -->
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
                             <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
                                 <div id="stat-ligacoes" class="text-base font-bold text-gray-900 dark:text-white">0</div>
@@ -456,7 +456,6 @@
                         </div>
                     </div>
 
-                    <!-- Histórico de Contatos -->
                     <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
                         <div class="flex justify-between items-center">
                             <h3 id="history-count-title" class="text-sm font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-red-500"></i>Histórico de Contatos (0)</h3>
@@ -478,7 +477,7 @@
                 </div>
             </div>
 
-            <!-- 4. ABA IMPORTAR CSV (Com os campos e botões idênticos à imagem) -->
+            <!-- 4. ABA IMPORTAR CSV -->
             <div id="tab-importar" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
                 <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-8 shadow-xl space-y-4">
                     <div>
@@ -509,12 +508,11 @@
                 </div>
             </div>
 
-            <!-- 5. ABA CONFIGURAÇÕES (Com Meta Diária, Aparência, Backup Local e Zona de Perigo) -->
+            <!-- 5. ABA CONFIGURAÇÕES -->
             <div id="tab-configuracoes" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
                 <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
                     <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Configurações</h2>
                     
-                    <!-- Meta Diária -->
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
                             <i class="fa-solid fa-bullseye text-red-500"></i>
@@ -524,7 +522,6 @@
                         <input type="number" id="input-meta-diaria" value="15" onchange="alterarMetaDiaria(this.value)" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                     </div>
 
-                    <!-- Aparência -->
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
                             <i class="fa-solid fa-sun text-yellow-500"></i>
@@ -536,16 +533,14 @@
                         </div>
                     </div>
 
-                    <!-- Backup Local -->
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-1">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
                             <i class="fa-solid fa-database text-blue-500"></i>
                             <span>Backup Local</span>
                         </div>
-                        <p id="backup-info-text" class="text-[11px] text-gray-500 dark:text-gray-400">0 leads salvos automaticamente no navegador. Nada se perde ao recarregar a página.</p>
+                        <p id="backup-info-text" class="text-[11px] text-gray-500 dark:text-gray-400">0 leads salvos automaticamente no navegador.</p>
                     </div>
 
-                    <!-- Zona de Perigo -->
                     <div class="border border-red-500/30 p-4 rounded-xl space-y-3">
                         <div class="text-xs font-bold text-red-600 dark:text-red-400 flex items-center space-x-1.5">
                             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -568,37 +563,33 @@
         </div>
     </main>
 
-    <!-- SCRIPT DO SISTEMA -->
+    <!-- SCRIPT COMPLETO DO SISTEMA COM SENHAS VISÍVEIS E ADMIN -->
     <script>
+        // Inicialização dos Corretores com Senha Padrão 123456
         function inicializarUsuarios() {
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             const preCadastrados = [
-                { nome: "Olegario", email: "olegario@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Palacio", email: "palacio@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Meirelles", email: "meirelles@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Coelho", email: "coelho@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Clara", email: "clara@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Muller", email: "muller@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Pagani", email: "pagani@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
-                { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: true },
-                { nome: "Gerente Comercial Sidney", email: "sidney@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: true }
+                { nome: "Olegario", email: "olegario@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Palacio", email: "palacio@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Meirelles", email: "meirelles@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Coelho", email: "coelho@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Clara", email: "clara@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Muller", email: "muller@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Pagani", email: "pagani@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
+                { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true },
+                { nome: "Gerente Comercial Sidney", email: "sidney@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true }
             ];
 
             preCadastrados.forEach(pc => {
                 if (!usuarios.some(u => u.email === pc.email)) {
                     usuarios.push(pc);
-                } else {
-                    let idx = usuarios.findIndex(u => u.email === pc.email);
-                    if(pc.isAdmin) {
-                        usuarios[idx].isAdmin = true;
-                        usuarios[idx].status = 'aprovado';
-                    }
                 }
             });
             localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
         }
         inicializarUsuarios();
 
+        let usuarioLogado = null;
         let leads = JSON.parse(localStorage.getItem('metrocasa_leads')) || [];
         let historicoContatos = JSON.parse(localStorage.getItem('metrocasa_historico')) || [];
         let currentIndex = 0;
@@ -652,37 +643,38 @@
             }
         }
 
-        function switchAuthTab(tab) {
-            if(tab === 'login') {
-                document.getElementById('form-login').classList.remove('hidden');
-                document.getElementById('form-register').classList.add('hidden');
-                document.getElementById('auth-tab-login').className = 'flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition';
-                document.getElementById('auth-tab-register').className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
-            } else {
-                document.getElementById('form-login').classList.add('hidden');
-                document.getElementById('form-register').classList.remove('hidden');
-                document.getElementById('auth-tab-register').className = 'flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition';
-                document.getElementById('auth-tab-login').className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
-            }
+        function mostrarTelaTrocaSenha() {
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-troca-senha').classList.remove('hidden');
         }
 
-        function realizarCadastro() {
-            const nome = document.getElementById('reg-nome').value.trim();
-            const email = document.getElementById('reg-email').value.trim().toLowerCase();
-            const senha = document.getElementById('reg-senha').value;
+        function voltarLogin() {
+            document.getElementById('form-troca-senha').classList.add('hidden');
+            document.getElementById('form-login').classList.remove('hidden');
+        }
 
-            if(!nome || !email || !senha) { alert("Preencha todos os campos!"); return; }
+        function salvarNovaSenha() {
+            const email = document.getElementById('troca-email').value.trim().toLowerCase();
+            const senhaAntiga = document.getElementById('troca-senha-antiga').value;
+            const senhaNova = document.getElementById('troca-senha-nova').value;
+
+            if(!email || !senhaAntiga || !senhaNova) {
+                alert("Preencha todos os campos!");
+                return;
+            }
 
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            if(usuarios.some(u => u.email === email)) { alert("Este e-mail já está cadastrado!"); return; }
+            let userIndex = usuarios.findIndex(u => u.email === email && u.senha === senhaAntiga);
 
-            usuarios.push({ nome, email, senha, status: 'pendente', isAdmin: false });
+            if(userIndex === -1) {
+                alert("E-mail ou senha atual incorretos!");
+                return;
+            }
+
+            usuarios[userIndex].senha = senhaNova;
             localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-            alert("Cadastro realizado com sucesso! Aguarde aprovação do administrador.");
-            document.getElementById('reg-nome').value = '';
-            document.getElementById('reg-email').value = '';
-            document.getElementById('reg-senha').value = '';
-            switchAuthTab('login');
+            alert("Senha alterada com sucesso! Agora você pode fazer o login.");
+            voltarLogin();
         }
 
         function fazerLogin() {
@@ -692,28 +684,39 @@
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             const user = usuarios.find(u => u.email === email && u.senha === senha);
 
-            if(!user) { alert("E-mail ou senha incorretos!"); return; }
-            if(user.status !== 'aprovado') { alert("Seu cadastro ainda está pendente de aprovação."); return; }
+            if(!user) {
+                alert("E-mail ou senha incorretos! Lembre-se que a senha padrão inicial é 123456.");
+                return;
+            }
 
+            usuarioLogado = user;
+            document.getElementById('user-header-name').innerText = user.nome;
+            document.getElementById('sidebar-user-name').innerText = user.nome;
             document.getElementById('login-screen').classList.add('hidden');
+            
             renderLeadAtual();
             atualizarMetricas();
         }
 
-        function fazerLoginAdminTeste() {
+        function fazerLoginAdminMaster() {
             let emailInput = prompt("Digite o e-mail Admin (ex: vinicius@metrocasa.com.br ou sidney@metrocasa.com.br):");
             if (!emailInput) return;
-            let senhaInput = prompt("Digite a senha:");
+            let senhaInput = prompt("Digite a senha atual:");
+            
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             let adminUser = usuarios.find(u => u.email.toLowerCase() === emailInput.trim().toLowerCase() && u.senha === senhaInput && u.isAdmin);
 
-            if(adminUser) { abrirPainelAdmin(); } else { alert("Acesso negado. Credenciais de admin incorretas."); }
+            if(adminUser) {
+                abrirPainelAdminMaster();
+            } else {
+                alert("Acesso negado. Credenciais de Administrador Master incorretas.");
+            }
         }
 
-        function abrirPainelAdmin() {
+        function abrirPainelAdminMaster() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-screen').classList.remove('hidden');
-            renderizarTabelaAdmin();
+            renderizarTabelaAdminMaster();
         }
 
         function fecharAdmin() {
@@ -721,45 +724,42 @@
             document.getElementById('login-screen').classList.remove('hidden');
         }
 
-        function renderizarTabelaAdmin() {
+        function renderizarTabelaAdminMaster() {
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             const tbody = document.getElementById('admin-users-table');
             tbody.innerHTML = '';
+            
             usuarios.forEach(u => {
-                let badgeColor = u.status === 'aprovado' ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500';
                 let roleBadge = u.isAdmin ? '<span class="px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-500 font-bold">ADMIN</span>' : '<span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-500 font-bold">CORRETOR</span>';
                 tbody.innerHTML += `
                     <tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-700 dark:text-gray-300">
                         <td class="py-3 px-3 font-medium">${u.nome}</td>
                         <td class="py-3 px-3 font-mono">${u.email}</td>
+                        <td class="py-3 px-3 font-mono text-red-600 dark:text-red-400 font-bold">${u.senha}</td>
                         <td class="py-3 px-3">${roleBadge}</td>
-                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] ${badgeColor}">${u.status.toUpperCase()}</span></td>
-                        <td class="py-3 px-3 text-right space-x-2">
-                            ${u.status === 'pendente' ? `<button onclick="mudarStatusUsuario('${u.email}', 'aprovado')" class="bg-green-600 text-white px-2.5 py-1 rounded text-[10px]">Aprovar</button>` : `<button onclick="mudarStatusUsuario('${u.email}', 'pendente')" class="bg-yellow-600 text-white px-2.5 py-1 rounded text-[10px]">Bloquear</button>`}
-                            <button onclick="excluirUsuario('${u.email}')" class="bg-red-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>
+                        <td class="py-3 px-3 text-right">
+                            <button onclick="mudarSenhaCorretor('${u.email}')" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white px-2.5 py-1 rounded text-[10px]">Alterar Senha</button>
                         </td>
                     </tr>
                 `;
             });
+            document.getElementById('admin-total-stats').innerText = `Total de usuários cadastrados: ${usuarios.length}`;
         }
 
-        function mudarStatusUsuario(email, status) {
+        function mudarSenhaCorretor(email) {
+            let novaSenha = prompt("Digite a nova senha para o usuário " + email + ":");
+            if(!novaSenha) return;
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            usuarios = usuarios.map(u => { if(u.email === email) u.status = status; return u; });
+            usuarios = usuarios.map(u => { if(u.email === email) u.senha = novaSenha; return u; });
             localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-            renderizarTabelaAdmin();
+            renderizarTabelaAdminMaster();
+            alert("Senha alterada com sucesso!");
         }
 
-        function excluirUsuario(email) {
-            if(confirm("Excluir usuário?")) {
-                let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-                usuarios = usuarios.filter(u => u.email !== email);
-                localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-                renderizarTabelaAdmin();
-            }
+        function logout() {
+            usuarioLogado = null;
+            document.getElementById('login-screen').classList.remove('hidden');
         }
-
-        function logout() { document.getElementById('login-screen').classList.remove('hidden'); }
 
         function switchTab(tabName) {
             const tabs = ['discador', 'leads', 'relatorios', 'importar', 'configuracoes'];
@@ -832,6 +832,7 @@
                 leads[currentIndex].ultimaAcao = `${acaoRealizada} em ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`;
 
                 historicoContatos.unshift({
+                    corretor: usuarioLogado ? usuarioLogado.nome : "Geral",
                     nome: leads[currentIndex].nome,
                     telefone: leads[currentIndex].telefone,
                     status: leads[currentIndex].status,
@@ -874,7 +875,7 @@
             const phone = leads[currentIndex]?.telefone.replace(/\D/g, '') || "";
             const nome = leads[currentIndex]?.nome || "Cliente";
             let msg = "";
-            if(tipo === 'Mega Feirão') msg = `Olá ${nome}, tudo bem? Aqui é da imobiliária. Convidamos você para o nosso Mega Feirão de Imóveis!`;
+            if(tipo === 'Mega Feirão') msg = `Olá ${nome}, tudo bem? Aqui é da Metrocasa. Convidamos você para o nosso Mega Feirão de Imóveis!`;
             if(tipo === 'Agendamento') msg = `Olá ${nome}, passando para confirmar nosso agendamento.`;
             if(tipo === 'Retorno') msg = `Olá ${nome}, conforme conversamos, estou retornando o contato.`;
             if(tipo === 'Encerramento') msg = `Olá ${nome}, agradeço pelo seu tempo. Qualquer dúvida estou à disposição!`;
@@ -886,7 +887,6 @@
         function abrirMetrocasa() { window.open('https://parceiros.metrocasa.com.br/', '_blank'); }
         function salvarLead() { salvarLeadAtualNoEstado("Salvo"); alert("Lead salvo com sucesso!"); }
 
-        // ABA LEADS FILTROS
         function filtrarLeadsTab(status) {
             filtroLeadAtualTab = status;
             ['Todos', 'WhatsApp', 'Interesse', 'Retorno', 'Não Atende', 'Inválido', 'Agendado'].forEach(s => {
@@ -936,13 +936,12 @@
                     <div class="text-xs text-gray-500">Obs: ${l.obs || 'Nenhuma'}</div>
                     <div class="grid grid-cols-2 gap-2 pt-2">
                         <button onclick="window.location.href='tel:${l.telefone}'" class="bg-green-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-solid fa-phone"></i><span>Ligar</span></button>
-                        <button onclick="window.open('https://wa.me/55${l.telefone.replace(/\\D/g,'')}', '_blank')" class="bg-emerald-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></button>
+                        <button onclick="window.open('https://wa.me/55${l.telefone.replace(/\D/g,'')}', '_blank')" class="bg-emerald-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></button>
                     </div>
                 </div>
             `;
         }
 
-        // RELATÓRIOS
         function atualizarDashboardRelatorios() {
             let trabalhados = leads.filter(l => l.status && l.status !== "Sem Status").length;
             let agendados = leads.filter(l => l.status === "Agendado").length;
@@ -971,7 +970,7 @@
                 texto = "Nenhum contato registrado.";
             } else {
                 historicoContatos.forEach((h, idx) => {
-                    texto += `[${idx+1}] ${h.data}\nLead: ${h.nome} (${h.telefone})\nAção: ${h.acao} | Status: ${h.status}\n-----------------------------------\n`;
+                    texto += `[${idx+1}] ${h.data} | Corretor: ${h.corretor}\nLead: ${h.nome} (${h.telefone})\nAção: ${h.acao} | Status: ${h.status}\n-----------------------------------\n`;
                 });
             }
             document.getElementById('relatorio-conteudo').innerText = texto;
@@ -979,13 +978,13 @@
 
         function copiarRelatorio() {
             let texto = `📊 Relatório Metrocasa - ${new Date().toLocaleDateString('pt-BR')}\nTotal de Leads: ${leads.length}\n\n`;
-            historicoContatos.forEach(h => { texto += `- ${h.nome} (${h.telefone}) | Ação: ${h.acao} | Status: ${h.status} (${h.data})\n`; });
+            historicoContatos.forEach(h => { texto += `- [${h.corretor}] ${h.nome} (${h.telefone}) | Ação: ${h.acao} | Status: ${h.status} (${h.data})\n`; });
             navigator.clipboard.writeText(texto);
             alert("Histórico copiado!");
         }
 
         function exportarRelatorioCSV() {
-            let csv = "Nome,Telefone,Status,Acao,Data\n" + historicoContatos.map(h => `"${h.nome}","${h.telefone}","${h.status}","${h.acao}","${h.data}"`).join("\n");
+            let csv = "Corretor,Nome,Telefone,Status,Acao,Data\n" + historicoContatos.map(h => `"${h.corretor}","${h.nome}","${h.telefone}","${h.status}","${h.acao}","${h.data}"`).join("\n");
             let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             let link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
@@ -993,7 +992,6 @@
             link.click();
         }
 
-        // IMPORTAR CSV
         function importarLeads() {
             const input = document.getElementById('csv-input').value;
             const linhas = input.split('\n');
@@ -1037,7 +1035,6 @@
             link.click();
         }
 
-        // CONFIGURAÇÕES
         function alterarMetaDiaria(val) {
             metaDiaria = parseInt(val) || 15;
             localStorage.setItem('metrocasa_meta', metaDiaria);
