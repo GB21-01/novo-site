@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discador Imobiliário</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2a2f3a;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-[#0d0f12] text-gray-800 dark:text-gray-200 flex flex-col lg:flex-row h-screen overflow-hidden transition-colors duration-200">
+
+    <!-- ================= TELA DE LOGIN / CADASTRO ================= -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-900/60 dark:bg-[#0d0f12] z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
+            <div class="text-center">
+                <div class="inline-flex bg-red-600 p-3 sm:p-4 rounded-2xl text-white shadow-lg shadow-red-600/30 mb-3">
+                    <i class="fa-solid fa-headset text-xl sm:text-2xl"></i>
+                </div>
+                <h1 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Discador Imobiliário</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Plataforma de Atendimento Metrocasa</p>
+            </div>
+
+            <!-- Seletor de Abas Login / Cadastro -->
+            <div class="flex bg-gray-100 dark:bg-[#111318] p-1 rounded-xl border border-gray-200 dark:border-[#222731]">
+                <button onclick="switchAuthTab('login')" id="auth-tab-login" class="flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition">Entrar</button>
+                <button onclick="switchAuthTab('register')" id="auth-tab-register" class="flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Cadastrar-se</button>
+            </div>
+
+            <!-- FORMULÁRIO DE LOGIN -->
+            <div id="form-login" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail</label>
+                    <input type="email" id="login-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão: 123)</label>
+                    <input type="password" id="login-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <button onclick="fazerLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/20">
+                    Acessar Sistema
+                </button>
+                <div class="text-center pt-2">
+                    <button onclick="fazerLoginAdminTeste()" class="text-[11px] text-gray-500 dark:text-gray-400 hover:text-red-500 underline">
+                        Entrar como Admin (Gerenciar Cadastros)
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <div id="form-register" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nome Completo</label>
+                    <input type="text" id="reg-nome" placeholder="Seu Nome" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail</label>
+                    <input type="email" id="reg-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha</label>
+                    <input type="password" id="reg-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                </div>
+                <button onclick="realizarCadastro()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/20">
+                    Solicitar Cadastro
+                </button>
+                <p class="text-[10px] text-gray-500 dark:text-gray-400 text-center">Seu cadastro precisará ser aprovado pelo administrador antes do acesso.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAINEL DE ADMINISTRAÇÃO ================= -->
+    <div id="admin-screen" class="fixed inset-0 bg-gray-900/60 dark:bg-[#0d0f12] z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-5 sm:p-6 rounded-2xl shadow-2xl w-full max-w-3xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-[#222731] pb-3">
+                <div>
+                    <h2 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-shield-halved text-red-500 mr-2"></i>Painel do Administrador</h2>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400">Gerencie os acessos da equipe (Sidney e Vinicius)</p>
+                </div>
+                <button onclick="fecharAdmin()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="overflow-x-auto max-h-72 sm:max-h-80 custom-scrollbar">
+                <table class="w-full text-left text-xs min-w-[500px]">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-[#222731] text-gray-500 dark:text-gray-400">
+                            <th class="py-2 px-3">Nome</th>
+                            <th class="py-2 px-3">E-mail</th>
+                            <th class="py-2 px-3">Função</th>
+                            <th class="py-2 px-3">Status</th>
+                            <th class="py-2 px-3 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-table">
+                        <!-- Preenchido via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="fecharAdmin()" class="bg-gray-200 dark:bg-[#222731] hover:bg-gray-300 dark:hover:bg-[#2a303d] text-gray-800 dark:text-white font-medium py-2 px-4 rounded-xl text-xs transition">Voltar ao Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MENU LATERAL (SIDEBAR) & MOBILE ================= -->
+    <div class="lg:hidden bg-white dark:bg-[#111318] border-b border-gray-200 dark:border-[#222731] p-4 flex items-center justify-between z-30">
+        <div class="flex items-center space-x-3">
+            <div class="bg-red-600 p-2 rounded-xl text-white shadow-md shadow-red-600/30">
+                <i class="fa-solid fa-headset text-sm"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-sm tracking-wide text-gray-900 dark:text-white">Discador</h1>
+                <span class="text-[10px] text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Imobiliário</span>
+            </div>
+        </div>
+        <button onclick="toggleMobileMenu()" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white p-2 text-lg focus:outline-none">
+            <i id="mobile-menu-icon" class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar-menu" class="hidden lg:flex w-full lg:w-64 bg-white dark:bg-[#111318] border-r border-gray-200 dark:border-[#222731] flex-col justify-between select-none z-40 fixed lg:static inset-x-0 top-[65px] lg:top-auto bottom-0 lg:bottom-auto bg-opacity-95 lg:bg-opacity-100 backdrop-blur-md lg:backdrop-blur-none">
+        <div class="overflow-y-auto max-h-[calc(100vh-140px)] lg:max-h-none">
+            <div class="hidden lg:flex p-5 items-center space-x-3 border-b border-gray-200 dark:border-[#222731]">
+                <div class="bg-red-600 p-2.5 rounded-xl text-white flex items-center justify-center shadow-lg shadow-red-600/30">
+                    <i class="fa-solid fa-headset text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base tracking-wide text-gray-900 dark:text-white">Discador</h1>
+                    <span class="text-xs text-red-600 dark:text-red-500 font-semibold tracking-wider uppercase">Imobiliário</span>
+                </div>
+            </div>
+
+            <nav class="p-3 space-y-1.5 mt-2">
+                <a href="#" onclick="switchTab('discador')" id="nav-discador" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 font-medium transition shadow-md">
+                    <i class="fa-solid fa-phone w-5 text-center"></i>
+                    <span>Discador</span>
+                </a>
+                <a href="#" onclick="switchTab('leads')" id="nav-leads" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>Leads</span>
+                </a>
+                <a href="#" onclick="switchTab('relatorios')" id="nav-relatorios" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition">
+                    <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" onclick="switchTab('importar')" id="nav-importar" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition">
+                    <i class="fa-solid fa-file-arrow-up w-5 text-center"></i>
+                    <span>Importar CSV</span>
+                </a>
+                <a href="#" onclick="switchTab('configuracoes')" id="nav-configuracoes" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition">
+                    <i class="fa-solid fa-gear w-5 text-center"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 dark:border-[#222731] flex items-center justify-between bg-white dark:bg-[#111318]">
+            <div class="flex items-center space-x-3 overflow-hidden">
+                <button onclick="toggleDarkMode()" class="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                    <span id="theme-text">Modo escuro</span>
+                </button>
+            </div>
+            <button onclick="logout()" title="Sair" class="text-gray-400 hover:text-red-500 transition p-2 flex-shrink-0">
+                <i class="fa-solid fa-right-from-bracket text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50 dark:bg-[#0d0f12]">
+        
+        <!-- HEADER SUPERIOR COM MÉTRICAS E BUSCA -->
+        <header class="hidden lg:flex h-20 bg-white dark:bg-[#111318] border-b border-gray-200 dark:border-[#222731] px-6 items-center justify-between flex-shrink-0">
+            <div class="flex items-center space-x-3 overflow-x-auto custom-scrollbar py-1">
+                <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
+                    <div class="text-gray-400 text-xs"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <div id="stat-leads" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase tracking-wider">Leads</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
+                    <div class="text-gray-400 text-xs"><i class="fa-solid fa-square-check"></i></div>
+                    <div>
+                        <div id="stat-trabalhados" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase tracking-wider">Trabalhados</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
+                    <div class="text-gray-400 text-xs"><i class="fa-solid fa-heart"></i></div>
+                    <div>
+                        <div id="stat-interesses" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase tracking-wider">Interesses</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
+                    <div class="text-gray-400 text-xs"><i class="fa-solid fa-percent"></i></div>
+                    <div>
+                        <div id="stat-conversao" class="text-base font-bold text-gray-900 dark:text-white">0%</div>
+                        <div class="text-[9px] text-gray-400 uppercase tracking-wider">Conversão</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
+                    <div class="text-gray-400 text-xs"><i class="fa-solid fa-calendar"></i></div>
+                    <div>
+                        <div id="current-date" class="text-xs font-bold text-gray-900 dark:text-white mt-0.5">13/09/2026</div>
+                        <div class="text-[9px] text-gray-400 uppercase tracking-wider">Data</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative w-64">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </span>
+                <input type="text" id="global-search" oninput="filtrarGlobal(this.value)" placeholder="Buscar por nome ou telefone..." class="w-full bg-gray-50 dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] rounded-xl pl-9 pr-4 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition shadow-sm">
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL (ABAS) -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-6 flex justify-center">
+            
+            <!-- 1. ABA DISCADOR -->
+            <div id="tab-discador" class="w-full max-w-2xl flex flex-col space-y-4 pb-10">
+                <!-- Métricas Mobile -->
+                <div class="grid grid-cols-4 gap-2 lg:hidden text-center">
+                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-2 rounded-xl shadow-sm">
+                        <div id="stat-leads-m" class="text-xs font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase">Leads</div>
+                    </div>
+                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-2 rounded-xl shadow-sm">
+                        <div id="stat-trabalhados-m" class="text-xs font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase">Trab.</div>
+                    </div>
+                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-2 rounded-xl shadow-sm">
+                        <div id="stat-interesses-m" class="text-xs font-bold text-gray-900 dark:text-white">0</div>
+                        <div class="text-[9px] text-gray-400 uppercase">Inter.</div>
+                    </div>
+                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-2 rounded-xl shadow-sm">
+                        <div id="stat-conversao-m" class="text-xs font-bold text-gray-900 dark:text-white">0%</div>
+                        <div class="text-[9px] text-gray-400 uppercase">Conv.</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-xl p-3 sm:p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2 text-xs">
+                        <span class="text-gray-500 dark:text-gray-400 font-medium">Progresso da lista</span>
+                        <span id="progress-text" class="text-gray-700 dark:text-gray-300 font-semibold">Nenhum lead carregado</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-[#222731] h-2 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-red-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4 sm:space-y-5">
+                    <div class="text-center py-1">
+                        <div id="lead-name" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white tracking-wide mb-1 truncate px-2">---</div>
+                        <div id="lead-phone" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-mono">---</div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Status do atendimento</label>
+                            <select id="lead-status" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition">
+                                <option value="Sem Status">Sem Status</option>
+                                <option value="Interessado">Interessado</option>
+                                <option value="Retorno">Retorno</option>
+                                <option value="Não Atende">Não Atende</option>
+                                <option value="Agendado">Agendado</option>
+                                <option value="Inválido">Inválido</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Observação do lead</label>
+                            <textarea id="lead-obs" rows="2" placeholder="Digite anotações sobre a ligação..." class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="contatarEProximo()" class="w-full bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-red-600/20 transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-phone-volume"></i>
+                        <span>Contatar e Próximo</span>
+                    </button>
+
+                    <div>
+                        <span class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">Templates WhatsApp</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="enviarTemplate('Mega Feirão')" class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 text-xs py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 truncate">
+                                <i class="fa-solid fa-house text-red-500 text-[10px]"></i>
+                                <span class="truncate">Mega Feirão</span>
+                            </button>
+                            <button onclick="enviarTemplate('Agendamento')" class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 text-xs py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 truncate">
+                                <i class="fa-solid fa-calendar-days text-blue-500 text-[10px]"></i>
+                                <span class="truncate">Agendamento</span>
+                            </button>
+                            <button onclick="enviarTemplate('Retorno')" class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 text-xs py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 truncate">
+                                <i class="fa-solid fa-rotate-left text-yellow-500 text-[10px]"></i>
+                                <span class="truncate">Retorno</span>
+                            </button>
+                            <button onclick="enviarTemplate('Encerramento')" class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 text-xs py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 truncate">
+                                <i class="fa-solid fa-xmark text-red-400 text-[10px]"></i>
+                                <span class="truncate">Encerramento</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5 pt-1">
+                        <button onclick="dispararLigacao()" class="bg-[#107c41] hover:bg-[#0e6b38] text-white font-medium py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 text-xs shadow-md truncate">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>Ligar</span>
+                        </button>
+                        <button onclick="abrirWhatsApp()" class="bg-[#198754] hover:bg-[#157347] text-white font-medium py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 text-xs shadow-md truncate">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>WhatsApp</span>
+                        </button>
+                        <button onclick="abrirMetrocasa()" class="bg-red-700 hover:bg-red-800 text-white font-medium py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 text-xs shadow-md truncate">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Metrocasa</span>
+                        </button>
+                        <button onclick="salvarLead()" class="bg-[#563d7c] hover:bg-[#453163] text-white font-medium py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 text-xs shadow-md truncate">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Salvar</span>
+                        </button>
+                    </div>
+
+                    <div class="pt-1">
+                        <button onclick="proximoLead()" class="w-full bg-gray-100 dark:bg-[#222731] hover:bg-gray-200 dark:hover:bg-[#2a303d] text-gray-700 dark:text-gray-300 font-medium py-2.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+                            <span>Próximo Lead</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ABA LEADS (Com as abas da imagem: Todos, WhatsApp, Interesse, Retorno, Não Atende, Inválido, Agendado e Painel Lateral de Ações) -->
+            <div id="tab-leads" class="w-full max-w-6xl hidden flex flex-col space-y-4 pb-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Tabela e Filtros de Leads -->
+                    <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-4">
+                        <!-- Filtros por Abas IDênticos à Imagem -->
+                        <div class="flex flex-wrap gap-1.5 bg-gray-100 dark:bg-[#111318] p-1.5 rounded-xl border border-gray-200 dark:border-[#222731]">
+                            <button onclick="filtrarLeadsTab('Todos')" id="filter-tab-Todos" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 text-white dark:bg-white dark:text-gray-900 transition">Todos</button>
+                            <button onclick="filtrarLeadsTab('WhatsApp')" id="filter-tab-WhatsApp" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">WhatsApp</button>
+                            <button onclick="filtrarLeadsTab('Interesse')" id="filter-tab-Interesse" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Interesse</button>
+                            <button onclick="filtrarLeadsTab('Retorno')" id="filter-tab-Retorno" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Retorno</button>
+                            <button onclick="filtrarLeadsTab('Não Atende')" id="filter-tab-Não Atende" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Não Atende</button>
+                            <button onclick="filtrarLeadsTab('Inválido')" id="filter-tab-Inválido" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Inválido</button>
+                            <button onclick="filtrarLeadsTab('Agendado')" id="filter-tab-Agendado" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Agendado</button>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar max-h-[450px]">
+                            <table class="w-full text-left text-xs min-w-[450px]">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-[#222731] text-gray-400">
+                                        <th class="py-3 px-3">Nome</th>
+                                        <th class="py-3 px-3">Telefone</th>
+                                        <th class="py-3 px-3">Status</th>
+                                        <th class="py-3 px-3">Última ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leads-table-body">
+                                    <tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-400">
+                                        <td colspan="4" class="py-8 text-center">Nenhum lead encontrado.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cartão de Ações do Lead Selecionado (Exatamente como na imagem) -->
+                    <div id="lead-action-panel" class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center">
+                        <div class="text-gray-400 mb-3 text-lg">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Selecione um lead na tabela para ver as ações.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ABA RELATÓRIOS (Dashboard idêntico às imagens de relatórios) -->
+            <div id="tab-relatorios" class="w-full max-w-5xl hidden flex flex-col space-y-4 pb-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
+                        <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Dashboard de Conversão</h2>
+                        
+                        <!-- Caixa Vermelha Principal -->
+                        <div class="bg-red-700 text-white rounded-2xl p-5 shadow-lg flex justify-between items-center">
+                            <div>
+                                <span class="text-[11px] uppercase tracking-wider opacity-90 block mb-1">Taxa de Conversão</span>
+                                <span id="dash-taxa-conv" class="text-3xl font-extrabold">0%</span>
+                            </div>
+                            <div class="text-right space-y-0.5 text-xs opacity-90">
+                                <div id="dash-agendados">0 agendados</div>
+                                <div id="dash-trabalhados">0 trabalhados</div>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between">
+                            <span>Meta diária</span>
+                            <span id="dash-meta-text">0/15</span>
+                        </div>
+
+                        <!-- Grid de 6 Cards de Estatísticas -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-ligacoes" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Ligações</div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-whats" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">WhatsApps</div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-trab" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Trabalhados</div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-agend" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Agendamentos</div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-ret" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Retornos</div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
+                                <div id="stat-naoatend" class="text-base font-bold text-gray-900 dark:text-white">0</div>
+                                <div class="text-[10px] text-gray-400 uppercase mt-0.5">Não atenderam</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de Contatos -->
+                    <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 id="history-count-title" class="text-sm font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-red-500"></i>Histórico de Contatos (0)</h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="copiarRelatorio()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>Copiar</span>
+                            </button>
+                            <button onclick="exportarRelatorioCSV()" class="flex-1 bg-gray-100 dark:bg-[#222731] hover:bg-gray-200 dark:hover:bg-[#2a303d] text-gray-700 dark:text-gray-300 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                <span>Exportar CSV</span>
+                            </button>
+                        </div>
+                        <div id="relatorio-conteudo" class="flex-1 bg-gray-50 dark:bg-[#1b1f28] p-3 rounded-xl font-mono text-[11px] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-[#2a303d] min-h-[250px] overflow-y-auto custom-scrollbar">
+                            Nenhum contato registrado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. ABA IMPORTAR CSV (Com os campos e botões idênticos à imagem) -->
+            <div id="tab-importar" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-8 shadow-xl space-y-4">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Importar Leads</h2>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Cole no formato <code class="text-red-500 bg-gray-100 dark:bg-[#1b1f28] px-1 py-0.5 rounded">nome,telefone</code> (um por linha) ou envie um arquivo CSV.</p>
+                    </div>
+
+                    <textarea id="csv-input" rows="6" placeholder="nome, telefone&#10;Karen, 11999999999&#10;Victor, 11988888888" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition resize-none font-mono"></textarea>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="importarLeads()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <span>Carregar</span>
+                        </button>
+                        <label class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-file-csv"></i>
+                            <span>Arquivo CSV</span>
+                            <input type="file" id="csv-file-input" accept=".csv" onchange="lerArquivoCSV(event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <button onclick="exportarBaseLeadsCSV()" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] hover:bg-gray-50 dark:hover:bg-[#1b1f28] text-gray-700 dark:text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Exportar CSV</span>
+                    </button>
+
+                    <div class="pt-2 text-center text-xs text-gray-400" id="import-status-text">Nenhum lead carregado</div>
+                </div>
+            </div>
+
+            <!-- 5. ABA CONFIGURAÇÕES (Com Meta Diária, Aparência, Backup Local e Zona de Perigo) -->
+            <div id="tab-configuracoes" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
+                <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+                    <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Configurações</h2>
+                    
+                    <!-- Meta Diária -->
+                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
+                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
+                            <i class="fa-solid fa-bullseye text-red-500"></i>
+                            <span>Meta Diária</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">Defina a quantidade de agendamentos que você quer alcançar por dia.</p>
+                        <input type="number" id="input-meta-diaria" value="15" onchange="alterarMetaDiaria(this.value)" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    </div>
+
+                    <!-- Aparência -->
+                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
+                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
+                            <i class="fa-solid fa-sun text-yellow-500"></i>
+                            <span>Aparência</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] p-3 rounded-xl text-xs">
+                            <span id="appearance-status-text">Modo claro ativo</span>
+                            <button onclick="toggleDarkMode()" class="text-red-600 dark:text-red-400 hover:underline font-semibold" id="appearance-toggle-btn">Clique para escuro</button>
+                        </div>
+                    </div>
+
+                    <!-- Backup Local -->
+                    <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-1">
+                        <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
+                            <i class="fa-solid fa-database text-blue-500"></i>
+                            <span>Backup Local</span>
+                        </div>
+                        <p id="backup-info-text" class="text-[11px] text-gray-500 dark:text-gray-400">0 leads salvos automaticamente no navegador. Nada se perde ao recarregar a página.</p>
+                    </div>
+
+                    <!-- Zona de Perigo -->
+                    <div class="border border-red-500/30 p-4 rounded-xl space-y-3">
+                        <div class="text-xs font-bold text-red-600 dark:text-red-400 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Zona de Perigo</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="zerarEstatisticas()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Zerar Estatísticas</span>
+                            </button>
+                            <button onclick="limparLeads()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Limpar Leads</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SCRIPT DO SISTEMA -->
+    <script>
+        function inicializarUsuarios() {
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            const preCadastrados = [
+                { nome: "Olegario", email: "olegario@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Palacio", email: "palacio@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Meirelles", email: "meirelles@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Coelho", email: "coelho@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Clara", email: "clara@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Muller", email: "muller@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Pagani", email: "pagani@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: false },
+                { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: true },
+                { nome: "Gerente Comercial Sidney", email: "sidney@metrocasa.com.br", senha: "123", status: "aprovado", isAdmin: true }
+            ];
+
+            preCadastrados.forEach(pc => {
+                if (!usuarios.some(u => u.email === pc.email)) {
+                    usuarios.push(pc);
+                } else {
+                    let idx = usuarios.findIndex(u => u.email === pc.email);
+                    if(pc.isAdmin) {
+                        usuarios[idx].isAdmin = true;
+                        usuarios[idx].status = 'aprovado';
+                    }
+                }
+            });
+            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
+        }
+        inicializarUsuarios();
+
+        let leads = JSON.parse(localStorage.getItem('metrocasa_leads')) || [];
+        let historicoContatos = JSON.parse(localStorage.getItem('metrocasa_historico')) || [];
+        let currentIndex = 0;
+        let metaDiaria = parseInt(localStorage.getItem('metrocasa_meta')) || 15;
+        let filtroLeadAtualTab = 'Todos';
+
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('input-meta-diaria').value = metaDiaria;
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            const appearanceStatus = document.getElementById('appearance-status-text');
+            const appearanceToggle = document.getElementById('appearance-toggle-btn');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.className = 'fa-solid fa-moon text-sm';
+                themeText.innerText = 'Modo escuro';
+                appearanceStatus.innerText = 'Modo claro ativo';
+                appearanceToggle.innerText = 'Clique para escuro';
+                localStorage.setItem('metrocasa_theme', 'light');
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-sun text-sm';
+                themeText.innerText = 'Modo claro';
+                appearanceStatus.innerText = 'Modo escuro ativo';
+                appearanceToggle.innerText = 'Clique para claro';
+                localStorage.setItem('metrocasa_theme', 'dark');
+            }
+        }
+
+        if(localStorage.getItem('metrocasa_theme') === 'dark') {
+            toggleDarkMode();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('sidebar-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                icon.className = 'fa-solid fa-xmark';
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                icon.className = 'fa-solid fa-bars';
+            }
+        }
+
+        function switchAuthTab(tab) {
+            if(tab === 'login') {
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('form-register').classList.add('hidden');
+                document.getElementById('auth-tab-login').className = 'flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition';
+                document.getElementById('auth-tab-register').className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
+            } else {
+                document.getElementById('form-login').classList.add('hidden');
+                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('auth-tab-register').className = 'flex-1 py-2 text-xs font-semibold rounded-lg bg-red-600 text-white transition';
+                document.getElementById('auth-tab-login').className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
+            }
+        }
+
+        function realizarCadastro() {
+            const nome = document.getElementById('reg-nome').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const senha = document.getElementById('reg-senha').value;
+
+            if(!nome || !email || !senha) { alert("Preencha todos os campos!"); return; }
+
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            if(usuarios.some(u => u.email === email)) { alert("Este e-mail já está cadastrado!"); return; }
+
+            usuarios.push({ nome, email, senha, status: 'pendente', isAdmin: false });
+            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
+            alert("Cadastro realizado com sucesso! Aguarde aprovação do administrador.");
+            document.getElementById('reg-nome').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-senha').value = '';
+            switchAuthTab('login');
+        }
+
+        function fazerLogin() {
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const senha = document.getElementById('login-senha').value;
+
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            const user = usuarios.find(u => u.email === email && u.senha === senha);
+
+            if(!user) { alert("E-mail ou senha incorretos!"); return; }
+            if(user.status !== 'aprovado') { alert("Seu cadastro ainda está pendente de aprovação."); return; }
+
+            document.getElementById('login-screen').classList.add('hidden');
+            renderLeadAtual();
+            atualizarMetricas();
+        }
+
+        function fazerLoginAdminTeste() {
+            let emailInput = prompt("Digite o e-mail Admin (ex: vinicius@metrocasa.com.br ou sidney@metrocasa.com.br):");
+            if (!emailInput) return;
+            let senhaInput = prompt("Digite a senha:");
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            let adminUser = usuarios.find(u => u.email.toLowerCase() === emailInput.trim().toLowerCase() && u.senha === senhaInput && u.isAdmin);
+
+            if(adminUser) { abrirPainelAdmin(); } else { alert("Acesso negado. Credenciais de admin incorretas."); }
+        }
+
+        function abrirPainelAdmin() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-screen').classList.remove('hidden');
+            renderizarTabelaAdmin();
+        }
+
+        function fecharAdmin() {
+            document.getElementById('admin-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function renderizarTabelaAdmin() {
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            const tbody = document.getElementById('admin-users-table');
+            tbody.innerHTML = '';
+            usuarios.forEach(u => {
+                let badgeColor = u.status === 'aprovado' ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500';
+                let roleBadge = u.isAdmin ? '<span class="px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-500 font-bold">ADMIN</span>' : '<span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-500 font-bold">CORRETOR</span>';
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-700 dark:text-gray-300">
+                        <td class="py-3 px-3 font-medium">${u.nome}</td>
+                        <td class="py-3 px-3 font-mono">${u.email}</td>
+                        <td class="py-3 px-3">${roleBadge}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] ${badgeColor}">${u.status.toUpperCase()}</span></td>
+                        <td class="py-3 px-3 text-right space-x-2">
+                            ${u.status === 'pendente' ? `<button onclick="mudarStatusUsuario('${u.email}', 'aprovado')" class="bg-green-600 text-white px-2.5 py-1 rounded text-[10px]">Aprovar</button>` : `<button onclick="mudarStatusUsuario('${u.email}', 'pendente')" class="bg-yellow-600 text-white px-2.5 py-1 rounded text-[10px]">Bloquear</button>`}
+                            <button onclick="excluirUsuario('${u.email}')" class="bg-red-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function mudarStatusUsuario(email, status) {
+            let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+            usuarios = usuarios.map(u => { if(u.email === email) u.status = status; return u; });
+            localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
+            renderizarTabelaAdmin();
+        }
+
+        function excluirUsuario(email) {
+            if(confirm("Excluir usuário?")) {
+                let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
+                usuarios = usuarios.filter(u => u.email !== email);
+                localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
+                renderizarTabelaAdmin();
+            }
+        }
+
+        function logout() { document.getElementById('login-screen').classList.remove('hidden'); }
+
+        function switchTab(tabName) {
+            const tabs = ['discador', 'leads', 'relatorios', 'importar', 'configuracoes'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).className = 'flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1d24] font-medium transition';
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabName}`).className = 'flex items-center space-x-3 px-4 py-3 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 font-medium transition shadow-md';
+
+            if(window.innerWidth < 1024) {
+                document.getElementById('sidebar-menu').classList.add('hidden');
+                document.getElementById('sidebar-menu').classList.remove('flex');
+                document.getElementById('mobile-menu-icon').className = 'fa-solid fa-bars';
+            }
+
+            if(tabName === 'leads') atualizarTabelaLeadsFiltrados();
+            if(tabName === 'relatorios') atualizarDashboardRelatorios();
+        }
+
+        function salvarEstadoLocal() {
+            localStorage.setItem('metrocasa_leads', JSON.stringify(leads));
+            localStorage.setItem('metrocasa_historico', JSON.stringify(historicoContatos));
+            document.getElementById('backup-info-text').innerText = `${leads.length} leads salvos automaticamente no navegador.`;
+        }
+
+        function renderLeadAtual() {
+            if (leads.length === 0 || currentIndex >= leads.length) {
+                document.getElementById('lead-name').innerText = "Fila Finalizada";
+                document.getElementById('lead-phone').innerText = "(00) 00000-0000";
+                document.getElementById('progress-text').innerText = "Nenhum lead pendente";
+                document.getElementById('progress-bar').style.width = "100%";
+                return;
+            }
+
+            const lead = leads[currentIndex];
+            document.getElementById('lead-name').innerText = lead.nome;
+            document.getElementById('lead-phone').innerText = lead.telefone;
+            document.getElementById('lead-status').value = lead.status || "Sem Status";
+            document.getElementById('lead-obs').value = lead.obs || "";
+
+            const progresso = ((currentIndex) / leads.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progresso}%`;
+            document.getElementById('progress-text').innerText = `Lead ${currentIndex + 1} de ${leads.length}`;
+            atualizarMetricas();
+        }
+
+        function atualizarMetricas() {
+            let trabalhados = leads.filter(l => l.status && l.status !== "Sem Status").length;
+            let interesses = leads.filter(l => l.status === "Interessado").length;
+            let agendados = leads.filter(l => l.status === "Agendado").length;
+            let conversao = trabalhados > 0 ? ((agendados / trabalhados) * 100).toFixed(0) : 0;
+
+            document.getElementById('stat-leads').innerText = leads.length;
+            document.getElementById('stat-trabalhados').innerText = trabalhados;
+            document.getElementById('stat-interesses').innerText = interesses;
+            document.getElementById('stat-conversao').innerText = `${conversao}%`;
+
+            document.getElementById('stat-leads-m').innerText = leads.length;
+            document.getElementById('stat-trabalhados-m').innerText = trabalhados;
+            document.getElementById('stat-interesses-m').innerText = interesses;
+            document.getElementById('stat-conversao-m').innerText = `${conversao}%`;
+        }
+
+        function salvarLeadAtualNoEstado(acaoRealizada = "Atualizado") {
+            if (leads.length > 0 && currentIndex < leads.length) {
+                leads[currentIndex].status = document.getElementById('lead-status').value;
+                leads[currentIndex].obs = document.getElementById('lead-obs').value;
+                leads[currentIndex].ultimaAcao = `${acaoRealizada} em ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`;
+
+                historicoContatos.unshift({
+                    nome: leads[currentIndex].nome,
+                    telefone: leads[currentIndex].telefone,
+                    status: leads[currentIndex].status,
+                    acao: acaoRealizada,
+                    data: new Date().toLocaleString('pt-BR')
+                });
+
+                salvarEstadoLocal();
+                atualizarMetricas();
+            }
+        }
+
+        function proximoLead() {
+            salvarLeadAtualNoEstado("Próximo");
+            if (currentIndex < leads.length) {
+                currentIndex++;
+                renderLeadAtual();
+            }
+        }
+
+        function contatarEProximo() {
+            salvarLeadAtualNoEstado("Ligação");
+            dispararLigacao();
+            setTimeout(() => { proximoLead(); }, 800);
+        }
+
+        function dispararLigacao() {
+            const phone = leads[currentIndex]?.telefone || "";
+            if(!phone) return;
+            window.location.href = `tel:${phone}`;
+        }
+
+        function abrirWhatsApp() {
+            const phone = leads[currentIndex]?.telefone.replace(/\D/g, '') || "";
+            if(!phone) return;
+            window.open(`https://wa.me/55${phone}`, '_blank');
+        }
+
+        function enviarTemplate(tipo) {
+            const phone = leads[currentIndex]?.telefone.replace(/\D/g, '') || "";
+            const nome = leads[currentIndex]?.nome || "Cliente";
+            let msg = "";
+            if(tipo === 'Mega Feirão') msg = `Olá ${nome}, tudo bem? Aqui é da imobiliária. Convidamos você para o nosso Mega Feirão de Imóveis!`;
+            if(tipo === 'Agendamento') msg = `Olá ${nome}, passando para confirmar nosso agendamento.`;
+            if(tipo === 'Retorno') msg = `Olá ${nome}, conforme conversamos, estou retornando o contato.`;
+            if(tipo === 'Encerramento') msg = `Olá ${nome}, agradeço pelo seu tempo. Qualquer dúvida estou à disposição!`;
+
+            window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            salvarLeadAtualNoEstado("WhatsApp");
+        }
+
+        function abrirMetrocasa() { window.open('https://parceiros.metrocasa.com.br/', '_blank'); }
+        function salvarLead() { salvarLeadAtualNoEstado("Salvo"); alert("Lead salvo com sucesso!"); }
+
+        // ABA LEADS FILTROS
+        function filtrarLeadsTab(status) {
+            filtroLeadAtualTab = status;
+            ['Todos', 'WhatsApp', 'Interesse', 'Retorno', 'Não Atende', 'Inválido', 'Agendado'].forEach(s => {
+                let btn = document.getElementById(`filter-tab-${s}`);
+                if(btn) {
+                    btn.className = s === status ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 text-white dark:bg-white dark:text-gray-900 transition' : 'px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition';
+                }
+            });
+            atualizarTabelaLeadsFiltrados();
+        }
+
+        function atualizarTabelaLeadsFiltrados() {
+            const tbody = document.getElementById('leads-table-body');
+            let filtrados = leads;
+            if(filtroLeadAtualTab !== 'Todos') {
+                filtrados = leads.filter(l => l.status === filtroLeadAtualTab);
+            }
+
+            if(filtrados.length === 0) {
+                tbody.innerHTML = `<tr class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-400"><td colspan="4" class="py-8 text-center">Nenhum lead encontrado.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            filtrados.forEach((l, idx) => {
+                tbody.innerHTML += `
+                    <tr onclick="selecionarLeadTabela(${idx})" class="border-b border-gray-200 dark:border-[#222731]/50 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1b1f28] cursor-pointer transition">
+                        <td class="py-3 px-3 font-medium">${l.nome}</td>
+                        <td class="py-3 px-3 font-mono">${l.telefone}</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-gray-200 dark:bg-[#222731]">${l.status || 'Sem Status'}</span></td>
+                        <td class="py-3 px-3 text-gray-400 text-[11px]">${l.ultimaAcao || '-'}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function selecionarLeadTabela(idx) {
+            const l = leads[idx];
+            const panel = document.getElementById('lead-action-panel');
+            panel.innerHTML = `
+                <div class="space-y-3 w-full text-left">
+                    <div class="border-b border-gray-200 dark:border-[#222731] pb-2">
+                        <div class="font-bold text-gray-900 dark:text-white text-sm">${l.nome}</div>
+                        <div class="text-xs text-gray-500 font-mono">${l.telefone}</div>
+                    </div>
+                    <div class="text-xs text-gray-600 dark:text-gray-300">Status atual: <strong class="text-red-500">${l.status}</strong></div>
+                    <div class="text-xs text-gray-500">Obs: ${l.obs || 'Nenhuma'}</div>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button onclick="window.location.href='tel:${l.telefone}'" class="bg-green-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-solid fa-phone"></i><span>Ligar</span></button>
+                        <button onclick="window.open('https://wa.me/55${l.telefone.replace(/\\D/g,'')}', '_blank')" class="bg-emerald-600 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // RELATÓRIOS
+        function atualizarDashboardRelatorios() {
+            let trabalhados = leads.filter(l => l.status && l.status !== "Sem Status").length;
+            let agendados = leads.filter(l => l.status === "Agendado").length;
+            let ligacoes = historicoContatos.filter(h => h.acao === "Ligação").length;
+            let whats = historicoContatos.filter(h => h.acao === "WhatsApp").length;
+            let retornos = leads.filter(l => l.status === "Retorno").length;
+            let naoAtendem = leads.filter(l => l.status === "Não Atende").length;
+            let conv = trabalhados > 0 ? ((agendados / trabalhados) * 100).toFixed(0) : 0;
+
+            document.getElementById('dash-taxa-conv').innerText = `${conv}%`;
+            document.getElementById('dash-agendados').innerText = `${agendados} agendados`;
+            document.getElementById('dash-trabalhados').innerText = `${trabalhados} trabalhados`;
+            document.getElementById('dash-meta-text').innerText = `${agendados}/${metaDiaria}`;
+
+            document.getElementById('stat-ligacoes').innerText = ligacoes;
+            document.getElementById('stat-whats').innerText = whats;
+            document.getElementById('stat-trab').innerText = trabalhados;
+            document.getElementById('stat-agend').innerText = agendados;
+            document.getElementById('stat-ret').innerText = retornos;
+            document.getElementById('stat-naoatend').innerText = naoAtendem;
+
+            document.getElementById('history-count-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-2 text-red-500"></i>Histórico de Contatos (${historicoContatos.length})`;
+
+            let texto = "";
+            if(historicoContatos.length === 0) {
+                texto = "Nenhum contato registrado.";
+            } else {
+                historicoContatos.forEach((h, idx) => {
+                    texto += `[${idx+1}] ${h.data}\nLead: ${h.nome} (${h.telefone})\nAção: ${h.acao} | Status: ${h.status}\n-----------------------------------\n`;
+                });
+            }
+            document.getElementById('relatorio-conteudo').innerText = texto;
+        }
+
+        function copiarRelatorio() {
+            let texto = `📊 Relatório Metrocasa - ${new Date().toLocaleDateString('pt-BR')}\nTotal de Leads: ${leads.length}\n\n`;
+            historicoContatos.forEach(h => { texto += `- ${h.nome} (${h.telefone}) | Ação: ${h.acao} | Status: ${h.status} (${h.data})\n`; });
+            navigator.clipboard.writeText(texto);
+            alert("Histórico copiado!");
+        }
+
+        function exportarRelatorioCSV() {
+            let csv = "Nome,Telefone,Status,Acao,Data\n" + historicoContatos.map(h => `"${h.nome}","${h.telefone}","${h.status}","${h.acao}","${h.data}"`).join("\n");
+            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "relatorio_metrocasa.csv";
+            link.click();
+        }
+
+        // IMPORTAR CSV
+        function importarLeads() {
+            const input = document.getElementById('csv-input').value;
+            const linhas = input.split('\n');
+            let novos = [];
+            linhas.forEach(l => {
+                let p = l.split(',');
+                if(p.length >= 2) {
+                    novos.push({ nome: p[0].trim(), telefone: p[1].trim(), status: "Sem Status", obs: "", ultimaAcao: "" });
+                }
+            });
+            if(novos.length > 0) {
+                leads = novos;
+                currentIndex = 0;
+                salvarEstadoLocal();
+                renderLeadAtual();
+                document.getElementById('import-status-text').innerText = `${novos.length} leads carregados com sucesso!`;
+                alert(`${novos.length} leads importados!`);
+                switchTab('discador');
+            } else {
+                alert("Formato inválido. Use: nome, telefone");
+            }
+        }
+
+        function lerArquivoCSV(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('csv-input').value = e.target.result;
+                importarLeads();
+            };
+            reader.readAsText(file);
+        }
+
+        function exportarBaseLeadsCSV() {
+            let csv = "Nome,Telefone,Status\n" + leads.map(l => `"${l.nome}","${l.telefone}","${l.status}"`).join("\n");
+            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "leads_metrocasa.csv";
+            link.click();
+        }
+
+        // CONFIGURAÇÕES
+        function alterarMetaDiaria(val) {
+            metaDiaria = parseInt(val) || 15;
+            localStorage.setItem('metrocasa_meta', metaDiaria);
+        }
+
+        function zerarEstatisticas() {
+            if(confirm("Deseja zerar todas as estatísticas e histórico?")) {
+                historicoContatos = [];
+                leads.forEach(l => { l.status = "Sem Status"; l.obs = ""; l.ultimaAcao = ""; });
+                salvarEstadoLocal();
+                renderLeadAtual();
+                alert("Estatísticas zeradas!");
+            }
+        }
+
+        function limparLeads() {
+            if(confirm("Deseja apagar todos os leads cadastrados?")) {
+                leads = [];
+                historicoContatos = [];
+                currentIndex = 0;
+                salvarEstadoLocal();
+                renderLeadAtual();
+                alert("Base de leads limpa!");
+            }
+        }
+
+        function filtrarGlobal(termo) {
+            if(!termo) return;
+            let matchIdx = leads.findIndex(l => l.nome.toLowerCase().includes(termo.toLowerCase()) || l.telefone.includes(termo));
+            if(matchIdx !== -1) {
+                currentIndex = matchIdx;
+                renderLeadAtual();
+                switchTab('discador');
+            }
+        }
+    </script>
+</body>
+</html>
