@@ -28,6 +28,13 @@
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #2a2f3a;
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-[#0d0f12] text-gray-800 dark:text-gray-200 flex flex-col lg:flex-row h-screen overflow-hidden transition-colors duration-200">
@@ -43,17 +50,23 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Plataforma de Atendimento Metrocasa</p>
             </div>
 
+            <!-- CAIXA DE MENSAGENS / ALERTAS MODERNA -->
+            <div id="auth-alert-box" class="hidden rounded-xl p-3.5 text-xs flex items-start space-x-2.5 animate-fade-in transition-all">
+                <div id="auth-alert-icon" class="text-sm mt-0.5 flex-shrink-0"></div>
+                <div id="auth-alert-text" class="leading-relaxed font-medium"></div>
+            </div>
+
             <!-- Formulário de Login -->
             <div id="form-login" class="space-y-4">
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail Corporativo</label>
-                    <input type="email" id="login-email" placeholder="ex: vinicius@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail ou Nome do Corretor</label>
+                    <input type="text" id="login-email" placeholder="ex: vinicius ou vinicius@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha (Padrão inicial: 123456)</label>
-                    <input type="password" id="login-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <input type="password" id="login-senha" placeholder="••••••••" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition">
                 </div>
-                <button onclick="fazerLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/20">
+                <button onclick="fazerLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-red-600/25">
                     Acessar Sistema
                 </button>
                 <div class="text-center pt-2 border-t border-gray-100 dark:border-[#222731]">
@@ -68,12 +81,13 @@
 
             <!-- Formulário de Troca de Senha no Primeiro Acesso -->
             <div id="form-troca-senha" class="space-y-4 hidden">
-                <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30 p-3 rounded-xl text-xs text-amber-800 dark:text-amber-400">
-                    Digite seu e-mail cadastrado, a senha atual (padrão 123456) e defina sua nova senha pessoal.
+                <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-xl text-xs text-amber-700 dark:text-amber-400 flex items-start space-x-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                    <span>Digite seu e-mail ou nome, a senha atual (padrão 123456) e defina sua nova senha pessoal.</span>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Seu E-mail</label>
-                    <input type="email" id="troca-email" placeholder="seu.email@metrocasa.com.br" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">E-mail ou Nome</label>
+                    <input type="text" id="troca-email" placeholder="seu nome ou e-mail" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl px-4 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Senha Atual / Temporária</label>
@@ -130,7 +144,7 @@
         </div>
     </div>
 
-    <!-- ================= MENU LATERAL (SIDEBAR) & MOBILE ================= -->
+    <!-- ================= MENU LATERAL & CONTEÚDO PRINCIPAL ================= -->
     <div class="lg:hidden bg-white dark:bg-[#111318] border-b border-gray-200 dark:border-[#222731] p-4 flex items-center justify-between z-30">
         <div class="flex items-center space-x-3">
             <div class="bg-red-600 p-2 rounded-xl text-white shadow-md shadow-red-600/30">
@@ -207,7 +221,6 @@
                         <div class="text-[9px] text-gray-400 uppercase tracking-wider">Leads</div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
                     <div class="text-gray-400 text-xs"><i class="fa-solid fa-square-check"></i></div>
                     <div>
@@ -215,7 +228,6 @@
                         <div class="text-[9px] text-gray-400 uppercase tracking-wider">Trabalhados</div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
                     <div class="text-gray-400 text-xs"><i class="fa-solid fa-heart"></i></div>
                     <div>
@@ -223,7 +235,6 @@
                         <div class="text-[9px] text-gray-400 uppercase tracking-wider">Interesses</div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
                     <div class="text-gray-400 text-xs"><i class="fa-solid fa-percent"></i></div>
                     <div>
@@ -231,7 +242,6 @@
                         <div class="text-[9px] text-gray-400 uppercase tracking-wider">Conversão</div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-[#171a21] border border-gray-200 dark:border-[#262b36] px-3 py-2 rounded-xl flex items-center space-x-2.5 flex-shrink-0 shadow-sm">
                     <div class="text-gray-400 text-xs"><i class="fa-solid fa-calendar"></i></div>
                     <div>
@@ -249,12 +259,11 @@
             </div>
         </header>
 
-        <!-- CONTEÚDO PRINCIPAL (ABAS) -->
+        <!-- CONTEÚDO PRINCIPAL -->
         <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-6 flex justify-center">
             
             <!-- 1. ABA DISCADOR -->
             <div id="tab-discador" class="w-full max-w-2xl flex flex-col space-y-4 pb-10">
-                <!-- Métricas Mobile -->
                 <div class="grid grid-cols-4 gap-2 lg:hidden text-center">
                     <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] p-2 rounded-xl shadow-sm">
                         <div id="stat-leads-m" class="text-xs font-bold text-gray-900 dark:text-white">0</div>
@@ -302,7 +311,6 @@
                                 <option value="Inválido">Inválido</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Observação do lead</label>
                             <textarea id="lead-obs" rows="2" placeholder="Digite anotações sobre a ligação..." class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition resize-none"></textarea>
@@ -377,7 +385,6 @@
                             <button onclick="filtrarLeadsTab('Inválido')" id="filter-tab-Inválido" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Inválido</button>
                             <button onclick="filtrarLeadsTab('Agendado')" id="filter-tab-Agendado" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Agendado</button>
                         </div>
-
                         <div class="overflow-x-auto custom-scrollbar max-h-[450px]">
                             <table class="w-full text-left text-xs min-w-[450px]">
                                 <thead>
@@ -396,11 +403,8 @@
                             </table>
                         </div>
                     </div>
-
                     <div id="lead-action-panel" class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center">
-                        <div class="text-gray-400 mb-3 text-lg">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
+                        <div class="text-gray-400 mb-3 text-lg"><i class="fa-solid fa-arrow-right"></i></div>
                         <p class="text-xs text-gray-500 dark:text-gray-400">Selecione um lead na tabela para ver as ações.</p>
                     </div>
                 </div>
@@ -411,7 +415,6 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
                         <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Dashboard de Conversão</h2>
-                        
                         <div class="bg-red-700 text-white rounded-2xl p-5 shadow-lg flex justify-between items-center">
                             <div>
                                 <span class="text-[11px] uppercase tracking-wider opacity-90 block mb-1">Taxa de Conversão</span>
@@ -422,12 +425,10 @@
                                 <div id="dash-trabalhados">0 trabalhados</div>
                             </div>
                         </div>
-
                         <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between">
                             <span>Meta diária</span>
                             <span id="dash-meta-text">0/15</span>
                         </div>
-
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
                             <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-3 rounded-xl">
                                 <div id="stat-ligacoes" class="text-base font-bold text-gray-900 dark:text-white">0</div>
@@ -462,12 +463,10 @@
                         </div>
                         <div class="flex gap-2">
                             <button onclick="copiarRelatorio()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
-                                <i class="fa-solid fa-copy"></i>
-                                <span>Copiar</span>
+                                <i class="fa-solid fa-copy"></i><span>Copiar</span>
                             </button>
                             <button onclick="exportarRelatorioCSV()" class="flex-1 bg-gray-100 dark:bg-[#222731] hover:bg-gray-200 dark:hover:bg-[#2a303d] text-gray-700 dark:text-gray-300 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5 shadow-sm">
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                <span>Exportar CSV</span>
+                                <i class="fa-solid fa-file-arrow-down"></i><span>Exportar CSV</span>
                             </button>
                         </div>
                         <div id="relatorio-conteudo" class="flex-1 bg-gray-50 dark:bg-[#1b1f28] p-3 rounded-xl font-mono text-[11px] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-[#2a303d] min-h-[250px] overflow-y-auto custom-scrollbar">
@@ -484,26 +483,19 @@
                         <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Importar Leads</h2>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Cole no formato <code class="text-red-500 bg-gray-100 dark:bg-[#1b1f28] px-1 py-0.5 rounded">nome,telefone</code> (um por linha) ou envie um arquivo CSV.</p>
                     </div>
-
                     <textarea id="csv-input" rows="6" placeholder="nome, telefone&#10;Karen, 11999999999&#10;Victor, 11988888888" class="w-full bg-gray-50 dark:bg-[#1b1f28] border border-gray-300 dark:border-[#2a303d] rounded-xl p-3 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition resize-none font-mono"></textarea>
-                    
                     <div class="grid grid-cols-2 gap-3">
                         <button onclick="importarLeads()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20">
-                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                            <span>Carregar</span>
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i><span>Carregar</span>
                         </button>
                         <label class="bg-gray-100 dark:bg-[#1b1f28] hover:bg-gray-200 dark:hover:bg-[#232936] border border-gray-300 dark:border-[#2a303d] text-gray-700 dark:text-gray-300 font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 cursor-pointer shadow-sm">
-                            <i class="fa-solid fa-file-csv"></i>
-                            <span>Arquivo CSV</span>
+                            <i class="fa-solid fa-file-csv"></i><span>Arquivo CSV</span>
                             <input type="file" id="csv-file-input" accept=".csv" onchange="lerArquivoCSV(event)" class="hidden">
                         </label>
                     </div>
-
                     <button onclick="exportarBaseLeadsCSV()" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] hover:bg-gray-50 dark:hover:bg-[#1b1f28] text-gray-700 dark:text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
-                        <i class="fa-solid fa-download"></i>
-                        <span>Exportar CSV</span>
+                        <i class="fa-solid fa-download"></i><span>Exportar CSV</span>
                     </button>
-
                     <div class="pt-2 text-center text-xs text-gray-400" id="import-status-text">Nenhum lead carregado</div>
                 </div>
             </div>
@@ -512,48 +504,38 @@
             <div id="tab-configuracoes" class="w-full max-w-xl hidden flex flex-col space-y-4 pb-10">
                 <div class="bg-white dark:bg-[#161920] border border-gray-200 dark:border-[#222731] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
                     <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Configurações</h2>
-                    
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-bullseye text-red-500"></i>
-                            <span>Meta Diária</span>
+                            <i class="fa-solid fa-bullseye text-red-500"></i><span>Meta Diária</span>
                         </div>
                         <p class="text-[11px] text-gray-500 dark:text-gray-400">Defina a quantidade de agendamentos que você quer alcançar por dia.</p>
                         <input type="number" id="input-meta-diaria" value="15" onchange="alterarMetaDiaria(this.value)" class="w-full bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-red-600">
                     </div>
-
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-2">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-sun text-yellow-500"></i>
-                            <span>Aparência</span>
+                            <i class="fa-solid fa-sun text-yellow-500"></i><span>Aparência</span>
                         </div>
                         <div class="flex justify-between items-center bg-white dark:bg-[#161920] border border-gray-300 dark:border-[#2a303d] p-3 rounded-xl text-xs">
                             <span id="appearance-status-text">Modo claro ativo</span>
                             <button onclick="toggleDarkMode()" class="text-red-600 dark:text-red-400 hover:underline font-semibold" id="appearance-toggle-btn">Clique para escuro</button>
                         </div>
                     </div>
-
                     <div class="bg-gray-50 dark:bg-[#1b1f28] border border-gray-200 dark:border-[#2a303d] p-4 rounded-xl space-y-1">
                         <div class="flex items-center space-x-2 text-xs font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-database text-blue-500"></i>
-                            <span>Backup Local</span>
+                            <i class="fa-solid fa-database text-blue-500"></i><span>Backup Local</span>
                         </div>
                         <p id="backup-info-text" class="text-[11px] text-gray-500 dark:text-gray-400">0 leads salvos automaticamente no navegador.</p>
                     </div>
-
                     <div class="border border-red-500/30 p-4 rounded-xl space-y-3">
                         <div class="text-xs font-bold text-red-600 dark:text-red-400 flex items-center space-x-1.5">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span>Zona de Perigo</span>
+                            <i class="fa-solid fa-triangle-exclamation"></i><span>Zona de Perigo</span>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <button onclick="zerarEstatisticas()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-rotate-left"></i>
-                                <span>Zerar Estatísticas</span>
+                                <i class="fa-solid fa-rotate-left"></i><span>Zerar Estatísticas</span>
                             </button>
                             <button onclick="limparLeads()" class="bg-white dark:bg-[#1b1f28] hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-500/40 text-red-600 dark:text-red-400 font-medium py-2 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-trash"></i>
-                                <span>Limpar Leads</span>
+                                <i class="fa-solid fa-trash"></i><span>Limpar Leads</span>
                             </button>
                         </div>
                     </div>
@@ -563,9 +545,8 @@
         </div>
     </main>
 
-    <!-- SCRIPT COMPLETO DO SISTEMA COM SENHAS VISÍVEIS E ADMIN -->
+    <!-- SCRIPT DO SISTEMA -->
     <script>
-        // Inicialização dos Corretores com Senha Padrão 123456
         function inicializarUsuarios() {
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
             const preCadastrados = [
@@ -577,7 +558,7 @@
                 { nome: "Muller", email: "muller@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
                 { nome: "Pagani", email: "pagani@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: false },
                 { nome: "Vinicius", email: "vinicius@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true },
-                { nome: "Gerente Comercial Sidney", email: "sidney@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true }
+                { nome: "Sidney", email: "sidney@metrocasa.com.br", senha: "123456", status: "aprovado", isAdmin: true }
             ];
 
             preCadastrados.forEach(pc => {
@@ -598,6 +579,24 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR');
         document.getElementById('input-meta-diaria').value = metaDiaria;
+
+        // Função de Alerta Visual Moderno
+        function mostrarAlertaAuth(mensagem, tipo = 'erro') {
+            const box = document.getElementById('auth-alert-box');
+            const icon = document.getElementById('auth-alert-icon');
+            const text = document.getElementById('auth-alert-text');
+            
+            box.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/30', 'text-red-700', 'dark:text-red-400', 'bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-700', 'dark:text-emerald-400');
+
+            if(tipo === 'erro') {
+                box.classList.add('bg-red-500/10', 'border', 'border-red-500/30', 'text-red-700', 'dark:text-red-400');
+                icon.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-500"></i>';
+            } else {
+                box.classList.add('bg-emerald-500/10', 'border', 'border-emerald-500/30', 'text-emerald-700', 'dark:text-emerald-400');
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+            }
+            text.innerText = mensagem;
+        }
 
         function toggleDarkMode() {
             const html = document.documentElement;
@@ -644,48 +643,55 @@
         }
 
         function mostrarTelaTrocaSenha() {
+            document.getElementById('auth-alert-box').classList.add('hidden');
             document.getElementById('form-login').classList.add('hidden');
             document.getElementById('form-troca-senha').classList.remove('hidden');
         }
 
         function voltarLogin() {
+            document.getElementById('auth-alert-box').classList.add('hidden');
             document.getElementById('form-troca-senha').classList.add('hidden');
             document.getElementById('form-login').classList.remove('hidden');
         }
 
         function salvarNovaSenha() {
-            const email = document.getElementById('troca-email').value.trim().toLowerCase();
+            const inputVal = document.getElementById('troca-email').value.trim().toLowerCase();
             const senhaAntiga = document.getElementById('troca-senha-antiga').value;
             const senhaNova = document.getElementById('troca-senha-nova').value;
 
-            if(!email || !senhaAntiga || !senhaNova) {
-                alert("Preencha todos os campos!");
+            if(!inputVal || !senhaAntiga || !senhaNova) {
+                mostrarAlertaAuth("Preencha todos os campos para alterar a senha.", "erro");
                 return;
             }
 
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            let userIndex = usuarios.findIndex(u => u.email === email && u.senha === senhaAntiga);
+            let userIndex = usuarios.findIndex(u => (u.email === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senhaAntiga);
 
             if(userIndex === -1) {
-                alert("E-mail ou senha atual incorretos!");
+                mostrarAlertaAuth("Não foi possível concluir. Usuário ou senha atual incorretos.", "erro");
                 return;
             }
 
             usuarios[userIndex].senha = senhaNova;
             localStorage.setItem('metrocasa_usuarios', JSON.stringify(usuarios));
-            alert("Senha alterada com sucesso! Agora você pode fazer o login.");
-            voltarLogin();
+            mostrarAlertaAuth("Senha alterada com sucesso! Faça login com a nova senha.", "sucesso");
+            setTimeout(() => { voltarLogin(); }, 1500);
         }
 
         function fazerLogin() {
-            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const inputVal = document.getElementById('login-email').value.trim().toLowerCase();
             const senha = document.getElementById('login-senha').value;
 
+            if(!inputVal || !senha) {
+                mostrarAlertaAuth("Digite seu e-mail/nome e a senha para continuar.", "erro");
+                return;
+            }
+
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            const user = usuarios.find(u => u.email === email && u.senha === senha);
+            const user = usuarios.find(u => (u.email === inputVal || u.nome.toLowerCase() === inputVal) && u.senha === senha);
 
             if(!user) {
-                alert("E-mail ou senha incorretos! Lembre-se que a senha padrão inicial é 123456.");
+                mostrarAlertaAuth("Não foi possível concluir o login. Verifique se o nome/e-mail e a senha (padrão 123456) estão corretos.", "erro");
                 return;
             }
 
@@ -699,17 +705,18 @@
         }
 
         function fazerLoginAdminMaster() {
-            let emailInput = prompt("Digite o e-mail Admin (ex: vinicius@metrocasa.com.br ou sidney@metrocasa.com.br):");
+            let emailInput = prompt("Digite o nome ou e-mail Admin (ex: Vinicius ou Sidney):");
             if (!emailInput) return;
             let senhaInput = prompt("Digite a senha atual:");
             
             let usuarios = JSON.parse(localStorage.getItem('metrocasa_usuarios')) || [];
-            let adminUser = usuarios.find(u => u.email.toLowerCase() === emailInput.trim().toLowerCase() && u.senha === senhaInput && u.isAdmin);
+            let adminUser = usuarios.find(u => (u.email.toLowerCase() === emailInput.trim().toLowerCase() || u.nome.toLowerCase() === emailInput.trim().toLowerCase()) && u.senha === senhaInput && u.isAdmin);
 
             if(adminUser) {
                 abrirPainelAdminMaster();
             } else {
-                alert("Acesso negado. Credenciais de Administrador Master incorretas.");
+                mostrarAlertaAuth("Acesso negado. Credenciais de Administrador Master incorretas.", "erro");
+                voltarLogin();
             }
         }
 
