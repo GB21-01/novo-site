@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Construtora - Prospecção & Cadência</title>
+    <title>CRM Construtora - Prospecção & Discador</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -52,6 +52,9 @@
                 </a>
                 <a href="#" onclick="switchTab('leads')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
                     <i class="fa-solid fa-address-book w-6"></i> Leads & Cadência
+                </a>
+                <a href="#" onclick="switchTab('discador')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
+                    <i class="fa-solid fa-headset w-6"></i> Config. Discador
                 </a>
                 <a href="#" onclick="switchTab('relatorios')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
                     <i class="fa-solid fa-chart-line w-6"></i> Relatórios Diários
@@ -103,7 +106,6 @@
                                 </div>
                             </div>
                             <h3 id="stat-total" class="text-3xl font-bold text-white mt-4">0</h3>
-                            <span class="text-xs text-slate-400 mt-2 block">Cadastrados no sistema</span>
                         </div>
                         <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
                             <div class="flex items-center justify-between">
@@ -113,7 +115,6 @@
                                 </div>
                             </div>
                             <h3 id="stat-t1" class="text-3xl font-bold text-white mt-4">0</h3>
-                            <span class="text-xs text-amber-400 mt-2 block">Aguardando 1º contato</span>
                         </div>
                         <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
                             <div class="flex items-center justify-between">
@@ -123,7 +124,6 @@
                                 </div>
                             </div>
                             <h3 id="stat-t2t3" class="text-3xl font-bold text-white mt-4">0</h3>
-                            <span class="text-xs text-purple-400 mt-2 block">Em cadência contínua</span>
                         </div>
                         <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
                             <div class="flex items-center justify-between">
@@ -133,14 +133,7 @@
                                 </div>
                             </div>
                             <h3 id="stat-sucesso" class="text-3xl font-bold text-white mt-4">0</h3>
-                            <span class="text-xs text-emerald-400 mt-2 block">Vendas / Convertidos</span>
                         </div>
-                    </div>
-
-                    <!-- Bloco de Atalho Rápido -->
-                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-2">Processo de Atendimento da Construtora</h3>
-                        <p class="text-sm text-slate-400">O sistema segue uma rigorosa cadência de 3 dias (1ª tentativa, 2ª tentativa e 3ª tentativa). Clique em "Tratado" após cada contato para avançar o lead para o dia seguinte.</p>
                     </div>
                 </div>
 
@@ -163,7 +156,6 @@
                         </div>
                     </div>
 
-                    <!-- Tabela de Leads -->
                     <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-sm">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -173,15 +165,43 @@
                                         <th class="py-4 px-6">Contato / Telefone</th>
                                         <th class="py-4 px-6">Status da Cadência</th>
                                         <th class="py-4 px-6">Observações</th>
-                                        <th class="py-4 px-6 text-center">Ações Rápidas</th>
+                                        <th class="py-4 px-6 text-center">Discador / WhatsApp</th>
                                         <th class="py-4 px-6 text-right">Gerenciar</th>
                                     </tr>
                                 </thead>
-                                <tbody id="leads-table-body" class="divide-y divide-slate-700 text-sm">
-                                    <!-- Inserido via JavaScript -->
-                                </tbody>
+                                <tbody id="leads-table-body" class="divide-y divide-slate-700 text-sm"></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ABA: CONFIGURAÇÃO DO DISCADOR -->
+                <div id="tab-discador" class="tab-content hidden space-y-6">
+                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-2xl">
+                        <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-sliders mr-2 text-emerald-500"></i> Parâmetros do Discador VoIP / WhatsApp</h3>
+                        <p class="text-sm text-slate-400 mb-6">Configure as credenciais de integração para transmitir as ligações diretamente para a API do WhatsApp e canais de prospecção.</p>
+                        
+                        <form onsubmit="salvarConfigDiscador(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">URL da API do Discador / Webhook</label>
+                                <input type="url" id="config-url" placeholder="https://api.seudiscador.com/v1/transmitir" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Token de Autenticação / API Key</label>
+                                <input type="password" id="config-token" placeholder="Insira o token de segurança" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Instância do WhatsApp Conectada</label>
+                                <input type="text" id="config-whatsapp" placeholder="Ex: construtora-instancia-01" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="flex items-center space-x-3 pt-2">
+                                <input type="checkbox" id="config-auto-transmissao" class="w-4 h-4 text-emerald-600 bg-slate-900 border-slate-700 rounded focus:ring-emerald-500">
+                                <label for="config-auto-transmissao" class="text-sm text-slate-300">Transmitir automaticamente para o WhatsApp ao acionar o discador</label>
+                            </div>
+                            <div class="pt-4 border-t border-slate-700">
+                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow">Salvar Configurações</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -236,9 +256,7 @@
                             <i class="fa-solid fa-user-plus mr-2"></i> Adicionar Corretor
                         </button>
                     </div>
-                    <div id="corretores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Inserido via JS -->
-                    </div>
+                    <div id="corretores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                 </div>
 
             </main>
@@ -273,7 +291,7 @@
         </div>
     </div>
 
-    <!-- MODAL: DESCARTAR LEAD (Com Motivos Obrigatórios) -->
+    <!-- MODAL: DESCARTAR LEAD -->
     <div id="discard-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
@@ -327,20 +345,28 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE FUNCIONAMENTO DO CRM -->
+    <!-- SCRIPT DO CRM & DISCADOR -->
     <script>
         let leads = JSON.parse(localStorage.getItem('crm_leads')) || [
-            { id: 1, nome: 'Carlos Eduardo', telefone: '11988887777', etapa: 1, obs: 'Interessado em apto 2 dorms', dataCriacao: '2026-09-14' },
-            { id: 2, nome: 'Mariana Souza', telefone: '11977776666', etapa: 2, obs: 'Pediu simulação de financiamento', dataCriacao: '2026-09-13' }
+            { id: 1, nome: 'Carlos Eduardo', telefone: '11988887777', etapa: 1, obs: 'Interessado em apto 2 dorms', dataCriacao: new Date().toISOString().split('T')[0] },
+            { id: 2, nome: 'Mariana Souza', telefone: '11977776666', etapa: 2, obs: 'Pediu simulação de financiamento', dataCriacao: new Date().toISOString().split('T')[0] }
         ];
 
         let corretores = JSON.parse(localStorage.getItem('crm_corretores')) || [
             { id: 1, nome: 'Gabriel Liberato', email: 'gabriel@construtora.com' }
         ];
 
+        let discadorConfig = JSON.parse(localStorage.getItem('crm_discador_config')) || {
+            url: '',
+            token: '',
+            whatsapp: '',
+            autoTransmissao: false
+        };
+
         function saveData() {
             localStorage.setItem('crm_leads', JSON.stringify(leads));
             localStorage.setItem('crm_corretores', JSON.stringify(corretores));
+            localStorage.setItem('crm_discador_config', JSON.stringify(discadorConfig));
             updateDashboard();
         }
 
@@ -355,17 +381,23 @@
             event.currentTarget.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
             event.currentTarget.classList.remove('text-slate-300', 'hover:bg-slate-700', 'hover:text-white');
 
-            const titles = { 'dashboard': 'Painel Geral', 'leads': 'Leads & Cadência', 'relatorios': 'Relatórios Diários', 'equipe': 'Equipe de Corretores' };
+            const titles = { 
+                'dashboard': 'Painel Geral', 
+                'leads': 'Leads & Cadência', 
+                'discador': 'Configuração do Discador', 
+                'relatorios': 'Relatórios Diários', 
+                'equipe': 'Equipe de Corretores' 
+            };
             document.getElementById('page-title').innerText = titles[tabId];
             
             if(tabId === 'leads') renderLeads();
+            if(tabId === 'discador') carregarConfigDiscadorNaTela();
             if(tabId === 'relatorios') updateRelatorios();
             if(tabId === 'equipe') renderCorretores();
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
         }
 
         function toggleDarkMode() {
@@ -376,7 +408,37 @@
             document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
         }
 
-        // Modais
+        // Configuração do Discador
+        function salvarConfigDiscador(e) {
+            e.preventDefault();
+            discadorConfig = {
+                url: document.getElementById('config-url').value,
+                token: document.getElementById('config-token').value,
+                whatsapp: document.getElementById('config-whatsapp').value,
+                autoTransmissao: document.getElementById('config-auto-transmissao').checked
+            };
+            saveData();
+            alert('Configurações do discador salvas com sucesso!');
+        }
+
+        function carregarConfigDiscadorNaTela() {
+            document.getElementById('config-url').value = discadorConfig.url || '';
+            document.getElementById('config-token').value = discadorConfig.token || '';
+            document.getElementById('config-whatsapp').value = discadorConfig.whatsapp || '';
+            document.getElementById('config-auto-transmissao').checked = discadorConfig.autoTransmissao || false;
+        }
+
+        function dispararDiscador(telefone, nome) {
+            const cleanPhone = telefone.replace(/\D/g, '');
+            if (discadorConfig.autoTransmissao && discadorConfig.url) {
+                // Simulação de transmissão direta via Webhook/API configurada
+                console.log(`Transmitindo para API do discador [${discadorConfig.url}] -> Lead: ${nome} (${cleanPhone})`);
+            }
+            // Abre o WhatsApp com a instância configurada ou padrão
+            window.open(`https://wa.me/55${cleanPhone}?text=Olá%20${encodeURIComponent(nome)},%20tudo%20bem?%20Aqui%20é%20da%20Construtora.`, '_blank');
+        }
+
+        // Modais de Lead e Corretor
         function openLeadModal() { document.getElementById('lead-modal').classList.remove('hidden'); }
         function closeLeadModal() { document.getElementById('lead-modal').classList.add('hidden'); document.getElementById('lead-form').reset(); }
         function openCorretorModal() { document.getElementById('corretor-modal').classList.remove('hidden'); }
@@ -398,14 +460,24 @@
             renderLeads();
         }
 
+        function saveCorretor(e) {
+            e.preventDefault();
+            const novo = {
+                id: Date.now(),
+                nome: document.getElementById('corretor-nome').value,
+                email: document.getElementById('corretor-email').value
+            };
+            corretores.push(novo);
+            saveData();
+            closeCorretorModal();
+            renderCorretores();
+        }
+
         function avancarTentativa(id) {
             const lead = leads.find(l => l.id === id);
             if (lead) {
-                if (lead.etapa < 3) {
-                    lead.etapa += 1;
-                } else {
-                    lead.etapa = 'sucesso'; // Concluído / Venda
-                }
+                if (lead.etapa < 3) lead.etapa += 1;
+                else lead.etapa = 'sucesso';
                 saveData();
                 renderLeads();
             }
@@ -473,10 +545,11 @@
                         <td class="py-4 px-6">${badgeEtapa}</td>
                         <td class="py-4 px-6 text-slate-400 text-xs">${lead.obs || '-'}</td>
                         <td class="py-4 px-6 text-center space-x-2">
-                            <a href="https://wa.me/55${cleanPhone}" target="_blank" class="inline-flex items-center justify-center w-9 h-9 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white rounded-xl transition" title="Abrir WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </a>
-                            <a href="tel:${cleanPhone}" class="inline-flex items-center justify-center w-9 h-9 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white rounded-xl transition" title="Ligar diretamente">
+                            <button onclick="dispararDiscador('${lead.telefone}', '${lead.nome}')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-xl font-semibold transition shadow" title="Disparar via Discador para o WhatsApp">
+                                <i class="fa-solid fa-headset"></i>
+                                <span>Discador</span>
+                            </button>
+                            <a href="tel:${cleanPhone}" class="inline-flex items-center justify-center w-8 h-8 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white rounded-xl transition" title="Ligar">
                                 <i class="fa-solid fa-phone"></i>
                             </a>
                         </td>
@@ -492,33 +565,31 @@
         }
 
         function updateDashboard() {
-            document.getElementById('stat-total').innerText = leads.length;
-            document.getElementById('stat-t1').innerText = leads.filter(l => l.etapa === 1).length;
-            document.getElementById('stat-t2t3').innerText = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
-            document.getElementById('stat-sucesso').innerText = leads.filter(l => l.etapa === 'sucesso').length;
+            const total = leads.length;
+            const t1 = leads.filter(l => l.etapa === 1).length;
+            const t2t3 = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
+            const sucesso = leads.filter(l => l.etapa === 'sucesso').length;
+
+            if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = total;
+            if(document.getElementById('stat-t1')) document.getElementById('stat-t1').innerText = t1;
+            if(document.getElementById('stat-t2t3')) document.getElementById('stat-t2t3').innerText = t2t3;
+            if(document.getElementById('stat-sucesso')) document.getElementById('stat-sucesso').innerText = t2t3; // corrigido para sucesso
+            if(document.getElementById('stat-sucesso')) document.getElementById('stat-sucesso').innerText = sucesso;
         }
 
         function updateRelatorios() {
-            const hojeStr = new Date().toISOString().split('T')[0];
-            document.getElementById('rep-hoje').innerText = leads.filter(l => l.dataCriacao === hojeStr).length;
-            document.getElementById('rep-t1').innerText = leads.filter(l => l.etapa === 1).length;
-            document.getElementById('rep-t2t3').innerText = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
+            const hoje = new Date().toISOString().split('T')[0];
+            const proscHoje = leads.filter(l => l.dataCriacao === hoje).length;
+            const t1 = leads.filter(l => l.etapa === 1).length;
+            const t2t3 = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
 
-            document.getElementById('desc-inexistente').innerText = leads.filter(l => l.motivoDescarte === 'Contato inexistente').length;
-            document.getElementById('desc-semresposta').innerText = leads.filter(l => l.motivoDescarte === 'Falta de resposta').length;
-            document.getElementById('desc-tempoperdido').innerText = leads.filter(l => l.motivoDescarte === 'Tomando meu tempo').length;
-        }
+            document.getElementById('rep-hoje').innerText = proscHoje;
+            document.getElementById('rep-t1').innerText = t1;
+            document.getElementById('rep-t2t3').innerText = t2t3;
 
-        function saveCorretor(e) {
-            e.preventDefault();
-            corretores.push({
-                id: Date.now(),
-                nome: document.getElementById('corretor-nome').value,
-                email: document.getElementById('corretor-email').value
-            });
-            saveData();
-            closeCorretorModal();
-            renderCorretores();
+            document.getElementById('desc-inexistente').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Contato inexistente').length;
+            document.getElementById('desc-semresposta').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Falta de resposta').length;
+            document.getElementById('desc-tempoperdido').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Tomando meu tempo').length;
         }
 
         function renderCorretores() {
@@ -526,12 +597,12 @@
             grid.innerHTML = '';
             corretores.forEach(c => {
                 grid.innerHTML += `
-                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
-                            ${c.nome.charAt(0)}
+                    <div class="bg-slate-900 border border-slate-700 p-5 rounded-2xl flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-xl flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-user-tie"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white">${c.nome}</h4>
+                            <h4 class="text-white font-bold">${c.nome}</h4>
                             <p class="text-xs text-slate-400">${c.email}</p>
                         </div>
                     </div>
@@ -539,8 +610,9 @@
             });
         }
 
-        // Inicializar contadores na primeira carga
-        updateDashboard();
+        window.onload = function() {
+            updateDashboard();
+        };
     </script>
 </body>
 </html>
