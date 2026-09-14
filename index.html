@@ -1,234 +1,546 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discador Imobiliário — Metrocasa</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Construtora - Prospecção & Cadência</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
-<div id="app"></div>
-<script>
-const S="metrocasa.sessao",L="metrocasa.leads",U="metrocasa.usuarios",P="Metrocasa@2026";
-const SL={sem_status:"Sem status",interessado:"Interessado",retorno:"Retorno",agendado:"Agendado",sem_interesse:"Sem interesse"};
-const SO=["sem_status","interessado","retorno","agendado","sem_interesse"];
-const LI=[
-{id:"1",nome:"Carlos Eduardo",telefone:"11988887777",empreendimento:"Metrocasa Tatuapé",status:"sem_status"},
-{id:"2",nome:"Ana Paula",telefone:"11977776666",empreendimento:"Metrocasa Brás",status:"interessado",observacao:"Gostou do apto."},
-{id:"3",nome:"Ricardo Menezes",telefone:"11966665544",empreendimento:"Metrocasa Ipiranga",status:"retorno"}
-];
-const UI=[
-{nome:"Vinicius",email:"vinicius@metrocasa.com.br",senha:P,role:"Corretor"},
-{nome:"Nikolas",email:"nikolas@metrocasa.com.br",senha:P,role:"Corretor"},
-{nome:"Admin Master",email:"admin@metrocasa.com.br",senha:P,role:"Admin"}
-];
-function ler(k,p){try{return JSON.parse(localStorage.getItem(k))??p}catch{return p}}
-function gra(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function getLeads(){return ler(L,LI)}
-function getUsrs(){return ler(U,UI)}
-function getSessao(){return ler(S,null)}
+<body class="bg-slate-900 text-slate-100 font-sans antialiased transition-colors duration-200">
 
-let idx=0;
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR / MENU LATERAL -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 border-r border-slate-700 transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 flex flex-col">
+            <div class="flex items-center justify-between h-16 px-6 bg-slate-800 border-b border-slate-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <span class="text-lg font-bold tracking-wide">CRM Construtora</span>
+                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
 
-function render(){
-let s=getSessao();
-let app=document.getElementById("app");
-if(!s){app.innerHTML=loginHTML();return;}
-app.innerHTML=`
-<div class="flex flex-col lg:flex-row min-h-screen">
-<aside class="w-full lg:w-64 bg-slate-900 border-r border-slate-800 p-5 flex flex-col justify-between">
-<div>
-<div class="flex items-center gap-3 pb-5 border-b border-slate-800">
-<span class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-rose-600/30"><i class="fa-solid fa-headset"></i></span>
-<div><p class="font-bold text-sm">${s.nome}</p><p class="text-xs text-rose-500 font-bold uppercase">Metrocasa</p></div>
-</div>
-<nav class="mt-4 space-y-1">
-<button onclick="router('discador')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-phone w-4"></i> Discador</button>
-<button onclick="router('leads')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-users w-4"></i> Leads</button>
-<button onclick="router('importar')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-upload w-4"></i> Importar</button>
-${s.admin?`<button onclick="router('admin')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-slate-800 text-slate-300"><i class="fa-solid fa-shield-halved w-4"></i> Painel Master</button>`:""}
-</nav>
-</div>
-<button onclick="localStorage.removeItem('${S}');render();" class="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-800 text-sm font-medium text-slate-400 hover:text-rose-500 hover:border-rose-500"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-</aside>
-<main class="flex-1 max-w-4xl mx-auto p-6 w-full" id="main-content"></main>
-</div>`;
-router(window.currentRoute||"discador");
-}
+            <!-- Navegação -->
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <a href="#" onclick="switchTab('dashboard')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors bg-emerald-600 text-white shadow-md">
+                    <i class="fa-solid fa-chart-pie w-6"></i> Dashboard
+                </a>
+                <a href="#" onclick="switchTab('leads')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
+                    <i class="fa-solid fa-address-book w-6"></i> Leads & Cadência
+                </a>
+                <a href="#" onclick="switchTab('relatorios')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
+                    <i class="fa-solid fa-chart-line w-6"></i> Relatórios Diários
+                </a>
+                <a href="#" onclick="switchTab('equipe')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
+                    <i class="fa-solid fa-users w-6"></i> Equipe de Corretores
+                </a>
+            </nav>
 
-function router(r){
-window.currentRoute=r;
-let el=document.getElementById("main-content");
-if(!el)return;
-if(r==="discador") el.innerHTML=discadorHTML();
-if(r==="leads") el.innerHTML=leadsHTML();
-if(r==="importar") el.innerHTML=importarHTML();
-if(r==="admin") el.innerHTML=adminHTML();
-}
+            <!-- Rodapé da Sidebar -->
+            <div class="p-4 border-t border-slate-700">
+                <button onclick="toggleDarkMode()" class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    <span id="theme-text">Modo Claro</span>
+                </button>
+            </div>
+        </aside>
 
-function loginHTML(){
-return `
-<div class="min-h-screen flex items-center justify-center p-4">
-<div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
-<div class="text-center mb-6">
-<span class="mx-auto w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-rose-600/30 mb-3"><i class="fa-solid fa-headset"></i></span>
-<h1 class="text-xl font-bold">Discador Imobiliário</h1><p class="text-xs text-slate-400">Acesso Restrito ao Sistema</p>
-</div>
-<form onsubmit="fazerLogin(event)" class="space-y-4">
-<div><label class="text-[11px] font-semibold uppercase text-slate-400">Seu Nome ou E-mail Cadastrado</label><input id="l-user" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="ex: Nikolas"></div>
-<div><label class="text-[11px] font-semibold uppercase text-slate-400">Senha</label><input id="l-pass" type="password" class="mt-1 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-rose-600" placeholder="••••••••"></div>
-<button type="submit" class="w-full bg-rose-600 text-white py-3 rounded-xl text-xs font-semibold uppercase tracking-wider shadow-lg shadow-rose-600/25 hover:bg-rose-500">Entrar no Sistema</button>
-<p class="text-[11px] text-center text-slate-500 mt-3">Apenas nomes cadastrados pelo Administrador têm acesso.</p>
-</form>
-</div></div>`;
-}
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="flex-1 flex flex-col md:pl-64 overflow-hidden">
+            
+            <!-- Barra Superior -->
+            <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-10">
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white text-lg">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 id="page-title" class="text-xl font-bold text-white">Painel Geral</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="openLeadModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Novo Lead</span>
+                    </button>
+                </div>
+            </header>
 
-function fazerLogin(e){
-e.preventDefault();
-let u=document.getElementById("l-user").value.trim().toLowerCase();
-let p=document.getElementById("l-pass").value;
-let usuarios=getUsrs();
-let user=usuarios.find(x=>x.email.toLowerCase()===u||x.nome.toLowerCase()===u);
+            <!-- Área Dinâmica -->
+            <main class="flex-1 overflow-y-auto p-6 bg-slate-900">
+                
+                <!-- ABA: DASHBOARD -->
+                <div id="tab-dashboard" class="tab-content space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400 text-sm font-medium">Total de Leads</span>
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
+                            <h3 id="stat-total" class="text-3xl font-bold text-white mt-4">0</h3>
+                            <span class="text-xs text-slate-400 mt-2 block">Cadastrados no sistema</span>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400 text-sm font-medium">1ª Tentativa</span>
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                            </div>
+                            <h3 id="stat-t1" class="text-3xl font-bold text-white mt-4">0</h3>
+                            <span class="text-xs text-amber-400 mt-2 block">Aguardando 1º contato</span>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400 text-sm font-medium">2ª / 3ª Tentativa</span>
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-headset"></i>
+                                </div>
+                            </div>
+                            <h3 id="stat-t2t3" class="text-3xl font-bold text-white mt-4">0</h3>
+                            <span class="text-xs text-purple-400 mt-2 block">Em cadência contínua</span>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400 text-sm font-medium">Fechamentos</span>
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                            </div>
+                            <h3 id="stat-sucesso" class="text-3xl font-bold text-white mt-4">0</h3>
+                            <span class="text-xs text-emerald-400 mt-2 block">Vendas / Convertidos</span>
+                        </div>
+                    </div>
 
-if(!user){
-alert("Acesso Negado: Este nome ou e-mail não está cadastrado no sistema.");
-return;
-}
-if(user.senha!==p){
-alert("Senha incorreta!");
-return;
-}
-gra(S,{nome:user.nome,email:user.email,admin:user.role==="Admin"});
-render();
-}
+                    <!-- Bloco de Atalho Rápido -->
+                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-2">Processo de Atendimento da Construtora</h3>
+                        <p class="text-sm text-slate-400">O sistema segue uma rigorosa cadência de 3 dias (1ª tentativa, 2ª tentativa e 3ª tentativa). Clique em "Tratado" após cada contato para avançar o lead para o dia seguinte.</p>
+                    </div>
+                </div>
 
-function discadorHTML(){
-let leads=getLeads();
-let l=leads[idx];
-let total=leads.length;
-let trab=leads.filter(x=>x.status!=="sem_status").length;
-let int=leads.filter(x=>x.status==="interessado"||x.status==="agendado").length;
-let prog=total?Math.round((idx/total)*100):0;
-return `
-<h1 class="text-xl font-bold">Discador</h1>
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
-<div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl"><p class="text-[11px] text-slate-400 uppercase font-semibold">Leads</p><p class="text-2xl font-bold mt-1">${total}</p></div>
-<div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl"><p class="text-[11px] text-slate-400 uppercase font-semibold">Trabalhados</p><p class="text-2xl font-bold mt-1">${trab}</p></div>
-<div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl"><p class="text-[11px] text-slate-400 uppercase font-semibold">Interesses</p><p class="text-2xl font-bold mt-1">${int}</p></div>
-<div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl"><p class="text-[11px] text-slate-400 uppercase font-semibold">Conversão</p><p class="text-2xl font-bold mt-1">${total?Math.round((int/total)*100):0}%</p></div>
-</div>
-<div class="mt-5"><div class="flex justify-between text-xs text-slate-400"><span>Lead ${total?idx+1:0} de ${total}</span><span>${prog}%</span></div>
-<div class="w-full bg-slate-900 h-2 rounded-full mt-2 overflow-hidden"><div class="bg-rose-600 h-full transition-all" style="width:${prog}%"></div></div></div>
-${l?`
-<div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl mt-6 text-center">
-<p class="text-xs uppercase text-slate-400">${l.empreendimento}</p>
-<h2 class="text-3xl font-bold mt-2">${l.nome}</h2>
-<p class="text-lg text-slate-400 mt-1">${l.telefone}</p>
-<div class="flex justify-center gap-3 mt-6">
-<a href="tel:${l.telefone}" class="bg-rose-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-rose-500"><i class="fa-solid fa-phone mr-2"></i> Ligar</a>
-<a href="https://wa.me/55${l.telefone.replace(/\D/g,'')}" target="_blank" class="border border-slate-800 px-6 py-3 rounded-xl text-sm font-semibold text-emerald-500 hover:border-emerald-500"><i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp</a>
-</div>
-<div class="grid sm:grid-cols-2 gap-4 mt-6 text-left">
-<div><label class="text-[11px] uppercase text-slate-400 font-semibold">Status</label><select id="lead-status" onchange="atualizarLead('status',this.value)" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none">${SO.map(s=>`<option value="${s}" ${l.status===s?'selected':''}>${SL[s]}</option>`).join('')}</select></div>
-<div><label class="text-[11px] uppercase text-slate-400 font-semibold">Observação</label><textarea id="lead-obs" oninput="atualizarLead('observacao',this.value)" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" rows="2">${l.observacao||''}</textarea></div>
-</div>
-<button onclick="proximoLead()" class="mt-6 bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold w-full">Salvar e Próximo <i class="fa-solid fa-arrow-right ml-2"></i></button>
-</div>`:`<p class="text-slate-400 mt-6">Nenhum lead disponível.</p>`}`;
-}
+                <!-- ABA: LEADS & CADÊNCIA -->
+                <div id="tab-leads" class="tab-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-800 p-4 rounded-2xl border border-slate-700">
+                        <div class="relative flex-1 w-full">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                            <input type="text" id="search-input" oninput="renderLeads()" placeholder="Buscar por nome ou telefone..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div class="flex items-center space-x-3 w-full sm:w-auto">
+                            <select id="filter-etapa" onchange="renderLeads()" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <option value="todos">Todas as Tentativas</option>
+                                <option value="1">1ª Tentativa</option>
+                                <option value="2">2ª Tentativa</option>
+                                <option value="3">3ª Tentativa</option>
+                                <option value="sucesso">Fechado / Sucesso</option>
+                                <option value="descartado">Descartados</option>
+                            </select>
+                        </div>
+                    </div>
 
-function atualizarLead(campo, val){
-let leads=getLeads();
-leads[idx][campo]=val;
-gra(L,leads);
-}
+                    <!-- Tabela de Leads -->
+                    <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-700/50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
+                                        <th class="py-4 px-6">Cliente / Lead</th>
+                                        <th class="py-4 px-6">Contato / Telefone</th>
+                                        <th class="py-4 px-6">Status da Cadência</th>
+                                        <th class="py-4 px-6">Observações</th>
+                                        <th class="py-4 px-6 text-center">Ações Rápidas</th>
+                                        <th class="py-4 px-6 text-right">Gerenciar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leads-table-body" class="divide-y divide-slate-700 text-sm">
+                                    <!-- Inserido via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-function proximoLead(){
-let leads=getLeads();
-if(leads.length) idx=(idx+1)%leads.length;
-router('discador');
-}
+                <!-- ABA: RELATÓRIOS -->
+                <div id="tab-relatorios" class="tab-content hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                            <h3 class="text-lg font-bold text-white mb-4">Desempenho Diário & Prospecções</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Prospecções Hoje</span>
+                                    <span id="rep-hoje" class="text-lg font-bold text-emerald-400">0</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Total na 1ª Tentativa</span>
+                                    <span id="rep-t1" class="text-lg font-bold text-amber-400">0</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Total na 2ª / 3ª Tentativa</span>
+                                    <span id="rep-t2t3" class="text-lg font-bold text-purple-400">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                            <h3 class="text-lg font-bold text-white mb-4">Motivos de Descarte Registrados</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Contato Inexistente</span>
+                                    <span id="desc-inexistente" class="text-lg font-bold text-red-400">0</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Falta de Resposta</span>
+                                    <span id="desc-semresposta" class="text-lg font-bold text-amber-400">0</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300">Tomando Meu Tempo</span>
+                                    <span id="desc-tempoperdido" class="text-lg font-bold text-slate-400">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-function leadsHTML(){
-let leads=getLeads();
-return `
-<h1 class="text-xl font-bold">Lista de Leads</h1>
-<div class="mt-6 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-<table class="w-full text-left text-sm">
-<thead class="bg-slate-950 text-xs uppercase text-slate-400"><tr><th class="p-4">Nome</th><th class="p-4">Telefone</th><th class="p-4">Empreendimento</th><th class="p-4">Status</th></tr></thead>
-<tbody>
-${leads.map(l=>`<tr class="border-t border-slate-800"><td class="p-4 font-medium">${l.nome}</td><td class="p-4 text-slate-400">${l.telefone}</td><td class="p-4 text-slate-400">${l.empreendimento}</td><td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs bg-slate-800 text-slate-300">${SL[l.status]}</span></td></tr>`).join('')}
-</tbody>
-</table>
-</div>`;
-}
+                <!-- ABA: EQUIPE -->
+                <div id="tab-equipe" class="tab-content hidden space-y-6">
+                    <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Corretores da Construtora</h3>
+                            <p class="text-sm text-slate-400">Cadastre os membros da equipe para distribuir os atendimentos.</p>
+                        </div>
+                        <button onclick="openCorretorModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">
+                            <i class="fa-solid fa-user-plus mr-2"></i> Adicionar Corretor
+                        </button>
+                    </div>
+                    <div id="corretores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Inserido via JS -->
+                    </div>
+                </div>
 
-function importarHTML(){
-return `
-<h1 class="text-xl font-bold">Importar Leads</h1>
-<div class="mt-6 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-<label class="text-xs uppercase text-slate-400 font-semibold">Cole sua lista (Nome, Telefone, Empreendimento)</label>
-<textarea id="imp-txt" rows="5" class="mt-2 w-full bg-slate-950 border border-slate-800 p-4 rounded-xl text-sm outline-none" placeholder="João Silva, 11999998888, Metrocasa Tatuapé"></textarea>
-<button onclick="execImportar()" class="mt-4 bg-rose-600 text-white px-6 py-2.5 rounded-xl text-xs font-semibold uppercase hover:bg-rose-500">Processar</button>
-</div>`;
-}
+            </main>
+        </div>
+    </div>
 
-function execImportar(){
-let txt=document.getElementById("imp-txt").value;
-let linhas=txt.split("\n");
-let leads=getLeads();
-linhas.forEach((l,i)=>{
-let p=l.split(/[,;|]/);
-if(p.length>=2) leads.push({id:Date.now()+i,nome:p[0].trim(),telefone:p[1].replace(/\D/g,'').trim(),empreendimento:p[2]?.trim()||"Metrocasa Geral",status:"sem_status"});
-});
-gra(L,leads);
-alert("Leads importados com sucesso!");
-router('leads');
-}
+    <!-- MODAL: NOVO LEAD -->
+    <div id="lead-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-2xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white">Cadastrar Novo Lead</h3>
+                <button onclick="closeLeadModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="lead-form" onsubmit="saveLead(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nome do Cliente</label>
+                    <input type="text" id="lead-nome" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Telefone / WhatsApp</label>
+                    <input type="text" id="lead-telefone" placeholder="(11) 99999-9999" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Observações Iniciais</label>
+                    <textarea id="lead-obs" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-700">
+                    <button type="button" onclick="closeLeadModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-sm font-semibold text-white transition">Salvar Lead</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-function adminHTML(){
-let usrs=getUsrs();
-return `
-<h1 class="text-xl font-bold">Painel Master (Administração)</h1>
-<div class="grid lg:grid-cols-2 gap-6 mt-6">
-<div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-<h2 class="text-sm font-bold mb-3">Cadastrar Novo Corretor</h2>
-<form onsubmit="cadastrarCorretor(event)" class="space-y-3">
-<div><label class="text-[11px] uppercase text-slate-400 font-semibold">Nome</label><input id="cad-nome" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" placeholder="Nome do corretor"></div>
-<div><label class="text-[11px] uppercase text-slate-400 font-semibold">E-mail</label><input id="cad-email" class="mt-1 w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-sm outline-none" placeholder="email@metrocasa.com.br"></div>
-<button type="submit" class="w-full bg-rose-600 text-white py-2.5 rounded-xl text-xs font-semibold uppercase hover:bg-rose-500">Adicionar à Lista de Permitidos</button>
-</form>
-</div>
-<div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-<h2 class="text-sm font-bold mb-3">Equipe Permitida</h2>
-<div class="space-y-2 max-h-60 overflow-y-auto">
-${usrs.map(u=>`<div class="flex justify-between items-center p-3 bg-slate-950 rounded-xl border border-slate-800"><div><p class="font-medium text-sm">${u.nome}</p><p class="text-xs text-slate-400">${u.email} (${u.role})</p></div><button onclick="resetPass('${u.email}')" class="text-xs border border-slate-800 px-3 py-1.5 rounded-lg hover:border-rose-600">Reset Senha</button></div>`).join('')}
-</div>
-</div>
-</div>`;
-}
+    <!-- MODAL: DESCARTAR LEAD (Com Motivos Obrigatórios) -->
+    <div id="discard-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white">Descartar Lead</h3>
+                <button onclick="closeDiscardModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-sm text-slate-400 mb-4">Selecione o motivo obrigatório do descarte:</p>
+            <input type="hidden" id="discard-lead-id">
+            <div class="space-y-3">
+                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
+                    <input type="radio" name="motivo-descarte" value="Contato inexistente" class="text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-sm text-slate-200">Contato inexistente</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
+                    <input type="radio" name="motivo-descarte" value="Falta de resposta" class="text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-sm text-slate-200">Falta de resposta</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
+                    <input type="radio" name="motivo-descarte" value="Tomando meu tempo" class="text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-sm text-slate-200">Tomando meu tempo</span>
+                </label>
+            </div>
+            <div class="flex justify-end space-x-3 pt-6 border-t border-slate-700 mt-6">
+                <button type="button" onclick="closeDiscardModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
+                <button type="button" onclick="confirmDiscard()" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-sm font-semibold text-white transition">Confirmar Descarte</button>
+            </div>
+        </div>
+    </div>
 
-function cadastrarCorretor(e){
-e.preventDefault();
-let nome=document.getElementById("cad-nome").value.trim();
-let email=document.getElementById("cad-email").value.trim();
-if(!nome||!email) return alert("Preencha todos os campos!");
-let usrs=getUsrs();
-if(usrs.some(u=>u.email.toLowerCase()===email.toLowerCase())) return alert("Este e-mail já está cadastrado!");
-usrs.push({nome,email,senha:P,role:"Corretor"});
-gra(U,usrs);
-alert(`Corretor ${nome} cadastrado com sucesso! Ele já pode acessar o sistema com a senha padrão: ${P}`);
-router('admin');
-}
+    <!-- MODAL: NOVO CORRETOR -->
+    <div id="corretor-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white">Cadastrar Corretor</h3>
+                <button onclick="closeCorretorModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="saveCorretor(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nome do Corretor</label>
+                    <input type="text" id="corretor-nome" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">E-mail</label>
+                    <input type="email" id="corretor-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-700">
+                    <button type="button" onclick="closeCorretorModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-sm font-semibold text-white transition">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-function resetPass(email){
-let usrs=getUsrs();
-usrs=usrs.map(u=>u.email===email?{...u,senha:P}:u);
-gra(U,usrs);
-alert(`Senha redefinida para o padrão: ${P}`);
-}
+    <!-- SCRIPT DE FUNCIONAMENTO DO CRM -->
+    <script>
+        let leads = JSON.parse(localStorage.getItem('crm_leads')) || [
+            { id: 1, nome: 'Carlos Eduardo', telefone: '11988887777', etapa: 1, obs: 'Interessado em apto 2 dorms', dataCriacao: '2026-09-14' },
+            { id: 2, nome: 'Mariana Souza', telefone: '11977776666', etapa: 2, obs: 'Pediu simulação de financiamento', dataCriacao: '2026-09-13' }
+        ];
 
-render();
-</script>
+        let corretores = JSON.parse(localStorage.getItem('crm_corretores')) || [
+            { id: 1, nome: 'Gabriel Liberato', email: 'gabriel@construtora.com' }
+        ];
+
+        function saveData() {
+            localStorage.setItem('crm_leads', JSON.stringify(leads));
+            localStorage.setItem('crm_corretores', JSON.stringify(corretores));
+            updateDashboard();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+                el.classList.add('text-slate-300', 'hover:bg-slate-700', 'hover:text-white');
+            });
+            event.currentTarget.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+            event.currentTarget.classList.remove('text-slate-300', 'hover:bg-slate-700', 'hover:text-white');
+
+            const titles = { 'dashboard': 'Painel Geral', 'leads': 'Leads & Cadência', 'relatorios': 'Relatórios Diários', 'equipe': 'Equipe de Corretores' };
+            document.getElementById('page-title').innerText = titles[tabId];
+            
+            if(tabId === 'leads') renderLeads();
+            if(tabId === 'relatorios') updateRelatorios();
+            if(tabId === 'equipe') renderCorretores();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+            document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
+        }
+
+        // Modais
+        function openLeadModal() { document.getElementById('lead-modal').classList.remove('hidden'); }
+        function closeLeadModal() { document.getElementById('lead-modal').classList.add('hidden'); document.getElementById('lead-form').reset(); }
+        function openCorretorModal() { document.getElementById('corretor-modal').classList.remove('hidden'); }
+        function closeCorretorModal() { document.getElementById('corretor-modal').classList.add('hidden'); }
+
+        function saveLead(e) {
+            e.preventDefault();
+            const novo = {
+                id: Date.now(),
+                nome: document.getElementById('lead-nome').value,
+                telefone: document.getElementById('lead-telefone').value,
+                etapa: 1,
+                obs: document.getElementById('lead-obs').value,
+                dataCriacao: new Date().toISOString().split('T')[0]
+            };
+            leads.push(novo);
+            saveData();
+            closeLeadModal();
+            renderLeads();
+        }
+
+        function avancarTentativa(id) {
+            const lead = leads.find(l => l.id === id);
+            if (lead) {
+                if (lead.etapa < 3) {
+                    lead.etapa += 1;
+                } else {
+                    lead.etapa = 'sucesso'; // Concluído / Venda
+                }
+                saveData();
+                renderLeads();
+            }
+        }
+
+        function abrirDescarteModal(id) {
+            document.getElementById('discard-lead-id').value = id;
+            document.getElementById('discard-modal').classList.remove('hidden');
+        }
+
+        function closeDiscardModal() {
+            document.getElementById('discard-modal').classList.add('hidden');
+            document.querySelectorAll('input[name="motivo-descarte"]').forEach(r => r.checked = false);
+        }
+
+        function confirmDiscard() {
+            const id = document.getElementById('discard-lead-id').value;
+            const selected = document.querySelector('input[name="motivo-descarte"]:checked');
+            if (!selected) {
+                alert('Por favor, selecione um motivo de descarte.');
+                return;
+            }
+            const lead = leads.find(l => l.id == id);
+            if (lead) {
+                lead.etapa = 'descartado';
+                lead.motivoDescarte = selected.value;
+                saveData();
+                closeDiscardModal();
+                renderLeads();
+            }
+        }
+
+        function renderLeads() {
+            const tbody = document.getElementById('leads-table-body');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const filterEtapa = document.getElementById('filter-etapa').value;
+            
+            tbody.innerHTML = '';
+
+            const filtered = leads.filter(l => {
+                const matchSearch = l.nome.toLowerCase().includes(search) || l.telefone.includes(search);
+                const matchEtapa = filterEtapa === 'todos' || l.etapa == filterEtapa || (filterEtapa === 'sucesso' && l.etapa === 'sucesso') || (filterEtapa === 'descartado' && l.etapa === 'descartado');
+                return matchSearch && matchEtapa;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Nenhum lead encontrado.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(lead => {
+                let badgeEtapa = '';
+                if(lead.etapa === 1) badgeEtapa = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-semibold">1ª Tentativa</span>`;
+                else if(lead.etapa === 2) badgeEtapa = `<span class="px-2.5 py-1 bg-purple-500/10 text-purple-400 rounded-lg text-xs font-semibold">2ª Tentativa</span>`;
+                else if(lead.etapa === 3) badgeEtapa = `<span class="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-semibold">3ª Tentativa</span>`;
+                else if(lead.etapa === 'sucesso') badgeEtapa = `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-semibold">Fechado / Sucesso</span>`;
+                else if(lead.etapa === 'descartado') badgeEtapa = `<span class="px-2.5 py-1 bg-red-500/10 text-red-400 rounded-lg text-xs font-semibold">Descartado (${lead.motivoDescarte || ''})</span>`;
+
+                const cleanPhone = lead.telefone.replace(/\D/g, '');
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-700/30 transition">
+                        <td class="py-4 px-6 font-medium text-white">${lead.nome}</td>
+                        <td class="py-4 px-6 text-slate-300">${lead.telefone}</td>
+                        <td class="py-4 px-6">${badgeEtapa}</td>
+                        <td class="py-4 px-6 text-slate-400 text-xs">${lead.obs || '-'}</td>
+                        <td class="py-4 px-6 text-center space-x-2">
+                            <a href="https://wa.me/55${cleanPhone}" target="_blank" class="inline-flex items-center justify-center w-9 h-9 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white rounded-xl transition" title="Abrir WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </a>
+                            <a href="tel:${cleanPhone}" class="inline-flex items-center justify-center w-9 h-9 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white rounded-xl transition" title="Ligar diretamente">
+                                <i class="fa-solid fa-phone"></i>
+                            </a>
+                        </td>
+                        <td class="py-4 px-6 text-right space-x-2">
+                            ${lead.etapa !== 'descartado' && lead.etapa !== 'sucesso' ? `
+                                <button onclick="avancarTentativa(${lead.id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-xl font-semibold transition">Tratado</button>
+                                <button onclick="abrirDescarteModal(${lead.id})" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white text-xs rounded-xl font-semibold transition">Descartar</button>
+                            ` : '-'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateDashboard() {
+            document.getElementById('stat-total').innerText = leads.length;
+            document.getElementById('stat-t1').innerText = leads.filter(l => l.etapa === 1).length;
+            document.getElementById('stat-t2t3').innerText = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
+            document.getElementById('stat-sucesso').innerText = leads.filter(l => l.etapa === 'sucesso').length;
+        }
+
+        function updateRelatorios() {
+            const hojeStr = new Date().toISOString().split('T')[0];
+            document.getElementById('rep-hoje').innerText = leads.filter(l => l.dataCriacao === hojeStr).length;
+            document.getElementById('rep-t1').innerText = leads.filter(l => l.etapa === 1).length;
+            document.getElementById('rep-t2t3').innerText = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
+
+            document.getElementById('desc-inexistente').innerText = leads.filter(l => l.motivoDescarte === 'Contato inexistente').length;
+            document.getElementById('desc-semresposta').innerText = leads.filter(l => l.motivoDescarte === 'Falta de resposta').length;
+            document.getElementById('desc-tempoperdido').innerText = leads.filter(l => l.motivoDescarte === 'Tomando meu tempo').length;
+        }
+
+        function saveCorretor(e) {
+            e.preventDefault();
+            corretores.push({
+                id: Date.now(),
+                nome: document.getElementById('corretor-nome').value,
+                email: document.getElementById('corretor-email').value
+            });
+            saveData();
+            closeCorretorModal();
+            renderCorretores();
+        }
+
+        function renderCorretores() {
+            const grid = document.getElementById('corretores-grid');
+            grid.innerHTML = '';
+            corretores.forEach(c => {
+                grid.innerHTML += `
+                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
+                            ${c.nome.charAt(0)}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">${c.nome}</h4>
+                            <p class="text-xs text-slate-400">${c.email}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Inicializar contadores na primeira carga
+        updateDashboard();
+    </script>
 </body>
 </html>
