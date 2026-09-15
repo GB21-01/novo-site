@@ -1,5 +1,5 @@
 
-     <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -15,9 +15,9 @@
                         studio: {
                             light: '#FCE7F3',
                             DEFAULT: '#E11D48',
-                            dark: '#9F1239',
+                            dark: '#881337',
                             soft: '#FFF1F2',
-                            gold: '#D97706'
+                            roseGold: '#F43F5E'
                         }
                     }
                 }
@@ -25,54 +25,78 @@
         }
     </script>
 </head>
-<body class="bg-gradient-to-br from-pink-50 via-white to-pink-100 text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-pink-200">
+<body class="bg-[#FFF8FA] text-gray-800 font-sans min-h-screen flex flex-col md:flex-row selection:bg-pink-200">
 
-    <!-- Header / Logo com a referência exata da imagem (Cílios/Olhar elegante) -->
-    <header class="py-10 px-4 text-center">
-        <div class="max-w-md mx-auto flex flex-col items-center space-y-4">
-            <!-- Logotipo Estilizado (Cílios / Olhar minimalista inspirado na referência) -->
-            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl shadow-pink-500/10 relative overflow-hidden group transition-transform duration-500 hover:scale-105 border border-pink-100">
-                <div class="absolute inset-0 bg-gradient-to-tr from-pink-100/50 to-transparent"></div>
-                <!-- Ícone simulando o traço artístico de cílios e sobrancelha da imagem -->
-                <img src="https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-eyelashes-logo-design-vector-png-image_996509.jpg" alt="Logo Isa & Bella" class="w-16 h-16 object-contain rounded-full opacity-90 transition-transform duration-300 group-hover:scale-110">
+    <!-- Sidebar / Painel Lateral Esquerdo (Profissional, fixo e elegante em telas maiores) -->
+    <aside class="w-full md:w-96 bg-white shadow-xl shadow-pink-500/5 p-8 flex flex-col justify-between border-r border-pink-100/60 relative z-10">
+        <!-- Topo da Sidebar: Logo e Identidade -->
+        <div class="space-y-6 text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <!-- Logotipo Estilizado de Cílios com efeito de luxo -->
+                <div class="w-20 h-20 bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl flex items-center justify-center shadow-md overflow-hidden p-2 group transition-all duration-300 hover:scale-105">
+                    <img src="https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-eyelashes-logo-design-vector-png-image_996509.jpg" alt="Isa & Bella Logo" class="w-full h-full object-contain rounded-xl opacity-95 group-hover:scale-110 transition-transform">
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-widest text-gray-900 font-serif">ISA & BELLA</h1>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-rose-600 block mt-0.5">Beauty Studio</span>
+                </div>
             </div>
-            <div>
-                <h1 class="text-3xl font-black tracking-widest text-gray-900 font-serif">ISA & BELLA</h1>
-                <p class="text-xs font-bold uppercase tracking-[0.3em] text-pink-600 mt-1">Design de Sobrancelhas & Nails</p>
+
+            <div class="space-y-3 pt-4 border-t border-gray-100">
+                <h2 class="text-sm font-bold text-gray-700 tracking-wide">✨ Experiência Exclusiva</h2>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Especialistas em realçar sua beleza natural com técnicas avançadas em design de sobrancelhas e nails design de alto padrão.
+                </p>
+            </div>
+
+            <!-- Informações / Localização -->
+            <div class="space-y-2 pt-2 text-xs text-gray-500">
+                <div class="flex items-center space-x-2.5 justify-center md:justify-start">
+                    <div class="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center text-rose-600 shrink-0">
+                        <i class="fa-solid fa-location-dot text-xs"></i>
+                    </div>
+                    <span>Rua das Elegâncias, 123 - Sala 4</span>
+                </div>
+                <div class="flex items-center space-x-2.5 justify-center md:justify-start">
+                    <div class="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center text-rose-600 shrink-0">
+                        <i class="fa-solid fa-clock text-xs"></i>
+                    </div>
+                    <span>Seg a Sáb: 09h às 19h</span>
+                </div>
             </div>
         </div>
-    </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-md w-full mx-auto p-4 sm:p-6 space-y-6 flex-1">
-        
-        <!-- Card de Boas-Vindas Elegante (Sem bordas pesadas, puro charme) -->
-        <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl shadow-pink-500/5 text-center space-y-2 transition-all duration-300">
-            <h2 class="font-bold text-gray-800 text-base font-serif">✨ Bem-vinda ao nosso espaço!</h2>
-            <p class="text-xs text-gray-500 leading-relaxed">Deixe seu olhar e suas unhas impecáveis com quem entende de beleza. Escolha seu horário abaixo.</p>
-            <div class="pt-2">
-                <span class="text-[11px] text-pink-700 font-bold bg-pink-50 py-2 px-4 rounded-full inline-flex items-center shadow-sm">
-                    <i class="fa-solid fa-location-dot mr-2 text-pink-500"></i> Rua das Elegâncias, 123 - Sala 4
-                </span>
-            </div>
+        <!-- Rodapé da Sidebar (Mensagem fofa) -->
+        <div class="pt-8 mt-8 border-t border-gray-100 text-center md:text-left">
+            <p class="text-[11px] font-medium text-rose-600 italic">"Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖"</p>
+            <p class="text-[10px] text-gray-300 mt-2">Isa & Bella Studio © 2026</p>
         </div>
+    </aside>
 
-        <!-- Formulário de Agendamento (Fluido, interativo e limpo) -->
-        <div class="bg-white rounded-3xl p-8 shadow-2xl shadow-pink-600/10 space-y-5">
-            <div class="flex items-center justify-between pb-3 border-b border-pink-50">
-                <span class="font-bold text-sm text-gray-700 tracking-wide uppercase">Agende seu Horário</span>
-                <i class="fa-solid fa-sparkles text-pink-500 text-sm animate-pulse"></i>
+    <!-- Conteúdo Principal / Área de Agendamento Dinâmica -->
+    <main class="flex-1 flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+        <div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl shadow-pink-900/5 space-y-6 border border-pink-100/40">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                <div>
+                    <h2 class="font-bold text-base text-gray-800 tracking-wide font-serif">Agende seu Horário</h2>
+                    <p class="text-[11px] text-gray-400 mt-0.5">Preencha rapidinho para garantir sua vaga</p>
+                </div>
+                <div class="w-9 h-9 rounded-2xl bg-pink-50 flex items-center justify-center text-rose-600">
+                    <i class="fa-solid fa-calendar-days text-sm"></i>
+                </div>
             </div>
 
+            <!-- Formulário de Agendamento Ultra Fluido -->
             <form id="booking-form" onsubmit="sendToWhatsApp(event)" class="space-y-4">
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Seu Nome</label>
-                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-pink-50/40 border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Seu Nome</label>
+                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200">
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Procedimento</label>
-                    <select id="service-type" required class="w-full bg-pink-50/40 border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200 cursor-pointer">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Procedimento Desejado</label>
+                    <select id="service-type" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200 cursor-pointer">
                         <option value="" disabled selected>Selecione o procedimento...</option>
                         <option value="Design de Sobrancelha">Design de Sobrancelha</option>
                         <option value="Design com Henna">Design com Henna</option>
@@ -83,12 +107,12 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Data</label>
-                        <input type="date" id="booking-date" required class="w-full bg-pink-50/40 border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Data</label>
+                        <input type="date" id="booking-date" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Horário</label>
-                        <select id="booking-time" required class="w-full bg-pink-50/40 border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200 cursor-pointer">
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Horário</label>
+                        <select id="booking-time" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200 cursor-pointer">
                             <option value="" disabled selected>Horário</option>
                             <option value="09:00">09:00</option>
                             <option value="10:30">10:30</option>
@@ -100,21 +124,14 @@
                     </div>
                 </div>
 
-                <!-- Botão com clique hiper fluido e atalho de Enter nativo -->
-                <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 active:scale-95 text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-pink-600/30 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-4 cursor-pointer">
+                <!-- Botão com clique hiper fluido, animação active e atalho Enter -->
+                <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 active:scale-95 text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-rose-600/25 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-3 cursor-pointer">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                     <span>Agendar via WhatsApp (Enter ↵)</span>
                 </button>
             </form>
         </div>
-
     </main>
-
-    <!-- Footer carinhoso -->
-    <footer class="py-6 px-4 text-center text-xs text-gray-400 space-y-1">
-        <p class="font-medium text-pink-600">Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖</p>
-        <p class="text-[10px] text-gray-400">Isa & Bella Studio © 2026</p>
-    </footer>
 
     <!-- Script de Fluidez e WhatsApp -->
     <script>
@@ -129,7 +146,7 @@
             const dateParts = date.split('-');
             const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
-            // Número da Isa (pode alterar depois)
+            // Número da Isa (substitua depois se precisar)
             const phoneNumber = "5511999999999"; 
 
             const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0a- *Serviço:* ${service}%0a- *Data:* ${formattedDate}%0a- *Horário:* ${time}%0a%0aMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
@@ -138,7 +155,7 @@
             window.open(whatsappUrl, '_blank');
         }
 
-        // Atalho de Enter super fluido em qualquer campo
+        // Atalho de Enter fluido no formulário inteiro
         document.getElementById('booking-form').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'SELECT') {
                 e.preventDefault();
