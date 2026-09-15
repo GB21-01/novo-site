@@ -1,618 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+    <charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Construtora - Prospecção & Discador</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Isa & Bella Studio | Agendamentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
+                        studio: {
+                            light: '#FCE7F3',
+                            DEFAULT: '#EC4899',
+                            dark: '#BE185D',
+                            soft: '#FFF1F2'
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome para Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased transition-colors duration-200">
+<body class="bg-studio-soft text-gray-800 font-sans min-h-screen flex flex-col justify-between">
 
-    <div class="flex h-screen overflow-hidden">
+    <!-- Header / Logo -->
+    <header class="bg-white shadow-sm py-6 px-4 text-center relative border-b border-pink-100">
+        <div class="max-w-md mx-auto flex flex-col items-center space-y-2">
+            <!-- Logo estilizada (Sobrancelha + Cílios / Charme) -->
+            <div class="w-16 h-16 bg-studio-light rounded-full flex items-center justify-center text-studio shadow-inner relative">
+                <i class="fa-solid fa-eye text-2xl absolute"></i>
+                <i class="fa-solid fa-wand-magic-sparkles text-xs absolute -top-1 -right-1 text-pink-500 animate-pulse"></i>
+            </div>
+            <h1 class="text-2xl font-black tracking-wider text-studio-dark">ISA & BELLA STUDIO</h1>
+            <p class="text-xs font-medium uppercase tracking-widest text-pink-400">Design de Sobrancelhas & Nails</p>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-md w-full mx-auto p-4 sm:p-6 my-4 space-y-6 flex-1">
         
-        <!-- SIDEBAR / MENU LATERAL -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 border-r border-slate-700 transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 flex flex-col">
-            <div class="flex items-center justify-between h-16 px-6 bg-slate-800 border-b border-slate-700">
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                        <i class="fa-solid fa-building"></i>
-                    </div>
-                    <span class="text-lg font-bold tracking-wide">CRM Construtora</span>
-                </div>
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+        <!-- Card de Boas-Vindas / Endereço -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-pink-100 text-center space-y-2">
+            <h2 class="font-bold text-gray-700 text-sm">✨ Bem-vinda ao nosso espaço!</h2>
+            <p class="text-xs text-gray-500 leading-relaxed">Deixe seu olhar e suas unhas impecáveis. Preencha os dados abaixo para agendar seu horário com todo o carinho que você merece.</p>
+            <div class="pt-2 text-[11px] text-pink-600 font-semibold bg-studio-light/50 py-1.5 px-3 rounded-lg inline-block">
+                <i class="fa-solid fa-location-dot mr-1"></i> Rua das Elegâncias, 123 - Sala 4
             </div>
-
-            <!-- Navegação -->
-            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                <a href="#" onclick="switchTab('dashboard')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors bg-emerald-600 text-white shadow-md">
-                    <i class="fa-solid fa-chart-pie w-6"></i> Dashboard
-                </a>
-                <a href="#" onclick="switchTab('leads')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
-                    <i class="fa-solid fa-address-book w-6"></i> Leads & Cadência
-                </a>
-                <a href="#" onclick="switchTab('discador')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
-                    <i class="fa-solid fa-headset w-6"></i> Config. Discador
-                </a>
-                <a href="#" onclick="switchTab('relatorios')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
-                    <i class="fa-solid fa-chart-line w-6"></i> Relatórios Diários
-                </a>
-                <a href="#" onclick="switchTab('equipe')" class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">
-                    <i class="fa-solid fa-users w-6"></i> Equipe de Corretores
-                </a>
-            </nav>
-
-            <!-- Rodapé da Sidebar -->
-            <div class="p-4 border-t border-slate-700">
-                <button onclick="toggleDarkMode()" class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors">
-                    <i id="theme-icon" class="fa-solid fa-moon"></i>
-                    <span id="theme-text">Modo Claro</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- CONTEÚDO PRINCIPAL -->
-        <div class="flex-1 flex flex-col md:pl-64 overflow-hidden">
-            
-            <!-- Barra Superior -->
-            <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-10">
-                <div class="flex items-center space-x-4">
-                    <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white text-lg">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                    <h1 id="page-title" class="text-xl font-bold text-white">Painel Geral</h1>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button onclick="openLeadModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition flex items-center space-x-2">
-                        <i class="fa-solid fa-user-plus"></i>
-                        <span>Novo Lead</span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Área Dinâmica -->
-            <main class="flex-1 overflow-y-auto p-6 bg-slate-900">
-                
-                <!-- ABA: DASHBOARD -->
-                <div id="tab-dashboard" class="tab-content space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-sm font-medium">Total de Leads</span>
-                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
-                                    <i class="fa-solid fa-users"></i>
-                                </div>
-                            </div>
-                            <h3 id="stat-total" class="text-3xl font-bold text-white mt-4">0</h3>
-                        </div>
-                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-sm font-medium">1ª Tentativa</span>
-                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
-                                    <i class="fa-solid fa-phone"></i>
-                                </div>
-                            </div>
-                            <h3 id="stat-t1" class="text-3xl font-bold text-white mt-4">0</h3>
-                        </div>
-                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-sm font-medium">2ª / 3ª Tentativa</span>
-                                <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
-                                    <i class="fa-solid fa-headset"></i>
-                                </div>
-                            </div>
-                            <h3 id="stat-t2t3" class="text-3xl font-bold text-white mt-4">0</h3>
-                        </div>
-                        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-sm font-medium">Fechamentos</span>
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
-                                    <i class="fa-solid fa-handshake"></i>
-                                </div>
-                            </div>
-                            <h3 id="stat-sucesso" class="text-3xl font-bold text-white mt-4">0</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ABA: LEADS & CADÊNCIA -->
-                <div id="tab-leads" class="tab-content hidden space-y-6">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-800 p-4 rounded-2xl border border-slate-700">
-                        <div class="relative flex-1 w-full">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
-                            <input type="text" id="search-input" oninput="renderLeads()" placeholder="Buscar por nome ou telefone..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <div class="flex items-center space-x-3 w-full sm:w-auto">
-                            <select id="filter-etapa" onchange="renderLeads()" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                <option value="todos">Todas as Tentativas</option>
-                                <option value="1">1ª Tentativa</option>
-                                <option value="2">2ª Tentativa</option>
-                                <option value="3">3ª Tentativa</option>
-                                <option value="sucesso">Fechado / Sucesso</option>
-                                <option value="descartado">Descartados</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-slate-700/50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
-                                        <th class="py-4 px-6">Cliente / Lead</th>
-                                        <th class="py-4 px-6">Contato / Telefone</th>
-                                        <th class="py-4 px-6">Status da Cadência</th>
-                                        <th class="py-4 px-6">Observações</th>
-                                        <th class="py-4 px-6 text-center">Discador / WhatsApp</th>
-                                        <th class="py-4 px-6 text-right">Gerenciar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leads-table-body" class="divide-y divide-slate-700 text-sm"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ABA: CONFIGURAÇÃO DO DISCADOR -->
-                <div id="tab-discador" class="tab-content hidden space-y-6">
-                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-2xl">
-                        <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-sliders mr-2 text-emerald-500"></i> Parâmetros do Discador VoIP / WhatsApp</h3>
-                        <p class="text-sm text-slate-400 mb-6">Configure as credenciais de integração para transmitir as ligações diretamente para a API do WhatsApp e canais de prospecção.</p>
-                        
-                        <form onsubmit="salvarConfigDiscador(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">URL da API do Discador / Webhook</label>
-                                <input type="url" id="config-url" placeholder="https://api.seudiscador.com/v1/transmitir" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Token de Autenticação / API Key</label>
-                                <input type="password" id="config-token" placeholder="Insira o token de segurança" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Instância do WhatsApp Conectada</label>
-                                <input type="text" id="config-whatsapp" placeholder="Ex: construtora-instancia-01" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                            </div>
-                            <div class="flex items-center space-x-3 pt-2">
-                                <input type="checkbox" id="config-auto-transmissao" class="w-4 h-4 text-emerald-600 bg-slate-900 border-slate-700 rounded focus:ring-emerald-500">
-                                <label for="config-auto-transmissao" class="text-sm text-slate-300">Transmitir automaticamente para o WhatsApp ao acionar o discador</label>
-                            </div>
-                            <div class="pt-4 border-t border-slate-700">
-                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow">Salvar Configurações</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- ABA: RELATÓRIOS -->
-                <div id="tab-relatorios" class="tab-content hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
-                            <h3 class="text-lg font-bold text-white mb-4">Desempenho Diário & Prospecções</h3>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Prospecções Hoje</span>
-                                    <span id="rep-hoje" class="text-lg font-bold text-emerald-400">0</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Total na 1ª Tentativa</span>
-                                    <span id="rep-t1" class="text-lg font-bold text-amber-400">0</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Total na 2ª / 3ª Tentativa</span>
-                                    <span id="rep-t2t3" class="text-lg font-bold text-purple-400">0</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
-                            <h3 class="text-lg font-bold text-white mb-4">Motivos de Descarte Registrados</h3>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Contato Inexistente</span>
-                                    <span id="desc-inexistente" class="text-lg font-bold text-red-400">0</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Falta de Resposta</span>
-                                    <span id="desc-semresposta" class="text-lg font-bold text-amber-400">0</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-900 rounded-xl border border-slate-700">
-                                    <span class="text-slate-300">Tomando Meu Tempo</span>
-                                    <span id="desc-tempoperdido" class="text-lg font-bold text-slate-400">0</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ABA: EQUIPE -->
-                <div id="tab-equipe" class="tab-content hidden space-y-6">
-                    <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Corretores da Construtora</h3>
-                            <p class="text-sm text-slate-400">Cadastre os membros da equipe para distribuir os atendimentos.</p>
-                        </div>
-                        <button onclick="openCorretorModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">
-                            <i class="fa-solid fa-user-plus mr-2"></i> Adicionar Corretor
-                        </button>
-                    </div>
-                    <div id="corretores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                </div>
-
-            </main>
         </div>
-    </div>
 
-    <!-- MODAL: NOVO LEAD -->
-    <div id="lead-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-2xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white">Cadastrar Novo Lead</h3>
-                <button onclick="closeLeadModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form id="lead-form" onsubmit="saveLead(event)" class="space-y-4">
+        <!-- Formulário de Agendamento -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-pink-100 space-y-4">
+            <h3 class="font-bold text-base text-gray-800 border-b pb-3 border-gray-100 flex items-center justify-between">
+                <span>Monte seu Horário</span>
+                <i class="fa-solid fa-calendar-days text-studio"></i>
+            </h3>
+
+            <form id="booking-form" onsubmit="sendToWhatsApp(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nome do Cliente</label>
-                    <input type="text" id="lead-nome" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Seu Nome Linda</label>
+                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
                 </div>
+
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Telefone / WhatsApp</label>
-                    <input type="text" id="lead-telefone" placeholder="(11) 99999-9999" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Escolha o Procedimento</label>
+                    <select id="service-type" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                        <option value="" disabled selected>Selecione o serviço...</option>
+                        <option value="Design de Sobrancelha">Design de Sobrancelha</option>
+                        <option value="Design com Henna">Design com Henna</option>
+                        <option value="Manicure / Unhas em Gel">Manicure / Unhas em Gel</option>
+                        <option value="Combo Sobrancelha + Unha">Combo Sobrancelha + Unha ✨</option>
+                    </select>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Observações Iniciais</label>
-                    <textarea id="lead-obs" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Data</label>
+                        <input type="date" id="booking-date" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Horário</label>
+                        <select id="booking-time" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                            <option value="" disabled selected>Horário</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:30">17:30</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-700">
-                    <button type="button" onclick="closeLeadModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-sm font-semibold text-white transition">Salvar Lead</button>
-                </div>
+
+                <button type="submit" class="w-full bg-studio hover:bg-studio-dark text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-pink-500/30 transition flex items-center justify-center space-x-2 text-sm mt-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Agendar via WhatsApp</span>
+                </button>
             </form>
         </div>
-    </div>
 
-    <!-- MODAL: DESCARTAR LEAD -->
-    <div id="discard-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white">Descartar Lead</h3>
-                <button onclick="closeDiscardModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <p class="text-sm text-slate-400 mb-4">Selecione o motivo obrigatório do descarte:</p>
-            <input type="hidden" id="discard-lead-id">
-            <div class="space-y-3">
-                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
-                    <input type="radio" name="motivo-descarte" value="Contato inexistente" class="text-emerald-600 focus:ring-emerald-500">
-                    <span class="text-sm text-slate-200">Contato inexistente</span>
-                </label>
-                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
-                    <input type="radio" name="motivo-descarte" value="Falta de resposta" class="text-emerald-600 focus:ring-emerald-500">
-                    <span class="text-sm text-slate-200">Falta de resposta</span>
-                </label>
-                <label class="flex items-center space-x-3 p-3 bg-slate-900 rounded-xl border border-slate-700 cursor-pointer hover:border-emerald-500">
-                    <input type="radio" name="motivo-descarte" value="Tomando meu tempo" class="text-emerald-600 focus:ring-emerald-500">
-                    <span class="text-sm text-slate-200">Tomando meu tempo</span>
-                </label>
-            </div>
-            <div class="flex justify-end space-x-3 pt-6 border-t border-slate-700 mt-6">
-                <button type="button" onclick="closeDiscardModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
-                <button type="button" onclick="confirmDiscard()" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-sm font-semibold text-white transition">Confirmar Descarte</button>
-            </div>
-        </div>
-    </div>
+    </main>
 
-    <!-- MODAL: NOVO CORRETOR -->
-    <div id="corretor-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white">Cadastrar Corretor</h3>
-                <button onclick="closeCorretorModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form onsubmit="saveCorretor(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nome do Corretor</label>
-                    <input type="text" id="corretor-nome" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">E-mail</label>
-                    <input type="email" id="corretor-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-700">
-                    <button type="button" onclick="closeCorretorModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-sm font-semibold text-white transition">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Footer / Mensagem fofa -->
+    <footer class="bg-white border-t border-pink-100 py-4 px-4 text-center text-xs text-gray-500">
+        <p>Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖</p>
+        <p class="text-[10px] text-pink-400 mt-1">Isa & Bella Studio © 2026</p>
+    </footer>
 
-    <!-- SCRIPT DO CRM & DISCADOR -->
+    <!-- Script de Integração com WhatsApp -->
     <script>
-        let leads = JSON.parse(localStorage.getItem('crm_leads')) || [
-            { id: 1, nome: 'Carlos Eduardo', telefone: '11988887777', etapa: 1, obs: 'Interessado em apto 2 dorms', dataCriacao: new Date().toISOString().split('T')[0] },
-            { id: 2, nome: 'Mariana Souza', telefone: '11977776666', etapa: 2, obs: 'Pediu simulação de financiamento', dataCriacao: new Date().toISOString().split('T')[0] }
-        ];
-
-        let corretores = JSON.parse(localStorage.getItem('crm_corretores')) || [
-            { id: 1, nome: 'Gabriel Liberato', email: 'gabriel@construtora.com' }
-        ];
-
-        let discadorConfig = JSON.parse(localStorage.getItem('crm_discador_config')) || {
-            url: '',
-            token: '',
-            whatsapp: '',
-            autoTransmissao: false
-        };
-
-        function saveData() {
-            localStorage.setItem('crm_leads', JSON.stringify(leads));
-            localStorage.setItem('crm_corretores', JSON.stringify(corretores));
-            localStorage.setItem('crm_discador_config', JSON.stringify(discadorConfig));
-            updateDashboard();
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        function sendToWhatsApp(event) {
+            event.preventDefault();
             
-            document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
-                el.classList.add('text-slate-300', 'hover:bg-slate-700', 'hover:text-white');
-            });
-            event.currentTarget.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
-            event.currentTarget.classList.remove('text-slate-300', 'hover:bg-slate-700', 'hover:text-white');
+            const name = document.getElementById('client-name').value;
+            const service = document.getElementById('service-type').value;
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-time').value;
 
-            const titles = { 
-                'dashboard': 'Painel Geral', 
-                'leads': 'Leads & Cadência', 
-                'discador': 'Configuração do Discador', 
-                'relatorios': 'Relatórios Diários', 
-                'equipe': 'Equipe de Corretores' 
-            };
-            document.getElementById('page-title').innerText = titles[tabId];
-            
-            if(tabId === 'leads') renderLeads();
-            if(tabId === 'discador') carregarConfigDiscadorNaTela();
-            if(tabId === 'relatorios') updateRelatorios();
-            if(tabId === 'equipe') renderCorretores();
+            // Formata a data para ficar bonitinha (AAAA-MM-DD para DD/MM/AAAA)
+            const dateParts = date.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+            // Número do WhatsApp da Isa (substitua depois se precisar, deixei um padrão)
+            const phoneNumber = "5511999999999"; 
+
+            // Mensagem pronta e carinhosa gerada automaticamente
+            const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0j- *Serviço:* ${service}%0j- *Data:* ${formattedDate}%0j- *Horário:* ${time}%0j%0jMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
+
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
         }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        }
-
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-            document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
-        }
-
-        // Configuração do Discador
-        function salvarConfigDiscador(e) {
-            e.preventDefault();
-            discadorConfig = {
-                url: document.getElementById('config-url').value,
-                token: document.getElementById('config-token').value,
-                whatsapp: document.getElementById('config-whatsapp').value,
-                autoTransmissao: document.getElementById('config-auto-transmissao').checked
-            };
-            saveData();
-            alert('Configurações do discador salvas com sucesso!');
-        }
-
-        function carregarConfigDiscadorNaTela() {
-            document.getElementById('config-url').value = discadorConfig.url || '';
-            document.getElementById('config-token').value = discadorConfig.token || '';
-            document.getElementById('config-whatsapp').value = discadorConfig.whatsapp || '';
-            document.getElementById('config-auto-transmissao').checked = discadorConfig.autoTransmissao || false;
-        }
-
-        function dispararDiscador(telefone, nome) {
-            const cleanPhone = telefone.replace(/\D/g, '');
-            if (discadorConfig.autoTransmissao && discadorConfig.url) {
-                // Simulação de transmissão direta via Webhook/API configurada
-                console.log(`Transmitindo para API do discador [${discadorConfig.url}] -> Lead: ${nome} (${cleanPhone})`);
-            }
-            // Abre o WhatsApp com a instância configurada ou padrão
-            window.open(`https://wa.me/55${cleanPhone}?text=Olá%20${encodeURIComponent(nome)},%20tudo%20bem?%20Aqui%20é%20da%20Construtora.`, '_blank');
-        }
-
-        // Modais de Lead e Corretor
-        function openLeadModal() { document.getElementById('lead-modal').classList.remove('hidden'); }
-        function closeLeadModal() { document.getElementById('lead-modal').classList.add('hidden'); document.getElementById('lead-form').reset(); }
-        function openCorretorModal() { document.getElementById('corretor-modal').classList.remove('hidden'); }
-        function closeCorretorModal() { document.getElementById('corretor-modal').classList.add('hidden'); }
-
-        function saveLead(e) {
-            e.preventDefault();
-            const novo = {
-                id: Date.now(),
-                nome: document.getElementById('lead-nome').value,
-                telefone: document.getElementById('lead-telefone').value,
-                etapa: 1,
-                obs: document.getElementById('lead-obs').value,
-                dataCriacao: new Date().toISOString().split('T')[0]
-            };
-            leads.push(novo);
-            saveData();
-            closeLeadModal();
-            renderLeads();
-        }
-
-        function saveCorretor(e) {
-            e.preventDefault();
-            const novo = {
-                id: Date.now(),
-                nome: document.getElementById('corretor-nome').value,
-                email: document.getElementById('corretor-email').value
-            };
-            corretores.push(novo);
-            saveData();
-            closeCorretorModal();
-            renderCorretores();
-        }
-
-        function avancarTentativa(id) {
-            const lead = leads.find(l => l.id === id);
-            if (lead) {
-                if (lead.etapa < 3) lead.etapa += 1;
-                else lead.etapa = 'sucesso';
-                saveData();
-                renderLeads();
-            }
-        }
-
-        function abrirDescarteModal(id) {
-            document.getElementById('discard-lead-id').value = id;
-            document.getElementById('discard-modal').classList.remove('hidden');
-        }
-
-        function closeDiscardModal() {
-            document.getElementById('discard-modal').classList.add('hidden');
-            document.querySelectorAll('input[name="motivo-descarte"]').forEach(r => r.checked = false);
-        }
-
-        function confirmDiscard() {
-            const id = document.getElementById('discard-lead-id').value;
-            const selected = document.querySelector('input[name="motivo-descarte"]:checked');
-            if (!selected) {
-                alert('Por favor, selecione um motivo de descarte.');
-                return;
-            }
-            const lead = leads.find(l => l.id == id);
-            if (lead) {
-                lead.etapa = 'descartado';
-                lead.motivoDescarte = selected.value;
-                saveData();
-                closeDiscardModal();
-                renderLeads();
-            }
-        }
-
-        function renderLeads() {
-            const tbody = document.getElementById('leads-table-body');
-            const search = document.getElementById('search-input').value.toLowerCase();
-            const filterEtapa = document.getElementById('filter-etapa').value;
-            
-            tbody.innerHTML = '';
-
-            const filtered = leads.filter(l => {
-                const matchSearch = l.nome.toLowerCase().includes(search) || l.telefone.includes(search);
-                const matchEtapa = filterEtapa === 'todos' || l.etapa == filterEtapa || (filterEtapa === 'sucesso' && l.etapa === 'sucesso') || (filterEtapa === 'descartado' && l.etapa === 'descartado');
-                return matchSearch && matchEtapa;
-            });
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Nenhum lead encontrado.</td></tr>`;
-                return;
-            }
-
-            filtered.forEach(lead => {
-                let badgeEtapa = '';
-                if(lead.etapa === 1) badgeEtapa = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-semibold">1ª Tentativa</span>`;
-                else if(lead.etapa === 2) badgeEtapa = `<span class="px-2.5 py-1 bg-purple-500/10 text-purple-400 rounded-lg text-xs font-semibold">2ª Tentativa</span>`;
-                else if(lead.etapa === 3) badgeEtapa = `<span class="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-semibold">3ª Tentativa</span>`;
-                else if(lead.etapa === 'sucesso') badgeEtapa = `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-semibold">Fechado / Sucesso</span>`;
-                else if(lead.etapa === 'descartado') badgeEtapa = `<span class="px-2.5 py-1 bg-red-500/10 text-red-400 rounded-lg text-xs font-semibold">Descartado (${lead.motivoDescarte || ''})</span>`;
-
-                const cleanPhone = lead.telefone.replace(/\D/g, '');
-                
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-700/30 transition">
-                        <td class="py-4 px-6 font-medium text-white">${lead.nome}</td>
-                        <td class="py-4 px-6 text-slate-300">${lead.telefone}</td>
-                        <td class="py-4 px-6">${badgeEtapa}</td>
-                        <td class="py-4 px-6 text-slate-400 text-xs">${lead.obs || '-'}</td>
-                        <td class="py-4 px-6 text-center space-x-2">
-                            <button onclick="dispararDiscador('${lead.telefone}', '${lead.nome}')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-xl font-semibold transition shadow" title="Disparar via Discador para o WhatsApp">
-                                <i class="fa-solid fa-headset"></i>
-                                <span>Discador</span>
-                            </button>
-                            <a href="tel:${cleanPhone}" class="inline-flex items-center justify-center w-8 h-8 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white rounded-xl transition" title="Ligar">
-                                <i class="fa-solid fa-phone"></i>
-                            </a>
-                        </td>
-                        <td class="py-4 px-6 text-right space-x-2">
-                            ${lead.etapa !== 'descartado' && lead.etapa !== 'sucesso' ? `
-                                <button onclick="avancarTentativa(${lead.id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-xl font-semibold transition">Tratado</button>
-                                <button onclick="abrirDescarteModal(${lead.id})" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white text-xs rounded-xl font-semibold transition">Descartar</button>
-                            ` : '-'}
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function updateDashboard() {
-            const total = leads.length;
-            const t1 = leads.filter(l => l.etapa === 1).length;
-            const t2t3 = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
-            const sucesso = leads.filter(l => l.etapa === 'sucesso').length;
-
-            if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = total;
-            if(document.getElementById('stat-t1')) document.getElementById('stat-t1').innerText = t1;
-            if(document.getElementById('stat-t2t3')) document.getElementById('stat-t2t3').innerText = t2t3;
-            if(document.getElementById('stat-sucesso')) document.getElementById('stat-sucesso').innerText = t2t3; // corrigido para sucesso
-            if(document.getElementById('stat-sucesso')) document.getElementById('stat-sucesso').innerText = sucesso;
-        }
-
-        function updateRelatorios() {
-            const hoje = new Date().toISOString().split('T')[0];
-            const proscHoje = leads.filter(l => l.dataCriacao === hoje).length;
-            const t1 = leads.filter(l => l.etapa === 1).length;
-            const t2t3 = leads.filter(l => l.etapa === 2 || l.etapa === 3).length;
-
-            document.getElementById('rep-hoje').innerText = proscHoje;
-            document.getElementById('rep-t1').innerText = t1;
-            document.getElementById('rep-t2t3').innerText = t2t3;
-
-            document.getElementById('desc-inexistente').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Contato inexistente').length;
-            document.getElementById('desc-semresposta').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Falta de resposta').length;
-            document.getElementById('desc-tempoperdido').innerText = leads.filter(l => l.etapa === 'descartado' && l.motivoDescarte === 'Tomando meu tempo').length;
-        }
-
-        function renderCorretores() {
-            const grid = document.getElementById('corretores-grid');
-            grid.innerHTML = '';
-            corretores.forEach(c => {
-                grid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-700 p-5 rounded-2xl flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-xl flex items-center justify-center font-bold text-lg">
-                            <i class="fa-solid fa-user-tie"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">${c.nome}</h4>
-                            <p class="text-xs text-slate-400">${c.email}</p>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        window.onload = function() {
-            updateDashboard();
-        };
     </script>
 </body>
 </html>
