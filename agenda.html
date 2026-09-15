@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isa & Bella Studio | Caderninho de Agendamentos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Importa o cliente do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            light: '#FCE7F3',
+                            DEFAULT: '#E11D48',
+                            dark: '#881337',
+                            soft: '#FFF1F2',
+                            paper: '#FFFDF9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#FAF7F5] text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-pink-200">
+
+    <!-- Header do Painel da Profissional -->
+    <header class="bg-white shadow-sm py-6 px-6 border-b border-pink-100/60">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-rose-600 shadow-sm">
+                    <i class="fa-solid fa-book-open text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wider text-gray-900 font-serif">CADERNO DA ISABELLA</h1>
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-rose-600">Gestão de Agendamentos em Tempo Real</p>
+                </div>
+            </div>
+            <div class="bg-pink-50/80 px-4 py-2 rounded-2xl text-xs font-bold text-rose-700 shadow-sm flex items-center space-x-2">
+                <i class="fa-regular fa-calendar text-rose-500"></i>
+                <span id="current-month-year">Carregando...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal: Estilo Caderno / Planner -->
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 my-4 space-y-6 flex-1">
+        
+        <div class="bg-studio-paper rounded-3xl p-6 sm:p-8 shadow-xl shadow-pink-900/5 border border-pink-100/60 relative">
+            
+            <div class="flex items-center justify-between pb-6 mb-6 border-b border-gray-100">
+                <div>
+                    <h2 class="font-bold text-base text-gray-800 font-serif">Horários Cadastrados</h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Atualiza automaticamente conforme as clientes agendam</p>
+                </div>
+                <div class="text-xs font-bold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-xl">
+                    <span id="total-count">0</span> agendamentos
+                </div>
+            </div>
+
+            <!-- Lista de Agendamentos Dinâmica -->
+            <div id="appointments-list" class="space-y-4">
+                <p class="text-center text-gray-400 text-xs py-8">Carregando agendamentos da nuvem...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="py-6 px-4 text-center text-xs text-gray-400">
+        <p>Painel Exclusivo • Isa & Bella Studio © 2026</p>
+    </footer>
+
+    <!-- Script de Conexão com o Banco de Dados -->
+    <script>
+        // COLE AS MESMAS CREDENCIAIS DO SUPABASE AQUI:
+        const SUPABASE_URL = 'SUA_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Atualiza o mês no header
+        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const dataAtual = new Date();
+        document.getElementById('current-month-year').innerText = `${meses[dataAtual.getMonth()]} de ${dataAtual.getFullYear()}`;
+
+        async function carregarAgendamentos() {
+            const { data, error } = await supabaseClient
+                .from('agendamentos')
+                .select('*')
+                .order('data', { ascending: true })
+                .order('horario', { ascending: true });
+
+            const listaEl = document.getElementById('appointments-list');
+            
+            if (error) {
+                listaEl.innerHTML = '<p class="text-center text-rose-500 text-xs py-4">Erro ao carregar os dados. Verifique as chaves do Supabase.</p>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                listaEl.innerHTML = '<p class="text-center text-gray-400 text-xs py-8">Nenhum agendamento encontrado no momento. 💖</p>';
+                document.getElementById('total-count').innerText = '0';
+                return;
+            }
+
+            document.getElementById('total-count').innerText = data.length;
+            listaEl.innerHTML = '';
+
+            data.forEach(item => {
+                // Formata data AAAA-MM-DD para DD/MM/AAAA
+                const partes = item.data.split('-');
+                const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all border-l-4 border-rose-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4";
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-extrabold text-rose-600 bg-pink-50 px-2.5 py-1 rounded-lg">${item.horario}</span>
+                            <span class="text-xs font-medium text-gray-400">${dataFormatada}</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-base">${item.nome}</h3>
+                        <p class="text-xs text-gray-500 font-medium">✨ ${item.servico}</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <a href="https://wa.me/5511999999999?text=Olá%20${encodeURIComponent(item.nome)},%20passando%20para%20confirmar%20seu%20horário%20conosco!%20💖" target="_blank" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 p-2.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Contato</span>
+                        </a>
+                        <button onclick="removerAgendamento(${item.id}, this)" class="bg-gray-50 text-gray-400 hover:bg-rose-50 hover:text-rose-600 p-2.5 rounded-xl text-xs font-bold transition cursor-pointer" title="Concluir / Remover">
+                            <i class="fa-solid fa-check text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                listaEl.appendChild(card);
+            });
+        }
+
+        async function removerAgendamento(id, button) {
+            const card = button.closest('.bg-white');
+            card.style.transform = 'scale(0.95)';
+            card.style.opacity = '0';
+
+            // Deleta do banco de dados na nuvem
+            await supabaseClient.from('agendamentos').delete().eq('id', id);
+
+            setTimeout(() => {
+                carregarAgendamentos();
+            }, 200);
+        }
+
+        // Carrega ao abrir a página
+        carregarAgendamentos();
+
+        // Opcional: Atualiza a cada 10 segundos automaticamente para ver os novos agendamentos da cliente na hora
+        setInterval(carregarAgendamentos, 10000);
+      
+    </script>
+</body>
+</html>
