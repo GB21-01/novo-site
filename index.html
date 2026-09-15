@@ -4,169 +4,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isa & Bella Studio | Agendamentos</title>
+    <title>Isa & Bella Studio | Agendamentos de Luxo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
                     colors: {
                         studio: {
-                            light: '#FCE7F3',
+                            light: '#FFF0F5',
                             DEFAULT: '#E11D48',
-                            dark: '#881337',
-                            soft: '#FFF1F2'
+                            roseGold: '#E6C5C0',
+                            softPink: '#FDF2F4',
+                            darkRose: '#9F1239'
                         }
+                    },
+                    boxShadow: {
+                        'luxury': '0 20px 40px -15px rgba(225, 29, 72, 0.15)',
+                        'glow': '0 0 25px rgba(244, 63, 94, 0.25)',
                     }
                 }
             }
         }
     </script>
+    <style>
+        .luxury-gradient-border {
+            position: relative;
+            border-radius: 1.75rem;
+            background: linear-gradient(60deg, #fbcfe8, #f43f5e, #fda4af);
+            padding: 1.5px;
+            transition: all 0.3s ease;
+        }
+        .luxury-gradient-border:focus-within {
+            background: linear-gradient(60deg, #f43f5e, #be123c, #fb7185);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
+        }
+        .luxury-input {
+            background-color: #FFFFFF;
+            border-radius: calc(1.75rem - 1.5px);
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
 </head>
-<body class="bg-[#FFF8FA] text-gray-800 font-sans min-h-screen flex flex-col md:flex-row selection:bg-pink-200">
+<body class="bg-gradient-to-br from-[#FFF5F7] via-[#FFF0F3] to-[#FFE4E6] text-gray-800 font-sans min-h-screen flex flex-col md:flex-row selection:bg-rose-200 selection:text-rose-900">
 
-    <aside class="w-full md:w-96 bg-white shadow-xl shadow-pink-500/5 p-8 flex flex-col justify-between border-r border-pink-100/60 relative z-10">
-        <div class="space-y-6 text-center md:text-left">
-            <div class="flex items-center justify-center md:justify-start space-x-4">
-                <div class="w-20 h-20 bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl flex items-center justify-center shadow-md overflow-hidden p-2 group transition-all duration-300 hover:scale-105">
-                    <img src="https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-eyelashes-logo-design-vector-png-image_996509.jpg" alt="Isa & Bella Logo" class="w-full h-full object-contain rounded-xl opacity-95 group-hover:scale-110 transition-transform">
+    <!-- BOTÃO DO MENU MOBILE -->
+    <div class="md:hidden flex items-center justify-between bg-white/90 backdrop-blur-md px-6 py-4 border-b border-rose-100 sticky top-0 z-40 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 font-serif font-bold text-lg">I&B</div>
+            <span class="font-serif font-black tracking-widest text-gray-900 text-sm">ISA & BELLA</span>
+        </div>
+        <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg shadow-sm active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-bars" id="menu-icon"></i>
+        </button>
+    </div>
+
+    <!-- MENU LATERAL / GAVETA MOBILE (Drawer) -->
+    <div id="sidebar-drawer" class="fixed inset-0 z-50 pointer-events-none md:pointer-events-auto md:static flex">
+        <div id="drawer-backdrop" onclick="toggleMenu()" class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+        
+        <aside id="menu-panel" class="mobile-menu md:translate-x-0 w-[85%] max-w-[380px] md:w-[420px] bg-white/95 backdrop-blur-2xl shadow-2xl shadow-rose-900/20 p-8 flex flex-col justify-between border-r border-rose-100 relative z-10 h-full overflow-y-auto">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-rose-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-tr from-rose-100 to-pink-50 rounded-2xl flex items-center justify-center shadow-md p-1.5 border border-rose-200/50">
+                            <img src="https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-eyelashes-logo-design-vector-png-image_996509.jpg" alt="Logo" class="w-full h-full object-contain rounded-xl opacity-90">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-[0.15em] text-gray-900 font-serif">ISA & BELLA</h1>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-rose-600 block mt-0.5">Beauty Studio</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleMenu()" class="md:hidden text-gray-400 hover:text-rose-600 text-xl p-2 cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-                <div>
-                    <h1 class="text-xl font-black tracking-widest text-gray-900 font-serif">ISA & BELLA</h1>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-rose-600 block mt-0.5">Beauty Studio</span>
+
+                <nav class="space-y-2 py-2">
+                    <a href="#agendamento-section" onclick="toggleMenu()" class="flex items-center space-x-3 px-4 py-3 rounded-2xl bg-rose-50/60 text-rose-700 font-semibold text-xs tracking-wider uppercase transition hover:bg-rose-100">
+                        <i class="fa-solid fa-calendar-check text-rose-500"></i>
+                        <span>Fazer Agendamento</span>
+                    </a>
+                    <a href="#promocao-banner" onclick="toggleMenu()" class="flex items-center space-x-3 px-4 py-3 rounded-2xl hover:bg-rose-50/50 text-gray-600 font-medium text-xs tracking-wider uppercase transition">
+                        <i class="fa-solid fa-fire text-rose-500"></i>
+                        <span>Promoção do Mês</span>
+                    </a>
+                </nav>
+
+                <div class="space-y-3 pt-2 border-t border-rose-100">
+                    <h2 class="text-xs font-bold text-gray-800 tracking-wider font-serif italic">✨ Experiência Exclusiva</h2>
+                    <p class="text-xs text-gray-500 leading-relaxed font-light">
+                        Especializadas em transformar olhares e unhas em verdadeiras obras de arte, com padrão de excelência internacional.
+                    </p>
+                </div>
+
+                <div class="space-y-2.5 text-xs text-gray-600">
+                    <div class="flex items-center space-x-3 bg-rose-50/40 p-3 rounded-2xl border border-rose-100/40">
+                        <div class="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-rose-600 shadow-sm shrink-0">
+                            <i class="fa-solid fa-location-dot text-[10px]"></i>
+                        </div>
+                        <span class="font-medium">Rua das Elegâncias, 123 - Sala 4</span>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-rose-50/40 p-3 rounded-2xl border border-rose-100/40">
+                        <div class="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-rose-600 shadow-sm shrink-0">
+                            <i class="fa-solid fa-clock text-[10px]"></i>
+                        </div>
+                        <span class="font-medium">Seg a Sáb: 09h às 19h</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-3 pt-4 border-t border-gray-100">
-                <h2 class="text-sm font-bold text-gray-700 tracking-wide">✨ Experiência Exclusiva</h2>
-                <p class="text-xs text-gray-400 leading-relaxed">
-                    Especialistas em realçar sua beleza natural com técnicas avançadas em design de sobrancelhas e nails design de alto padrão.
-                </p>
+            <div class="pt-6 mt-6 border-t border-rose-100 space-y-3">
+                <div class="bg-gradient-to-r from-rose-500/10 to-pink-500/10 p-3.5 rounded-2xl border border-rose-200/50 space-y-1">
+                    <div class="flex items-center space-x-2 text-rose-700">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-wider font-serif">Clube VIP News</span>
+                    </div>
+                    <p class="text-[10px] text-gray-600 leading-tight">Cadastre seu e-mail para receber ofertas exclusivas!</p>
+                </div>
+                <p class="text-[10px] font-medium text-rose-600 italic text-center">"Obrigada por ser essa cliente maravilhosa! 💖"</p>
             </div>
+        </aside>
+    </div>
 
-            <div class="space-y-2 pt-2 text-xs text-gray-500">
-                <div class="flex items-center space-x-2.5 justify-center md:justify-start">
-                    <div class="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center text-rose-600 shrink-0">
-                        <i class="fa-solid fa-location-dot text-xs"></i>
-                    </div>
-                    <span>Rua das Elegâncias, 123 - Sala 4</span>
-                </div>
-                <div class="flex items-center space-x-2.5 justify-center md:justify-start">
-                    <div class="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center text-rose-600 shrink-0">
-                        <i class="fa-solid fa-clock text-xs"></i>
-                    </div>
-                    <span>Seg a Sáb: 09h às 19h</span>
-                </div>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-1 flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto space-y-8">
+        
+        <!-- BANNER DA PROMOÇÃO -->
+        <div id="promocao-banner" class="max-w-xl w-full bg-white rounded-[2.5rem] p-3 shadow-xl shadow-rose-900/10 border border-rose-100 overflow-hidden group transition-all duration-300 hover:shadow-2xl">
+            <div class="relative rounded-[2rem] overflow-hidden bg-rose-50">
+                <img src="ChatGPT Image 15 de set. de 2026, 19_55_17.png" alt="Promoção Especial - Sobrancelha de Henna + Mão" class="w-full h-auto object-cover transform group-hover:scale-102 transition-transform duration-700">
             </div>
         </div>
 
-        <div class="pt-8 mt-8 border-t border-gray-100 text-center md:text-left">
-            <p class="text-[11px] font-medium text-rose-600 italic">"Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖"</p>
-            <p class="text-[10px] text-gray-300 mt-2">Isa & Bella Studio © 2026</p>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex items-center justify-center p-6 md:p-12 overflow-y-auto">
-        <div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl shadow-pink-900/5 space-y-6 border border-pink-100/40">
+        <!-- CAIXA DE AGENDAMENTO -->
+        <div id="agendamento-section" class="max-w-xl w-full bg-white/90 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-10 shadow-luxury shadow-rose-900/10 space-y-8 border border-white relative overflow-hidden">
             
-            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-pink-400/20 to-rose-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-6 border-b border-rose-100/80 relative z-10">
                 <div>
-                    <h2 class="font-bold text-base text-gray-800 tracking-wide font-serif">Agende seu Horário</h2>
-                    <p class="text-[11px] text-gray-400 mt-0.5">Preencha rapidinho para garantir sua vaga</p>
+                    <h2 class="text-xl font-bold text-gray-900 font-serif tracking-wide">Agende seu Momento VIP</h2>
+                    <p class="text-xs text-rose-600/80 font-medium mt-1">Garanta sua vaga na promoção especial</p>
                 </div>
-                <div class="w-9 h-9 rounded-2xl bg-pink-50 flex items-center justify-center text-rose-600">
-                    <i class="fa-solid fa-calendar-days text-sm"></i>
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-rose-500/30">
+                    <i class="fa-solid fa-heart text-base animate-pulse"></i>
                 </div>
             </div>
 
-            <form id="booking-form" onsubmit="realizarAgendamento(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Seu Nome</label>
-                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Procedimento Desejado</label>
-                    <select id="service-type" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200 cursor-pointer">
-                        <option value="" disabled selected>Selecione o procedimento...</option>
-                        <option value="Design de Sobrancelha">Design de Sobrancelha</option>
-                        <option value="Design com Henna">Design com Henna</option>
-                        <option value="Manicure / Unhas em Gel">Manicure / Unhas em Gel</option>
-                        <option value="Combo Sobrancelha + Unha">Combo Sobrancelha + Unha ✨</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Data</label>
-                        <input type="date" id="booking-date" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200">
+            <form id="booking-form" onsubmit="enviarParaWhatsApp(event)" class="space-y-5 relative z-10">
+                
+                <div class="space-y-1.5">
+                    <label class="block text-[11px] font-bold uppercase tracking-[0.2em] text-rose-700/80 ml-1">Seu Nome Completo</label>
+                    <div class="luxury-gradient-border">
+                        <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="luxury-input w-full px-5 py-4 text-sm text-gray-800 placeholder-gray-300 focus:outline-none transition-all">
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Horário</label>
-                        <select id="booking-time" required class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-3 py-3.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200 cursor-pointer">
-                            <option value="" disabled selected>Horário</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:30">10:30</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:30">14:30</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:30">17:30</option>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[11px] font-bold uppercase tracking-[0.2em] text-rose-700/80 ml-1">Seu E-mail (Para News & Comprovantes)</label>
+                    <div class="luxury-gradient-border">
+                        <input type="email" id="client-email" required placeholder="seu.email@exemplo.com" class="luxury-input w-full px-5 py-4 text-sm text-gray-800 placeholder-gray-300 focus:outline-none transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[11px] font-bold uppercase tracking-[0.2em] text-rose-700/80 ml-1">Procedimento / Promoção</label>
+                    <div class="luxury-gradient-border">
+                        <select id="service-type" required class="luxury-input w-full px-5 py-4 text-sm text-gray-800 focus:outline-none transition-all cursor-pointer appearance-none bg-white">
+                            <option value="" disabled selected>Selecione sua transformação...</option>
+                            <option value="Combo Promocional: Sobrancelha de Henna + Mão (R$ 55,00)" selected>✨ Combo Promo: Sobrancelha de Henna + Mão (R$ 55,00)</option>
+                            <option value="Design de Sobrancelha">Design de Sobrancelha</option>
+                            <option value="Design com Henna">Design com Henna</option>
+                            <option value="Manicure / Unhas em Gel">Manicure / Unhas em Gel</option>
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 active:scale-95 text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-rose-600/25 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-3 cursor-pointer">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Agendar via WhatsApp (Enter ↵)</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-[11px] font-bold uppercase tracking-[0.2em] text-rose-700/80 ml-1">Data Escolhida</label>
+                        <div class="luxury-gradient-border">
+                            <input type="date" id="booking-date" required class="luxury-input w-full px-4 py-4 text-sm text-gray-800 focus:outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-[11px] font-bold uppercase tracking-[0.2em] text-rose-700/80 ml-1">Horário Perfeito</label>
+                        <div class="luxury-gradient-border">
+                            <select id="booking-time" required class="luxury-input w-full px-4 py-4 text-sm text-gray-800 focus:outline-none transition-all cursor-pointer appearance-none bg-white">
+                                <option value="" disabled selected>Horário</option>
+                                <option value="09:00">09:00 - Manhã</option>
+                                <option value="10:30">10:30 - Manhã</option>
+                                <option value="13:00">13:00 - Tarde</option>
+                                <option value="14:30">14:30 - Tarde</option>
+                                <option value="16:00">16:00 - Tarde</option>
+                                <option value="17:30">17:30 - Noite</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 hover:from-rose-700 hover:to-pink-800 active:scale-95 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-rose-600/30 hover:shadow-glow transition-all duration-300 flex items-center justify-center space-x-3 text-sm mt-4 cursor-pointer group">
+                    <i class="fa-brands fa-whatsapp text-lg group-hover:scale-125 transition-transform"></i>
+                    <span class="tracking-wider uppercase font-semibold">Confirmar Agendamento VIP (Enter ↵)</span>
                 </button>
             </form>
         </div>
     </main>
 
     <script>
-        // Supabase configurado com suas chaves oficiais:
-        const SUPABASE_URL = 'https://kvxfwixhxbjmvrdsdfxg.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_toPcCSDwQ2Z86xkLyXCBqA__cMtGyjf';
-        
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        function toggleMenu() {
+            const drawer = document.getElementById('sidebar-drawer');
+            const panel = document.getElementById('menu-panel');
+            const backdrop = document.getElementById('drawer-backdrop');
+            const icon = document.getElementById('menu-icon');
 
-        async function realizarAgendamento(event) {
+            panel.classList.toggle('open');
+            
+            if (panel.classList.contains('open')) {
+                backdrop.style.opacity = '1';
+                backdrop.style.pointerEvents = 'auto';
+                drawer.style.pointerEvents = 'auto';
+                icon.className = 'fa-solid fa-xmark';
+            } else {
+                backdrop.style.opacity = '0';
+                backdrop.style.pointerEvents = 'none';
+                drawer.style.pointerEvents = 'none';
+                icon.className = 'fa-solid fa-bars';
+            }
+        }
+
+        function enviarParaWhatsApp(event) {
             event.preventDefault();
             
-            const btn = document.getElementById('btn-submit');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Salvando agendamento...';
-
             const name = document.getElementById('client-name').value;
+            const email = document.getElementById('client-email').value;
             const service = document.getElementById('service-type').value;
             const date = document.getElementById('booking-date').value;
             const time = document.getElementById('booking-time').value;
 
-            const { error } = await supabaseClient
-                .from('agendamentos')
-                .insert([{ nome: name, servico: service, data: date, horario: time }]);
-
-            if (error) {
-                alert('Erro ao salvar agendamento: ' + error.message);
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Agendar via WhatsApp (Enter ↵)';
-                return;
-            }
-
             const dateParts = date.split('-');
             const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-            const phoneNumber = "5511999999999"; 
 
-            const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0a- *Serviço:* ${service}%0a- *Data:* ${formattedDate}%0a- *Horário:* ${time}%0a%0aMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
+            // Número oficial da Isa configurado com sucesso
+            const phoneNumber = "5511991284711"; 
+
+            const message = `✨ *AGENDAMENTO VIP - STUDIO* ✨%0a%0a👤 *Cliente:* ${name}%0a📧 *E-mail (News):* ${email}%0a💅 *Serviço:* ${service}%0a📅 *Data:* ${formattedDate}%0a⏰ *Horário:* ${time}%0a%0a_Enviado pelo site exclusivo do Studio._ 💖`;
 
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappUrl, '_blank');
-
-            document.getElementById('booking-form').reset();
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Agendar via WhatsApp (Enter ↵)';
         }
 
         document.getElementById('booking-form').addEventListener('keydown', function(e) {
