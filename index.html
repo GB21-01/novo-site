@@ -1,5 +1,5 @@
 
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <title>Isa & Bella Studio | Agendamentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -16,8 +17,7 @@
                             light: '#FCE7F3',
                             DEFAULT: '#E11D48',
                             dark: '#881337',
-                            soft: '#FFF1F2',
-                            roseGold: '#F43F5E'
+                            soft: '#FFF1F2'
                         }
                     }
                 }
@@ -27,12 +27,9 @@
 </head>
 <body class="bg-[#FFF8FA] text-gray-800 font-sans min-h-screen flex flex-col md:flex-row selection:bg-pink-200">
 
-    <!-- Sidebar / Painel Lateral Esquerdo (Profissional, fixo e elegante em telas maiores) -->
     <aside class="w-full md:w-96 bg-white shadow-xl shadow-pink-500/5 p-8 flex flex-col justify-between border-r border-pink-100/60 relative z-10">
-        <!-- Topo da Sidebar: Logo e Identidade -->
         <div class="space-y-6 text-center md:text-left">
             <div class="flex items-center justify-center md:justify-start space-x-4">
-                <!-- Logotipo Estilizado de Cílios com efeito de luxo -->
                 <div class="w-20 h-20 bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl flex items-center justify-center shadow-md overflow-hidden p-2 group transition-all duration-300 hover:scale-105">
                     <img src="https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-eyelashes-logo-design-vector-png-image_996509.jpg" alt="Isa & Bella Logo" class="w-full h-full object-contain rounded-xl opacity-95 group-hover:scale-110 transition-transform">
                 </div>
@@ -49,7 +46,6 @@
                 </p>
             </div>
 
-            <!-- Informações / Localização -->
             <div class="space-y-2 pt-2 text-xs text-gray-500">
                 <div class="flex items-center space-x-2.5 justify-center md:justify-start">
                     <div class="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center text-rose-600 shrink-0">
@@ -66,14 +62,12 @@
             </div>
         </div>
 
-        <!-- Rodapé da Sidebar (Mensagem fofa) -->
         <div class="pt-8 mt-8 border-t border-gray-100 text-center md:text-left">
             <p class="text-[11px] font-medium text-rose-600 italic">"Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖"</p>
             <p class="text-[10px] text-gray-300 mt-2">Isa & Bella Studio © 2026</p>
         </div>
     </aside>
 
-    <!-- Conteúdo Principal / Área de Agendamento Dinâmica -->
     <main class="flex-1 flex items-center justify-center p-6 md:p-12 overflow-y-auto">
         <div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl shadow-pink-900/5 space-y-6 border border-pink-100/40">
             
@@ -87,8 +81,7 @@
                 </div>
             </div>
 
-            <!-- Formulário de Agendamento Ultra Fluido -->
-            <form id="booking-form" onsubmit="sendToWhatsApp(event)" class="space-y-4">
+            <form id="booking-form" onsubmit="realizarAgendamento(event)" class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">Seu Nome</label>
                     <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-[#FAFAFA] border-0 rounded-2xl px-4 py-3.5 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all duration-200">
@@ -124,8 +117,7 @@
                     </div>
                 </div>
 
-                <!-- Botão com clique hiper fluido, animação active e atalho Enter -->
-                <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 active:scale-95 text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-rose-600/25 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-3 cursor-pointer">
+                <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 active:scale-95 text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-rose-600/25 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-3 cursor-pointer">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                     <span>Agendar via WhatsApp (Enter ↵)</span>
                 </button>
@@ -133,29 +125,50 @@
         </div>
     </main>
 
-    <!-- Script de Fluidez e WhatsApp -->
     <script>
-        function sendToWhatsApp(event) {
+        // Supabase configurado com suas chaves oficiais:
+        const SUPABASE_URL = 'https://kvxfwixhxbjmvrdsdfxg.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_toPcCSDwQ2Z86xkLyXCBqA__cMtGyjf';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function realizarAgendamento(event) {
             event.preventDefault();
             
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Salvando agendamento...';
+
             const name = document.getElementById('client-name').value;
             const service = document.getElementById('service-type').value;
             const date = document.getElementById('booking-date').value;
             const time = document.getElementById('booking-time').value;
 
+            const { error } = await supabaseClient
+                .from('agendamentos')
+                .insert([{ nome: name, servico: service, data: date, horario: time }]);
+
+            if (error) {
+                alert('Erro ao salvar agendamento: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Agendar via WhatsApp (Enter ↵)';
+                return;
+            }
+
             const dateParts = date.split('-');
             const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-
-            // Número da Isa (substitua depois se precisar)
             const phoneNumber = "5511999999999"; 
 
             const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0a- *Serviço:* ${service}%0a- *Data:* ${formattedDate}%0a- *Horário:* ${time}%0a%0aMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
 
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappUrl, '_blank');
+
+            document.getElementById('booking-form').reset();
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Agendar via WhatsApp (Enter ↵)';
         }
 
-        // Atalho de Enter fluido no formulário inteiro
         document.getElementById('booking-form').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'SELECT') {
                 e.preventDefault();
