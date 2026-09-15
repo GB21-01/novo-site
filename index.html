@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isa & Bella Studio | Agendamentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,49 +23,53 @@
         }
     </script>
 </head>
-<body class="bg-studio-soft text-gray-800 font-sans min-h-screen flex flex-col justify-between">
+<body class="bg-studio-soft text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-pink-200">
 
-    <!-- Header / Logo -->
-    <header class="bg-white shadow-sm py-6 px-4 text-center relative border-b border-pink-100">
-        <div class="max-w-md mx-auto flex flex-col items-center space-y-2">
-            <!-- Logo estilizada (Sobrancelha + Cílios / Charme) -->
-            <div class="w-16 h-16 bg-studio-light rounded-full flex items-center justify-center text-studio shadow-inner relative">
+    <!-- Header / Logo (Sem bordas soltas, visual limpo) -->
+    <header class="bg-white shadow-sm py-8 px-4 text-center">
+        <div class="max-w-md mx-auto flex flex-col items-center space-y-3">
+            <!-- Logo estilizada com cílios / olhar -->
+            <div class="w-16 h-16 bg-studio-light rounded-2xl flex items-center justify-center text-studio shadow-sm relative transition-transform duration-300 hover:scale-105">
                 <i class="fa-solid fa-eye text-2xl absolute"></i>
                 <i class="fa-solid fa-wand-magic-sparkles text-xs absolute -top-1 -right-1 text-pink-500 animate-pulse"></i>
             </div>
-            <h1 class="text-2xl font-black tracking-wider text-studio-dark">ISA & BELLA STUDIO</h1>
-            <p class="text-xs font-medium uppercase tracking-widest text-pink-400">Design de Sobrancelhas & Nails</p>
+            <div>
+                <h1 class="text-2xl font-black tracking-wider text-studio-dark">ISA & BELLA STUDIO</h1>
+                <p class="text-xs font-semibold uppercase tracking-widest text-pink-400 mt-0.5">Design de Sobrancelhas & Nails</p>
+            </div>
         </div>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="max-w-md w-full mx-auto p-4 sm:p-6 my-4 space-y-6 flex-1">
+    <main class="max-w-md w-full mx-auto p-4 sm:p-6 my-2 space-y-5 flex-1">
         
-        <!-- Card de Boas-Vindas / Endereço -->
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-pink-100 text-center space-y-2">
+        <!-- Card de Boas-Vindas (Minimalista, sem borda) -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm text-center space-y-2 transition-all duration-300 hover:shadow-md">
             <h2 class="font-bold text-gray-700 text-sm">✨ Bem-vinda ao nosso espaço!</h2>
-            <p class="text-xs text-gray-500 leading-relaxed">Deixe seu olhar e suas unhas impecáveis. Preencha os dados abaixo para agendar seu horário com todo o carinho que você merece.</p>
-            <div class="pt-2 text-[11px] text-pink-600 font-semibold bg-studio-light/50 py-1.5 px-3 rounded-lg inline-block">
-                <i class="fa-solid fa-location-dot mr-1"></i> Rua das Elegâncias, 123 - Sala 4
+            <p class="text-xs text-gray-400 leading-relaxed">Deixe seu olhar e suas unhas impecáveis. Preencha rapidinho para agendar seu horário.</p>
+            <div class="pt-1">
+                <span class="text-[11px] text-pink-600 font-bold bg-studio-light/60 py-1.5 px-3.5 rounded-full inline-flex items-center">
+                    <i class="fa-solid fa-location-dot mr-1.5"></i> Rua das Elegâncias, 123 - Sala 4
+                </span>
             </div>
         </div>
 
-        <!-- Formulário de Agendamento -->
-        <div class="bg-white rounded-2xl p-6 shadow-md border border-pink-100 space-y-4">
-            <h3 class="font-bold text-base text-gray-800 border-b pb-3 border-gray-100 flex items-center justify-between">
-                <span>Monte seu Horário</span>
-                <i class="fa-solid fa-calendar-days text-studio"></i>
-            </h3>
+        <!-- Formulário de Agendamento (Fluido e sem poluição de bordas) -->
+        <div class="bg-white rounded-3xl p-6 shadow-md space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+                <span class="font-bold text-sm text-gray-700">Monte seu Horário</span>
+                <i class="fa-solid fa-calendar-days text-studio text-sm"></i>
+            </div>
 
             <form id="booking-form" onsubmit="sendToWhatsApp(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Seu Nome Linda</label>
-                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Seu Nome Linda</label>
+                    <input type="text" id="client-name" required placeholder="Ex: Jéssica Silva" class="w-full bg-gray-50 border-0 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-studio transition-all duration-200">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Escolha o Procedimento</label>
-                    <select id="service-type" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Escolha o Procedimento</label>
+                    <select id="service-type" required class="w-full bg-gray-50 border-0 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-studio transition-all duration-200 cursor-pointer">
                         <option value="" disabled selected>Selecione o serviço...</option>
                         <option value="Design de Sobrancelha">Design de Sobrancelha</option>
                         <option value="Design com Henna">Design com Henna</option>
@@ -76,12 +80,12 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Data</label>
-                        <input type="date" id="booking-date" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Data</label>
+                        <input type="date" id="booking-date" required class="w-full bg-gray-50 border-0 rounded-2xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-studio transition-all duration-200">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Horário</label>
-                        <select id="booking-time" required class="w-full bg-pink-50/50 border border-pink-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-studio">
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Horário</label>
+                        <select id="booking-time" required class="w-full bg-gray-50 border-0 rounded-2xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-studio transition-all duration-200 cursor-pointer">
                             <option value="" disabled selected>Horário</option>
                             <option value="09:00">09:00</option>
                             <option value="10:30">10:30</option>
@@ -93,22 +97,23 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-studio hover:bg-studio-dark text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-pink-500/30 transition flex items-center justify-center space-x-2 text-sm mt-2">
+                <!-- Botão com clique super fluido (efeito active:scale-95) e atalho de Enter nativo do formulário -->
+                <button type="submit" class="w-full bg-studio hover:bg-studio-dark active:scale-95 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-pink-500/25 transition-all duration-200 flex items-center justify-center space-x-2 text-sm mt-3 cursor-pointer">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Agendar via WhatsApp</span>
+                    <span>Agendar via WhatsApp (Enter ↵)</span>
                 </button>
             </form>
         </div>
 
     </main>
 
-    <!-- Footer / Mensagem fofa -->
-    <footer class="bg-white border-t border-pink-100 py-4 px-4 text-center text-xs text-gray-500">
+    <!-- Footer fofo -->
+    <footer class="bg-white py-4 px-4 text-center text-xs text-gray-400 mt-4">
         <p>Muito obrigada por ser essa cliente linda e maravilhosa que você é! 💖</p>
-        <p class="text-[10px] text-pink-400 mt-1">Isa & Bella Studio © 2026</p>
+        <p class="text-[10px] text-pink-300 mt-1">Isa & Bella Studio © 2026</p>
     </footer>
 
-    <!-- Script de Integração com WhatsApp -->
+    <!-- Script de Fluidez e WhatsApp -->
     <script>
         function sendToWhatsApp(event) {
             event.preventDefault();
@@ -118,19 +123,25 @@
             const date = document.getElementById('booking-date').value;
             const time = document.getElementById('booking-time').value;
 
-            // Formata a data para ficar bonitinha (AAAA-MM-DD para DD/MM/AAAA)
             const dateParts = date.split('-');
             const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
-            // Número do WhatsApp da Isa (substitua depois se precisar, deixei um padrão)
+            // Número da Isa/Bella (pode substituir depois)
             const phoneNumber = "5511999999999"; 
 
-            // Mensagem pronta e carinhosa gerada automaticamente
-            const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0j- *Serviço:* ${service}%0j- *Data:* ${formattedDate}%0j- *Horário:* ${time}%0j%0jMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
+            const message = `Olá! Meu nome é *${name}*. Gostaria de agendar o seguinte horário:%0a- *Serviço:* ${service}%0a- *Data:* ${formattedDate}%0a- *Horário:* ${time}%0a%0aMuito obrigado por ser essa profissional incrível! Aguardo a confirmação. 💖`;
 
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappUrl, '_blank');
         }
+
+        // Garante que o Enter em qualquer campo submeta o formulário de forma fluida sem frescura
+        document.getElementById('booking-form').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'SELECT') {
+                e.preventDefault();
+                this.requestSubmit();
+            }
+        });
     </script>
 </body>
 </html>
